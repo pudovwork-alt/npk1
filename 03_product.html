@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Каталог эндоскопического оборудования</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}:root{--p:#00727b;--p2:#2498a0;--t:#143b40;--m:#5b777a}
+html,body{width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;background:radial-gradient(circle at 18% 18%,rgba(0,114,123,.12),transparent 28%),radial-gradient(circle at 82% 82%,rgba(36,152,160,.10),transparent 30%),linear-gradient(135deg,#fbfefe,#eef7f7 55%,#f8fbfb);color:var(--t)}
+#graph{position:fixed;inset:0;z-index:0;pointer-events:none}.app{position:relative;z-index:2;width:1920px;height:1080px;transform-origin:top left;padding:54px 74px 44px}.header{text-align:center}.title{font-size:58px;font-weight:850;color:var(--p)}.subtitle{margin-top:10px;font-size:24px;color:var(--m)}
+.stage{position:relative;height:760px;margin-top:24px;perspective:1600px}.carousel{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}.card{position:absolute;width:760px;height:650px;border-radius:42px;padding:30px 34px 34px;background:rgba(255,255,255,.29);border:1px solid rgba(255,255,255,.76);box-shadow:0 34px 90px rgba(0,114,123,.14),inset 0 1px 0 rgba(255,255,255,.94);backdrop-filter:blur(24px);overflow:hidden;cursor:pointer;transition:transform .85s cubic-bezier(.2,.8,.2,1),opacity .55s,filter .55s,box-shadow .55s;transform-style:preserve-3d}.card:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 10%,rgba(255,255,255,.88),transparent 32%),linear-gradient(145deg,rgba(255,255,255,.22),transparent 42%);pointer-events:none}.card.active{transform:translateX(0) translateZ(120px) rotateY(0) scale(1);opacity:1;z-index:5}.card.left{transform:translateX(-610px) translateZ(-150px) rotateY(30deg) scale(.73);opacity:.66;filter:saturate(.75);z-index:3}.card.right{transform:translateX(610px) translateZ(-150px) rotateY(-30deg) scale(.73);opacity:.66;filter:saturate(.75);z-index:3}.card.hidden-left{transform:translateX(-980px) translateZ(-300px) rotateY(40deg) scale(.5);opacity:0;pointer-events:none}.card.hidden-right{transform:translateX(980px) translateZ(-300px) rotateY(-40deg) scale(.5);opacity:0;pointer-events:none}
+.visual{position:relative;z-index:2;height:390px;display:flex;align-items:center;justify-content:center}.visual:before{content:"";position:absolute;width:360px;height:360px;border-radius:50%;border:1px solid rgba(0,114,123,.15);box-shadow:0 0 0 24px rgba(0,114,123,.035),0 0 0 48px rgba(0,114,123,.02);animation:ring 6s ease-in-out infinite alternate}@keyframes ring{to{transform:scale(1.04) rotate(10deg)}}.card img{position:relative;z-index:2;max-width:88%;max-height:350px;object-fit:contain;filter:drop-shadow(0 20px 30px rgba(0,70,75,.14));transition:.45s}.card.active:hover img{transform:scale(1.035) translateY(-4px)}.num{position:absolute;top:28px;right:34px;z-index:3;font-size:88px;font-weight:900;color:rgba(0,114,123,.07)}.content{position:relative;z-index:2;text-align:center}.content h2{font-size:40px;color:var(--p);margin-bottom:12px}.content p{font-size:21px;line-height:1.38;color:var(--m);max-width:640px;margin:auto}.more{margin-top:22px;display:inline-flex;align-items:center;justify-content:center;min-width:205px;height:58px;border-radius:999px;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;font-size:20px;font-weight:800;box-shadow:0 16px 34px rgba(0,114,123,.22)}
+.arrow{position:absolute;top:50%;transform:translateY(-50%);width:68px;height:68px;border-radius:50%;border:1px solid rgba(255,255,255,.78);background:rgba(255,255,255,.30);backdrop-filter:blur(18px);color:var(--p);font-size:42px;cursor:pointer;z-index:8;transition:.3s;box-shadow:0 16px 42px rgba(0,114,123,.12)}.arrow:hover{transform:translateY(-50%) scale(1.08);background:rgba(255,255,255,.56)}.prev{left:18px}.next{right:18px}.bottom{display:flex;justify-content:center;align-items:center;gap:28px;margin-top:-8px}.dots{display:flex;gap:12px}.dot{width:12px;height:12px;border:0;border-radius:50%;background:rgba(0,114,123,.18);cursor:pointer;transition:.3s}.dot.active{width:42px;border-radius:12px;background:var(--p)}.status{display:flex;align-items:center;gap:10px;color:var(--m);font-size:16px}.pulse{width:9px;height:9px;border-radius:50%;background:var(--p);animation:pulse 2s infinite}@keyframes pulse{70%{box-shadow:0 0 0 12px rgba(0,114,123,0)}}
+.detail{display:none;position:absolute;inset:0;z-index:20;padding:54px 76px;background:radial-gradient(circle at 20% 20%,rgba(0,114,123,.10),transparent 30%),linear-gradient(135deg,rgba(249,253,253,.97),rgba(238,247,247,.96));animation:fade .35s}.detail.active{display:block}@keyframes fade{from{opacity:0;transform:translateY(16px)}}.back{display:inline-flex;padding:14px 26px;border-radius:999px;background:rgba(255,255,255,.36);border:1px solid rgba(255,255,255,.75);box-shadow:0 14px 38px rgba(0,114,123,.10);backdrop-filter:blur(18px);color:var(--p);font-size:21px;font-weight:800;cursor:pointer}.grid{display:grid;grid-template-columns:700px 1fr;gap:58px;margin-top:38px}.dimg{height:660px;border-radius:38px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.75);box-shadow:0 26px 78px rgba(0,114,123,.11);backdrop-filter:blur(18px) saturate(145%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}.dimg:before{content:"";position:absolute;width:430px;height:430px;border-radius:50%;border:1px solid rgba(0,114,123,.16);box-shadow:0 0 0 28px rgba(0,114,123,.035),0 0 0 56px rgba(0,114,123,.02)}.dimg img{position:relative;z-index:2;max-width:90%;max-height:90%;object-fit:contain}.kicker{font-size:18px;letter-spacing:.16em;text-transform:uppercase;color:var(--p2);font-weight:800;margin-bottom:10px}.info h1{font-size:54px;color:var(--p);margin-bottom:18px}.info>p{font-size:23px;line-height:1.45;color:var(--m);margin-bottom:24px}.features{display:grid;grid-template-columns:1fr 1fr;gap:14px}.feature{padding:15px 18px;border-radius:16px;background:rgba(255,255,255,.34);border:1px solid rgba(0,114,123,.15);font-size:19px}.specs{margin-top:24px;padding:24px;border-radius:24px;background:rgba(255,255,255,.34);border:1px solid rgba(255,255,255,.76);box-shadow:0 18px 55px rgba(0,114,123,.09)}.specs h3{font-size:27px;color:var(--p);margin-bottom:12px}.row{display:grid;grid-template-columns:45% 55%;padding:11px 0;border-bottom:1px solid rgba(0,114,123,.10);font-size:19px}.row span:first-child{color:var(--p);font-weight:800}
+
+.product-card .glass-shine{
+  position:absolute;
+  inset:-35% -45%;
+  z-index:1;
+  background:linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255,255,255,.34) 48%,
+    transparent 61%
+  );
+  transform:translateX(-48%) rotate(6deg);
+  opacity:0;
+  pointer-events:none;
+}
+.product-card.active .glass-shine{
+  animation:glassSweep 7s ease-in-out infinite;
+}
+@keyframes glassSweep{
+  0%,18%{transform:translateX(-48%) rotate(6deg);opacity:0}
+  30%{opacity:.72}
+  52%{transform:translateX(48%) rotate(6deg);opacity:.12}
+  100%{transform:translateX(48%) rotate(6deg);opacity:0}
+}
+.product-card.left,
+.product-card.right{
+  background:rgba(255,255,255,.02);
+  border-color:rgba(255,255,255,.20);
+}
+.product-visual,
+.product-content,
+.product-index{
+  position:relative;
+  z-index:2;
+}
+
+
+/* Верхняя панель управления */
+.topbar{position:absolute;top:28px;left:74px;right:74px;z-index:60;display:flex;align-items:center;justify-content:space-between;pointer-events:none}
+.topbar-group{display:flex;align-items:center;gap:12px;pointer-events:auto}
+.control-btn,.lang-switch{height:58px;border:1px solid rgba(255,255,255,.78);background:rgba(255,255,255,.34);box-shadow:0 14px 38px rgba(0,114,123,.10),inset 0 1px 0 rgba(255,255,255,.78);backdrop-filter:blur(18px) saturate(140%);color:var(--p);transition:.28s ease}
+.control-btn{width:58px;border-radius:18px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;text-decoration:none}
+.control-btn:hover{transform:translateY(-2px) scale(1.04);background:rgba(255,255,255,.58);box-shadow:0 18px 44px rgba(0,114,123,.16)}
+.control-btn:active{transform:translateY(0) scale(.98)}
+.control-btn svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.theme-icon-moon{display:none}
+.lang-switch{display:flex;align-items:center;padding:5px;border-radius:18px;gap:4px}
+.lang-option{min-width:54px;height:46px;border:0;border-radius:13px;background:transparent;color:var(--m);font-size:17px;font-weight:850;letter-spacing:.04em;cursor:pointer;transition:.25s}
+.lang-option:hover{color:var(--p)}
+.lang-option.active{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;box-shadow:0 8px 20px rgba(0,114,123,.22)}
+.control-btn:focus-visible,.lang-option:focus-visible,.arrow:focus-visible,.dot:focus-visible,.back:focus-visible{outline:3px solid rgba(36,152,160,.35);outline-offset:4px}
+
+/* Тёмная тема */
+body.dark{--t:#e7f5f5;--m:#a8c1c3;background:radial-gradient(circle at 18% 18%,rgba(36,152,160,.18),transparent 30%),radial-gradient(circle at 82% 82%,rgba(0,114,123,.15),transparent 32%),linear-gradient(135deg,#071316,#0b1e22 55%,#071114);color:var(--t)}
+body.dark .control-btn,body.dark .lang-switch,body.dark .arrow,body.dark .back{background:rgba(10,31,35,.56);border-color:rgba(132,216,221,.18);box-shadow:0 16px 42px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.06)}
+body.dark .control-btn:hover,body.dark .arrow:hover,body.dark .back:hover{background:rgba(15,48,53,.78)}
+body.dark .theme-icon-sun{display:none}
+body.dark .theme-icon-moon{display:block}
+body.dark .card{background:rgba(13,38,42,.58);border-color:rgba(132,216,221,.16);box-shadow:0 34px 90px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.06)}
+body.dark .card:before{background:radial-gradient(circle at 80% 10%,rgba(75,181,188,.12),transparent 34%),linear-gradient(145deg,rgba(255,255,255,.035),transparent 42%)}
+body.dark .card.left,body.dark .card.right{background:rgba(9,28,31,.38);border-color:rgba(132,216,221,.11)}
+body.dark .num{color:rgba(91,204,211,.10)}
+body.dark .visual:before,body.dark .dimg:before{border-color:rgba(91,204,211,.20);box-shadow:0 0 0 24px rgba(36,152,160,.045),0 0 0 48px rgba(36,152,160,.025)}
+body.dark .detail{background:radial-gradient(circle at 20% 20%,rgba(36,152,160,.15),transparent 30%),linear-gradient(135deg,rgba(7,20,23,.98),rgba(10,29,33,.98))}
+body.dark .dimg{background:rgba(13,38,42,.34);border-color:rgba(132,216,221,.14);box-shadow:0 26px 78px rgba(0,0,0,.30)}
+body.dark .feature,body.dark .specs{background:rgba(13,38,42,.58);border-color:rgba(132,216,221,.14);box-shadow:0 18px 55px rgba(0,0,0,.22)}
+body.dark .row{border-bottom-color:rgba(132,216,221,.12)}
+body.dark .dot{background:rgba(132,216,221,.20)}
+body.dark .dot.active{background:var(--p2)}
+body.dark .card img,body.dark .dimg img{filter:drop-shadow(0 22px 34px rgba(0,0,0,.34))}
+body.dark .lang-option{color:#9db8ba}
+body.dark .lang-option:hover{color:#d7eeee}
+body.dark .lang-option.active{color:#fff}
+.detail{padding-top:110px}
+
+</style>
+</head><body>
+
+<svg width="0" height="0" aria-hidden="true" style="position:absolute">
+  <defs>
+    <filter id="liquid-glass-distortion" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency="0.010 0.012"
+        numOctaves="2"
+        seed="92"
+        result="noise" />
+      <feGaussianBlur
+        in="noise"
+        stdDeviation="1.5"
+        result="blurred" />
+      <feDisplacementMap
+        in="SourceGraphic"
+        in2="blurred"
+        scale="38"
+        xChannelSelector="R"
+        yChannelSelector="G" />
+    </filter>
+  </defs>
+</svg>
+
+<canvas id="graph"></canvas>
+<div class="app" id="app">
+
+<div class="topbar" aria-label="Page controls">
+  <div class="topbar-group">
+    <a class="control-btn home-btn" href="02_menu.html" data-i18n-aria="home" data-i18n-title="home" aria-label="Домой" title="Домой">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.2 12 4l9 7.2"/><path d="M5.5 10.3V20h13v-9.7"/><path d="M9.5 20v-5.7h5V20"/></svg>
+    </a>
+  </div>
+  <div class="topbar-group">
+    <button class="control-btn" id="themeToggle" type="button" data-i18n-aria="themeDark" data-i18n-title="themeDark" aria-label="Включить тёмную тему" title="Включить тёмную тему">
+      <svg class="theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></svg>
+      <svg class="theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 15.2A8.7 8.7 0 0 1 8.8 3.5 8.8 8.8 0 1 0 20.5 15.2Z"/></svg>
+    </button>
+    <div class="lang-switch" role="group" data-i18n-aria="language" aria-label="Выбор языка">
+      <button class="lang-option active" type="button" data-lang="ru" aria-pressed="true">RU</button>
+      <button class="lang-option" type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+  </div>
+</div>
+
+<section id="catalog">
+<div class="header"><div class="title" data-i18n="catalogTitle">Эндоскопическое оборудование</div><div class="subtitle" data-i18n="catalogSubtitle">Выберите интересующий товар</div></div>
+<div class="stage" id="stage"><button class="arrow prev" type="button" onclick="change(-1)" data-i18n-aria="previous" aria-label="Предыдущий товар">‹</button><div class="carousel">
+<article class="card active" data-index="0" onclick="openDetail(1)"><div class="glass-shine"></div><div class="num">01</div><div class="visual"><img src="npk1.png"></div><div class="content"><h2 data-i18n="p1Title">ЭНДОКАМ FULL HD</h2><p data-i18n="p1CardDesc">Современная медицинская камера для вывода изображения операционного поля на монитор.</p><div class="more" data-i18n="more">Подробнее →</div></div></article>
+<article class="card right" data-index="1" onclick="openDetail(2)"><div class="glass-shine"></div><div class="num">02</div><div class="visual"><img src="npk2.png"></div><div class="content"><h2 data-i18n="p2Title">Видеоголовка с адаптером</h2><p data-i18n="p2CardDesc">Объектив с переменным фокусным расстоянием 15–35 мм.</p><div class="more" data-i18n="more">Подробнее →</div></div></article>
+<article class="card left" data-index="2" onclick="openDetail(3)"><div class="glass-shine"></div><div class="num">03</div><div class="visual"><img src="telezhka_banner_white_1200w.jpg"></div><div class="content"><h2 data-i18n="p3Title">Медицинская стойка</h2><p data-i18n="p3CardDesc">Мобильная стойка для размещения эндоскопического оборудования.</p><div class="more" data-i18n="more">Подробнее →</div></div></article>
+</div><button class="arrow next" type="button" onclick="change(1)" data-i18n-aria="next" aria-label="Следующий товар">›</button></div>
+<div class="bottom"><div class="dots"><button class="dot active" onclick="go(0)"></button><button class="dot" onclick="go(1)"></button><button class="dot" onclick="go(2)"></button></div><div class="status"><span class="pulse"></span><span data-i18n="autoStatus">Автопоказ после 8 секунд бездействия</span></div></div>
+</section>
+
+<section class="detail" id="detail1"><button class="back" type="button" onclick="back()" data-i18n="back">← Назад</button><div class="grid"><div class="dimg"><img src="npk1.png"></div><div class="info"><div class="kicker" data-i18n="p1Kicker">Медицинская эндовидеокамера</div><h1 data-i18n="p1Title">ЭНДОКАМ FULL HD</h1><p data-i18n="p1DetailDesc">Медицинская камера серии «ЭНДОКАМ FULL HD» предназначена для вывода изображения операционного поля на экран монитора.</p><div class="features"><div class="feature" data-i18n="p1F1">✓ Отсутствие помех</div><div class="feature" data-i18n="p1F2">✓ FULL HD цветопередача</div><div class="feature" data-i18n="p1F3">✓ Простота эксплуатации</div><div class="feature" data-i18n="p1F4">✓ Малое энергопотребление</div><div class="feature" data-i18n="p1F5">✓ Небольшие габариты и вес</div><div class="feature" data-i18n="p1F6">✓ Запись на USB</div><div class="feature" data-i18n="p1F7">✓ 4 программируемые кнопки</div></div><div class="specs"><h3 data-i18n="keyFeatures">Ключевые особенности</h3><div class="row"><span data-i18n="type">Тип</span><span data-i18n="p1TypeValue">Медицинская эндовидеокамера</span></div><div class="row"><span data-i18n="image">Изображение</span><span data-i18n="p1ImageValue">FULL HD, цветное</span></div><div class="row"><span data-i18n="recording">Запись</span><span data-i18n="p1RecordingValue">На USB-устройства</span></div></div></div></div></section>
+
+<section class="detail" id="detail2"><button class="back" type="button" onclick="back()" data-i18n="back">← Назад</button><div class="grid"><div class="dimg"><img src="npk2.png"></div><div class="info"><div class="kicker" data-i18n="p2Kicker">Компонент эндоскопической системы</div><h1 data-i18n="p2Title">Видеоголовка с адаптером</h1><p data-i18n="p2DetailDesc">Видеоголовка с адаптером и объективом с переменным фокусным расстоянием 15–35 мм.</p><div class="features"><div class="feature" data-i18n="p2F1">✓ Объектив 15–35 мм</div><div class="feature" data-i18n="p2F2">✓ 2 программируемые кнопки</div><div class="feature" data-i18n="p2F3">✓ Кабель 3 м</div><div class="feature" data-i18n="p2F4">✓ PAL, CCIR</div></div><div class="specs"><h3 data-i18n="technicalSpecs">Технические характеристики</h3><div class="row"><span data-i18n="tvStandard">ТВ-стандарт</span><span data-i18n="p2TvValue">CCIR, 625 строк, 50 полей, PAL</span></div><div class="row"><span data-i18n="resolution">Разрешение</span><span data-i18n="p2ResolutionValue">470 ТВЛ</span></div><div class="row"><span data-i18n="focus">Фокус</span><span data-i18n="p2FocusValue">15–35 мм</span></div></div></div></div></section>
+
+<section class="detail" id="detail3"><button class="back" type="button" onclick="back()" data-i18n="back">← Назад</button><div class="grid"><div class="dimg"><img src="telezhka_banner_white_1200w.jpg"></div><div class="info"><div class="kicker" data-i18n="p3Kicker">Мобильное медицинское оборудование</div><h1 data-i18n="p3Title">Медицинская стойка</h1><p data-i18n="p3DetailDesc">Все модели стоек имеют четыре поворотных колеса диаметром 125 мм, два из которых оснащены тормозными педалями.</p><div class="features"><div class="feature" data-i18n="p3F1">✓ 4 поворотных колеса</div><div class="feature" data-i18n="p3F2">✓ Диаметр 125 мм</div><div class="feature" data-i18n="p3F3">✓ 2 тормозные педали</div><div class="feature" data-i18n="p3F4">✓ Устойчивая конструкция</div></div><div class="specs"><h3 data-i18n="keySpecs">Ключевые характеристики</h3><div class="row"><span data-i18n="type">Тип</span><span data-i18n="p3TypeValue">Медицинская мобильная стойка</span></div><div class="row"><span data-i18n="wheels">Колёса</span><span data-i18n="p3WheelsValue">4 поворотных колеса</span></div><div class="row"><span data-i18n="brakes">Тормоза</span><span data-i18n="p3BrakesValue">2 колеса с тормозными педалями</span></div></div></div></div></section>
+</div>
+<script>
+const translations={
+  ru:{
+    documentTitle:'Каталог эндоскопического оборудования',home:'Домой',themeDark:'Включить тёмную тему',themeLight:'Включить светлую тему',language:'Выбор языка',previous:'Предыдущий товар',next:'Следующий товар',
+    catalogTitle:'Эндоскопическое оборудование',catalogSubtitle:'Выберите интересующий товар',more:'Подробнее →',autoStatus:'Автопоказ после 8 секунд бездействия',back:'← Назад',
+    p1Title:'ЭНДОКАМ FULL HD',p1CardDesc:'Современная медицинская камера для вывода изображения операционного поля на монитор.',p1Kicker:'Медицинская эндовидеокамера',p1DetailDesc:'Медицинская камера серии «ЭНДОКАМ FULL HD» предназначена для вывода изображения операционного поля на экран монитора.',
+    p1F1:'✓ Отсутствие помех',p1F2:'✓ FULL HD цветопередача',p1F3:'✓ Простота эксплуатации',p1F4:'✓ Малое энергопотребление',p1F5:'✓ Небольшие габариты и вес',p1F6:'✓ Запись на USB',p1F7:'✓ 4 программируемые кнопки',
+    keyFeatures:'Ключевые особенности',type:'Тип',image:'Изображение',recording:'Запись',p1TypeValue:'Медицинская эндовидеокамера',p1ImageValue:'FULL HD, цветное',p1RecordingValue:'На USB-устройства',
+    p2Title:'Видеоголовка с адаптером',p2CardDesc:'Объектив с переменным фокусным расстоянием 15–35 мм.',p2Kicker:'Компонент эндоскопической системы',p2DetailDesc:'Видеоголовка с адаптером и объективом с переменным фокусным расстоянием 15–35 мм.',
+    p2F1:'✓ Объектив 15–35 мм',p2F2:'✓ 2 программируемые кнопки',p2F3:'✓ Кабель 3 м',p2F4:'✓ PAL, CCIR',technicalSpecs:'Технические характеристики',tvStandard:'ТВ-стандарт',resolution:'Разрешение',focus:'Фокус',p2TvValue:'CCIR, 625 строк, 50 полей, PAL',p2ResolutionValue:'470 ТВЛ',p2FocusValue:'15–35 мм',
+    p3Title:'Медицинская стойка',p3CardDesc:'Мобильная стойка для размещения эндоскопического оборудования.',p3Kicker:'Мобильное медицинское оборудование',p3DetailDesc:'Все модели стоек имеют четыре поворотных колеса диаметром 125 мм, два из которых оснащены тормозными педалями.',
+    p3F1:'✓ 4 поворотных колеса',p3F2:'✓ Диаметр 125 мм',p3F3:'✓ 2 тормозные педали',p3F4:'✓ Устойчивая конструкция',keySpecs:'Ключевые характеристики',wheels:'Колёса',brakes:'Тормоза',p3TypeValue:'Медицинская мобильная стойка',p3WheelsValue:'4 поворотных колеса',p3BrakesValue:'2 колеса с тормозными педалями'
+  },
+  en:{
+    documentTitle:'Endoscopic Equipment Catalog',home:'Home',themeDark:'Enable dark theme',themeLight:'Enable light theme',language:'Language selection',previous:'Previous product',next:'Next product',
+    catalogTitle:'Endoscopic Equipment',catalogSubtitle:'Select a product to learn more',more:'Learn more →',autoStatus:'Autoplay starts after 8 seconds of inactivity',back:'← Back',
+    p1Title:'ENDOCAM FULL HD',p1CardDesc:'A modern medical camera that displays the surgical field on a monitor.',p1Kicker:'Medical endoscopic video camera',p1DetailDesc:'The ENDOCAM FULL HD medical camera is designed to display the surgical field on a monitor.',
+    p1F1:'✓ Interference-free operation',p1F2:'✓ FULL HD color reproduction',p1F3:'✓ Easy to operate',p1F4:'✓ Low power consumption',p1F5:'✓ Compact and lightweight',p1F6:'✓ USB recording',p1F7:'✓ 4 programmable buttons',
+    keyFeatures:'Key features',type:'Type',image:'Image',recording:'Recording',p1TypeValue:'Medical endoscopic video camera',p1ImageValue:'FULL HD, color',p1RecordingValue:'To USB devices',
+    p2Title:'Camera Head with Adapter',p2CardDesc:'Lens with a variable focal length of 15–35 mm.',p2Kicker:'Endoscopic system component',p2DetailDesc:'Camera head with an adapter and a lens featuring a variable focal length of 15–35 mm.',
+    p2F1:'✓ 15–35 mm lens',p2F2:'✓ 2 programmable buttons',p2F3:'✓ 3 m cable',p2F4:'✓ PAL, CCIR',technicalSpecs:'Technical specifications',tvStandard:'TV standard',resolution:'Resolution',focus:'Focus',p2TvValue:'CCIR, 625 lines, 50 fields, PAL',p2ResolutionValue:'470 TV lines',p2FocusValue:'15–35 mm',
+    p3Title:'Medical Equipment Cart',p3CardDesc:'A mobile cart for endoscopic equipment.',p3Kicker:'Mobile medical equipment',p3DetailDesc:'All cart models have four 125 mm swivel casters, two of which are equipped with brake pedals.',
+    p3F1:'✓ 4 swivel casters',p3F2:'✓ 125 mm diameter',p3F3:'✓ 2 brake pedals',p3F4:'✓ Stable construction',keySpecs:'Key specifications',wheels:'Casters',brakes:'Brakes',p3TypeValue:'Mobile medical equipment cart',p3WheelsValue:'4 swivel casters',p3BrakesValue:'2 casters with brake pedals'
+  }
+};
+
+const storage={
+  get(key){try{return window.localStorage.getItem(key)}catch(e){return null}},
+  set(key,value){try{window.localStorage.setItem(key,value)}catch(e){} }
+};
+
+function scale(){const a=document.getElementById('app'),s=Math.min(innerWidth/1920,innerHeight/1080);a.style.transform=`scale(${s})`;a.style.marginLeft=((innerWidth-1920*s)/2)+'px';a.style.marginTop=((innerHeight-1080*s)/2)+'px'}
+addEventListener('resize',scale);scale();
+
+let current=0,timer,auto,startX=0;
+const cards=[...document.querySelectorAll('.card')],dots=[...document.querySelectorAll('.dot')];
+const norm=i=>(i+cards.length)%cards.length;
+
+function update(){cards.forEach((c,i)=>{c.className='card';const d=(i-current+cards.length)%cards.length;if(d===0)c.classList.add('active');else if(d===1)c.classList.add('right');else if(d===cards.length-1)c.classList.add('left');else c.classList.add(d<cards.length/2?'hidden-right':'hidden-left')});dots.forEach((d,i)=>d.classList.toggle('active',i===current))}
+function change(d){current=norm(current+d);update();activity()}
+function go(i){current=i;update();activity()}
+function openDetail(id){if(!cards[id-1].classList.contains('active')){current=id-1;update();return}document.getElementById('detail'+id).classList.add('active');clearInterval(auto)}
+function back(){document.querySelectorAll('.detail').forEach(d=>d.classList.remove('active'));activity()}
+function startAuto(){clearInterval(auto);auto=setInterval(()=>{if(!document.querySelector('.detail.active')){current=norm(current+1);update()}},4200)}
+function activity(){clearInterval(auto);clearTimeout(timer);timer=setTimeout(startAuto,8000)}
+['mousemove','mousedown','touchstart','keydown','wheel'].forEach(e=>addEventListener(e,activity,{passive:true}));
+
+const stage=document.getElementById('stage');
+stage.addEventListener('touchstart',e=>startX=e.touches[0].clientX,{passive:true});
+stage.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-startX;if(Math.abs(dx)>50)change(dx<0?1:-1)},{passive:true});
+addEventListener('keydown',e=>{if(e.key==='ArrowRight')change(1);if(e.key==='ArrowLeft')change(-1);if(e.key==='Escape')back()});
+
+let currentLang=storage.get('npk-language')||'ru';
+if(!translations[currentLang])currentLang='ru';
+function applyLanguage(lang){
+  currentLang=translations[lang]?lang:'ru';
+  const t=translations[currentLang];
+  document.documentElement.lang=currentLang;
+  document.title=t.documentTitle;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{const key=el.dataset.i18n;if(t[key]!==undefined)el.textContent=t[key]});
+  document.querySelectorAll('[data-i18n-aria]').forEach(el=>{const key=el.dataset.i18nAria;if(t[key]!==undefined)el.setAttribute('aria-label',t[key])});
+  document.querySelectorAll('[data-i18n-title]').forEach(el=>{const key=el.dataset.i18nTitle;if(t[key]!==undefined)el.setAttribute('title',t[key])});
+  document.querySelectorAll('.lang-option').forEach(btn=>{const active=btn.dataset.lang===currentLang;btn.classList.toggle('active',active);btn.setAttribute('aria-pressed',String(active))});
+  updateThemeLabel();
+  storage.set('npk-language',currentLang);
+}
+
+document.querySelectorAll('.lang-option').forEach(btn=>btn.addEventListener('click',()=>applyLanguage(btn.dataset.lang)));
+
+const themeToggle=document.getElementById('themeToggle');
+function updateThemeLabel(){const dark=document.body.classList.contains('dark');const key=dark?'themeLight':'themeDark';const label=translations[currentLang][key];themeToggle.setAttribute('aria-label',label);themeToggle.setAttribute('title',label)}
+function applyTheme(theme){const dark=theme==='dark';document.body.classList.toggle('dark',dark);document.documentElement.style.colorScheme=dark?'dark':'light';storage.set('npk-theme',dark?'dark':'light');updateThemeLabel()}
+themeToggle.addEventListener('click',()=>applyTheme(document.body.classList.contains('dark')?'light':'dark'));
+const savedTheme=storage.get('npk-theme');
+applyTheme(savedTheme==='dark'?'dark':'light');
+applyLanguage(currentLang);
+
+const c=document.getElementById('graph'),x=c.getContext('2d');let w,h,p=[];
+function init(){w=c.width=innerWidth;h=c.height=innerHeight;p=Array.from({length:72},()=>({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28,r:Math.random()*1.8+.8}))}
+function draw(){
+  x.clearRect(0,0,w,h);
+  const dark=document.body.classList.contains('dark');
+  x.fillStyle=dark?'rgba(76,198,205,.34)':'rgba(0,114,123,.27)';
+  p.forEach(a=>{a.x+=a.vx;a.y+=a.vy;if(a.x<0||a.x>w)a.vx*=-1;if(a.y<0||a.y>h)a.vy*=-1;x.beginPath();x.arc(a.x,a.y,a.r,0,6.28);x.fill()});
+  x.strokeStyle=dark?'rgba(76,198,205,.12)':'rgba(0,114,123,.09)';
+  for(let i=0;i<p.length;i++)for(let j=i+1;j<p.length;j++){let a=p[i],b=p[j],d=Math.hypot(a.x-b.x,a.y-b.y);if(d<150){x.globalAlpha=1-d/150;x.beginPath();x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.stroke()}}
+  x.globalAlpha=1;requestAnimationFrame(draw)
+}
+addEventListener('resize',init);init();draw();update();activity();
+</script></body></html>

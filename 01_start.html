@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>НПК АЗИМУТ — Интерактивная презентация</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--primary:#00727b;--primary-light:#2498a0;--text-dark:#073d43}
+html,body{width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;background:#000}
+.video-bg{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;background:#000;transition:filter .8s ease,transform 1s ease}
+.video-bg.dimmed{filter:brightness(.52) saturate(.88);transform:scale(1.015)}
+.control-btn{
+position:fixed;z-index:10;right:36px;bottom:36px;
+width:74px;height:74px;padding:0;border:1px solid rgba(255,255,255,.38);
+border-radius:50%;background:rgba(255,255,255,.10);
+box-shadow:0 14px 38px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.62);
+backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+color:#fff;cursor:pointer;transition:.35s ease;
+display:flex;align-items:center;justify-content:center
+}
+.control-btn:hover{
+background:rgba(255,255,255,.18);
+transform:translateY(-4px) scale(1.08);
+box-shadow:0 20px 48px rgba(0,114,123,.20),inset 0 1px 0 rgba(255,255,255,.72)
+}
+.control-btn:active{transform:scale(.96)}
+.control-btn svg{
+width:30px;height:30px;fill:#fff;stroke:none;
+filter:drop-shadow(0 4px 10px rgba(0,0,0,.22));
+transition:opacity .25s ease,transform .25s ease
+}
+#iconPlay{display:none}
+.presentation-layer{position:fixed;inset:0;z-index:3;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .8s ease,visibility .8s ease}
+.presentation-layer.active{opacity:1;visibility:visible;pointer-events:auto}
+.overlay{position:absolute;inset:0;background:radial-gradient(circle at 20% 20%,rgba(0,114,123,.12),transparent 30%),radial-gradient(circle at 80% 80%,rgba(36,152,160,.10),transparent 30%),linear-gradient(135deg,rgba(255,255,255,.72),rgba(235,248,248,.58))}
+.glow{position:absolute;width:520px;height:520px;border-radius:50%;background:rgba(0,114,123,.10);filter:blur(80px);animation:floatGlow 8s ease-in-out infinite alternate}
+.glow.one{left:-140px;top:-120px}.glow.two{right:-160px;bottom:-140px;animation-delay:1.5s}
+@keyframes floatGlow{from{transform:translateY(0) scale(1)}to{transform:translateY(40px) scale(1.12)}}
+.content{position:relative;z-index:4;width:1920px;height:1080px;transform-origin:top left;display:flex;align-items:center;justify-content:center}
+.center-card{width:980px;min-height:600px;padding:70px 80px;border-radius:44px;background:rgba(255,255,255,.34);border:1px solid rgba(255,255,255,.65);box-shadow:0 30px 90px rgba(0,70,60,.16),inset 0 1px 0 rgba(255,255,255,.78);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);text-align:center;transform:translateY(28px) scale(.98);transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+.presentation-layer.active .center-card{transform:none}
+.logo{width:520px;max-height:180px;object-fit:contain;margin-bottom:48px;filter:drop-shadow(0 14px 24px rgba(0,90,70,.16))}
+h1{max-width:980px;margin:0 auto 28px;font-size:46px;line-height:1.08;font-weight:800;letter-spacing:.025em;color:var(--primary)}
+.subtitle{font-size:34px;font-weight:700;letter-spacing:.12em;color:var(--primary);margin-bottom:56px}
+.decor-line{width:260px;height:4px;border-radius:20px;margin:0 auto 42px;background:linear-gradient(90deg,transparent,var(--primary),transparent)}
+.start-btn{display:inline-flex;align-items:center;justify-content:center;min-width:310px;height:82px;border-radius:60px;background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;text-decoration:none;font-size:28px;font-weight:900;letter-spacing:.12em;box-shadow:0 18px 45px rgba(0,114,123,.30),inset 0 0 22px rgba(255,255,255,.26);transition:.35s ease}
+.start-btn:hover{transform:translateY(-6px) scale(1.035);box-shadow:0 24px 65px rgba(0,114,123,.42),inset 0 0 30px rgba(255,255,255,.34)}
+.start-btn:active{transform:scale(.98)}
+@media(max-width:800px){.control-btn{right:20px;bottom:20px;width:64px;height:64px}}
+</style>
+</head>
+<body>
+<video id="backgroundVideo" class="video-bg" autoplay muted loop playsinline>
+  <source src="NPK.mp4" type="video/mp4">
+</video>
+<button id="controlButton" class="control-btn" type="button" aria-label="Показать презентацию">
+  <svg id="iconStop" viewBox="0 0 24 24" aria-hidden="true">
+    <rect x="6" y="6" width="12" height="12" rx="2"></rect>
+  </svg>
+  <svg id="iconPlay" viewBox="0 0 24 24" aria-hidden="true">
+    <polygon points="8,5 19,12 8,19"></polygon>
+  </svg>
+</button>
+<div id="presentationLayer" class="presentation-layer">
+  <div class="overlay"></div>
+  <div class="glow one"></div>
+  <div class="glow two"></div>
+  <main class="content" id="content">
+    <section class="center-card">
+      <img class="logo" src="cropped-LogoAz-2.png" alt="НПК Азимут">
+      <h1>Научно-производственная<br>компания «АЗИМУТ»</h1>
+      <div class="decor-line"></div>
+      <div class="subtitle">ИНТЕРАКТИВНАЯ ПРЕЗЕНТАЦИЯ</div>
+      <a class="start-btn" href="02_menu.html">НАЧАТЬ</a>
+    </section>
+  </main>
+</div>
+<script>
+const video=document.getElementById('backgroundVideo');
+const button=document.getElementById('controlButton');
+const stopIcon=document.getElementById('iconStop');
+const playIcon=document.getElementById('iconPlay');
+const layer=document.getElementById('presentationLayer');
+let presentationVisible=false;
+button.addEventListener('click',()=>{
+  presentationVisible=!presentationVisible;
+  if(presentationVisible){
+    layer.classList.add('active');
+    video.classList.add('dimmed');
+    stopIcon.style.display='none';
+    playIcon.style.display='block';
+    button.setAttribute('aria-label','Показать чистое видео');
+  }else{
+    layer.classList.remove('active');
+    video.classList.remove('dimmed');
+    playIcon.style.display='none';
+    stopIcon.style.display='block';
+    button.setAttribute('aria-label','Показать презентацию');
+  }
+});
+function scaleContent(){
+  const scale=Math.min(window.innerWidth/1920,window.innerHeight/1080);
+  const content=document.getElementById('content');
+  content.style.transform=`scale(${scale})`;
+  content.style.marginLeft=`${(window.innerWidth-1920*scale)/2}px`;
+  content.style.marginTop=`${(window.innerHeight-1080*scale)/2}px`;
+}
+window.addEventListener('resize',scaleContent);
+scaleContent();
+video.play().catch(()=>{});
+</script>
+</body>
+</html>
