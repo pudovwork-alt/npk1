@@ -1,2 +1,2 @@
 # npk1
-geography.html - карта
+geography.html - карта раньше была map5. Сейчас добавлен текст внизу
