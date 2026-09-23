@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>НПК «АЗИМУТ» — Главное меню</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --green:#00727b;--green2:#0a8d97;--green3:#72cbd0;
+    --text:#073e43;--muted:#628b96;--soft-text:#80aabb;
+    --glass:rgba(255,255,255,.62);--glass2:rgba(255,255,255,.37);
+    --line:rgba(0,114,123,.17);--line-light:rgba(255,255,255,.72);
+    --shadow:rgba(0,76,83,.14);--image-wash:rgba(235,250,250,.1)
+  }
+  html,body{width:100%;height:100%;overflow:hidden;font-family:Inter,Arial,Helvetica,sans-serif;color:var(--text)}
+  body{
+    background:
+      radial-gradient(circle at 13% 18%,rgba(0,114,123,.16),transparent 31%),
+      radial-gradient(circle at 86% 78%,rgba(0,114,123,.10),transparent 30%),
+      linear-gradient(135deg,#fff 0%,#eefbf8 48%,#dff6f0 100%);
+    transition:background .45s ease,color .35s ease
+  }
+  body[data-theme="dark"]{
+    --green:#62dce4;--green2:#2eb3bd;--green3:#9cf0f3;
+    --text:#f2ffff;--muted:#a9ced1;--soft-text:#89b6bc;
+    --glass:rgba(10,29,32,.72);--glass2:rgba(8,24,27,.46);
+    --line:rgba(112,227,234,.2);--line-light:rgba(255,255,255,.16);
+    --shadow:rgba(0,0,0,.36);--image-wash:rgba(8,34,37,.2);
+    background:
+      radial-gradient(circle at 13% 18%,rgba(0,184,196,.16),transparent 31%),
+      radial-gradient(circle at 86% 78%,rgba(42,151,160,.13),transparent 30%),
+      linear-gradient(135deg,#020708 0%,#071416 48%,#0a2023 100%)
+  }
+  button,a{font:inherit}
+  #particles{position:fixed;inset:0;z-index:0;pointer-events:none}
+  .app{position:relative;z-index:2;width:1920px;height:1080px;overflow:hidden;transform-origin:top left}
+  .ambient-visuals{position:fixed;inset:0;z-index:1;overflow:hidden;pointer-events:none}
+  .side-art{position:absolute;display:block;max-width:none;user-select:none;filter:saturate(.78) contrast(.96);opacity:.41;transition:filter .35s ease,opacity .35s ease}
+  .side-art--mrt{width:clamp(470px,35vw,680px);left:clamp(-160px,-7.6vw,-68px);bottom:clamp(-150px,-12.5vh,-68px)}
+  .side-art--doctor{width:clamp(470px,34vw,660px);right:clamp(-128px,-4.8vw,-48px);bottom:clamp(-135px,-11.3vh,-58px)}
+  body[data-theme="dark"] .side-art{opacity:.19;filter:saturate(.65) brightness(.8)}
+  .side-note{position:absolute;width:190px;color:var(--soft-text);font-size:16px;line-height:1.5;font-weight:800;letter-spacing:.18em;text-transform:uppercase;opacity:.9}
+  .side-note--left{left:60px;top:220px}.side-note--right{right:55px;top:194px;text-align:right}
+
+  .topbar{position:absolute;top:36px;left:112px;right:112px;z-index:10;display:flex;align-items:center;justify-content:space-between}
+  .presentation-link{display:flex;align-items:center;gap:18px;color:var(--text);text-decoration:none;transition:transform .25s ease}
+  .presentation-link:hover{transform:translateY(-3px)}
+  .play-button{width:78px;height:78px;display:grid;place-items:center;border:0;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--green2));color:#fff;box-shadow:0 13px 35px rgba(0,114,123,.35);transition:.25s ease}
+  .presentation-link:hover .play-button{transform:scale(1.06);box-shadow:0 19px 45px rgba(0,114,123,.43)}
+  .play-button svg{width:36px;height:36px;margin-left:5px;fill:currentColor}
+  .presentation-label{font-size:17px;line-height:1.35;font-weight:900;letter-spacing:.04em;text-transform:uppercase}
+  .control-cluster{display:flex;align-items:center;gap:14px}
+  .glass-control{height:64px;border:1px solid var(--line);border-radius:22px;background:var(--glass2);color:var(--text);box-shadow:0 15px 38px var(--shadow),inset 0 1px 0 rgba(255,255,255,.28);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);transition:.25s ease}
+  .glass-control:hover{transform:translateY(-3px);background:var(--glass);box-shadow:0 20px 46px var(--shadow),inset 0 1px 0 rgba(255,255,255,.34)}
+  .icon-button{width:64px;display:grid;place-items:center;cursor:pointer}
+  .icon-button svg{width:29px;height:29px;fill:none;stroke:var(--green);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .theme-button .sun-icon{display:none}body[data-theme="dark"] .theme-button .sun-icon{display:block}body[data-theme="dark"] .theme-button .moon-icon{display:none}
+  .language-switch{height:64px;padding:6px;display:flex;align-items:center;gap:4px}
+  .language-switch button{height:50px;min-width:65px;border:0;border-radius:16px;background:transparent;color:var(--muted);font-size:20px;font-weight:850;cursor:pointer;transition:.25s ease}
+  .language-switch button:hover{color:var(--text)}
+  .language-switch button.active{background:linear-gradient(135deg,var(--green),var(--green2));color:#fff;box-shadow:0 9px 23px rgba(0,114,123,.27)}
+  .logo-wrap{position:absolute;z-index:8;top:27px;left:50%;transform:translateX(-50%);display:grid;place-items:center}
+  .logo-img{display:block;width:412px;max-height:100px;object-fit:contain;filter:drop-shadow(0 15px 28px rgba(0,77,84,.16))}
+  .logo-fallback{display:none;align-items:center;gap:13px;color:var(--green);filter:drop-shadow(0 15px 28px rgba(0,77,84,.16));white-space:nowrap}
+  .logo-wrap.logo-missing .logo-img{display:none}.logo-wrap.logo-missing .logo-fallback{display:flex}
+  .logo-fallback svg{width:68px;height:68px;fill:none;stroke:currentColor;stroke-width:1.6}.logo-fallback svg path:first-child{stroke-width:2.6}
+  .logo-fallback strong{display:block;font-size:52px;line-height:.76;font-weight:950;letter-spacing:-.07em}.logo-fallback small{display:block;margin-top:8px;font-size:11px;font-weight:800;letter-spacing:.035em;text-transform:uppercase}
+  body[data-theme="dark"] .logo-img{filter:drop-shadow(0 18px 30px rgba(0,0,0,.46)) brightness(1.12)}
+
+  .hero-copy{position:absolute;z-index:5;top:168px;left:50%;width:930px;transform:translateX(-50%);text-align:center}
+  .hero-copy h1{font-size:20px;line-height:1.2;letter-spacing:.28em;font-weight:900;color:#4c8492;text-transform:uppercase;white-space:nowrap}
+  .hero-copy p{margin-top:18px;font-size:15px;font-weight:850;letter-spacing:.17em;color:#79a7b6;text-transform:uppercase}
+  .hero-copy p:before,.hero-copy p:after{content:"";display:inline-block;width:26px;height:1px;margin:0 17px 5px;background:currentColor;opacity:.8}
+  body[data-theme="dark"] .hero-copy h1{color:#a8e4e9}body[data-theme="dark"] .hero-copy p{color:#88c2ca}
+
+  .menu{position:absolute;z-index:5;left:50%;top:263px;display:grid;grid-template-columns:620px 620px;grid-template-rows:316px 316px;gap:30px;transform:translateX(-50%)}
+  .tile{position:relative;display:block;overflow:hidden;padding:30px 50px 28px 60px;border:1px solid var(--line);border-radius:40px;background:var(--glass2);box-shadow:0 21px 58px var(--shadow),inset 0 1px 0 rgba(255,255,255,.38),inset 0 0 45px rgba(255,255,255,.08);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);color:var(--text);text-decoration:none;isolation:isolate;transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease,background .28s ease}
+  .tile:hover{transform:translateY(-7px);border-color:rgba(40,170,179,.45);background:var(--glass);box-shadow:0 29px 70px var(--shadow),0 0 30px rgba(0,114,123,.11),inset 0 1px 0 rgba(255,255,255,.44)}
+  .tile:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(120deg,rgba(255,255,255,.31),transparent 50%),radial-gradient(circle at 12% 88%,rgba(126,239,241,.09),transparent 38%);pointer-events:none}
+  .tile-content{position:relative;z-index:3;display:flex;flex-direction:column;align-items:flex-start;width:53%;height:100%}
+  .tile-icon{width:78px;height:78px;display:grid;place-items:center;border:1px solid rgba(0,114,123,.13);border-radius:27px;background:rgba(255,255,255,.6);box-shadow:0 12px 26px rgba(0,93,100,.10),inset 0 1px 0 rgba(255,255,255,.75);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+  .tile-icon svg{width:42px;height:42px;fill:none;stroke:var(--green);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+  .tile h2{margin-top:22px;font-size:36px;line-height:1;letter-spacing:.012em;font-weight:900;text-transform:uppercase;color:var(--text);white-space:nowrap}
+  .tile p{margin-top:15px;font-size:19px;line-height:1.35;color:var(--muted);font-weight:550}
+  .tile-arrow{position:absolute;z-index:4;left:34px;bottom:22px;width:57px;height:57px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:rgba(255,255,255,.61);box-shadow:0 9px 20px rgba(0,93,100,.08),inset 0 1px 0 rgba(255,255,255,.8);font-size:31px;line-height:1;color:var(--green);transition:transform .28s ease,background .28s ease}
+  .tile:hover .tile-arrow{transform:translateX(7px);background:rgba(232,255,255,.9)}
+  .card-media{position:absolute;z-index:1;top:-6px;right:-8px;width:53%;height:calc(100% + 12px);overflow:hidden;border-radius:58% 0 0 56% / 55% 0 0 54%;background:radial-gradient(circle at 42% 42%,rgba(255,255,255,.98),rgba(223,247,247,.5) 54%,rgba(177,225,229,.2));border-left:1px solid rgba(89,202,209,.34)}
+  .card-media:before{content:"";position:absolute;z-index:2;width:420px;height:420px;left:-98px;top:-47px;border:1px solid rgba(49,195,203,.28);border-radius:50%;box-shadow:0 0 0 24px rgba(255,255,255,.12),0 0 0 25px rgba(56,190,197,.10);pointer-events:none}
+  .card-media:after{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(90deg,rgba(255,255,255,.54),transparent 34%,rgba(234,250,250,.08));pointer-events:none}
+  .card-media img{position:absolute;z-index:1;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:.91;filter:saturate(.86) contrast(.98);mix-blend-mode:multiply}
+  .tile--product .card-media img{object-fit:contain;object-position:65% 56%;padding:34px 0 20px 20px;mix-blend-mode:normal;filter:saturate(.82) brightness(1.04)}
+  .tile--concept .card-media img{object-fit:contain;object-position:60% 55%;padding:8px 0 0 6px;mix-blend-mode:screen;opacity:.88;filter:saturate(.75)}
+  body[data-theme="dark"] .tile-icon,body[data-theme="dark"] .tile-arrow{background:rgba(15,46,50,.65);border-color:var(--line)}
+  body[data-theme="dark"] .card-media{background:radial-gradient(circle at 42% 42%,rgba(71,131,137,.44),rgba(9,35,39,.64) 68%);border-color:rgba(105,231,238,.25)}
+  body[data-theme="dark"] .card-media:after{background:linear-gradient(90deg,rgba(8,35,39,.6),transparent 42%,rgba(0,0,0,.1))}
+  body[data-theme="dark"] .card-media img{mix-blend-mode:screen;opacity:.66;filter:saturate(.72) brightness(.92)}
+  body[data-theme="dark"] .tile--product .card-media img{mix-blend-mode:screen;filter:saturate(.8) brightness(.9)}
+  .media-fallback{position:absolute;z-index:1;inset:0;display:grid;place-items:center;padding:25px;color:var(--green);opacity:0;transition:opacity .2s ease}
+  .card-media.missing-asset .media-fallback{opacity:.8}.card-media.missing-asset img{display:none}
+  .media-fallback svg{width:210px;height:210px;fill:none;stroke:currentColor;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round;opacity:.65}
+  .tile--product .media-fallback svg{width:230px;height:150px}.tile--concept .media-fallback svg{width:180px;height:230px;stroke-width:1}
+  .tile--contacts .map-image{position:absolute;z-index:1;inset:10px 4px 10px 8px;width:calc(100% - 12px);height:calc(100% - 20px);max-width:none;object-fit:cover;object-position:center;padding:0;border-radius:60% 0 0 58% / 57% 0 0 55%;opacity:.95;mix-blend-mode:normal;filter:saturate(.86) contrast(.98)}
+  .contact-map{position:absolute;z-index:3;right:6px;top:28px;width:306px;height:228px;fill:rgba(46,165,174,.24);stroke:rgba(0,114,123,.34);stroke-width:1.2;opacity:0;transition:opacity .22s ease}
+  .contact-map .point{fill:#0f9aa5;stroke:#fff;stroke-width:4}.contact-map .route{fill:none;stroke:#41c6cc;stroke-width:2;stroke-dasharray:2 6;opacity:.82}
+  .contact-map .pin{fill:#0794a0;stroke:#fff;stroke-width:3}.contact-map .pin-dot{fill:#fff;stroke:none}
+  .contact-graphic{background:radial-gradient(circle at 80% 59%,rgba(72,220,226,.18),transparent 36%)}
+  .contact-graphic.map-missing .map-image{display:none}.contact-graphic.map-missing .contact-map{opacity:1}
+  body[data-theme="dark"] .tile--contacts .map-image{mix-blend-mode:normal;opacity:.76;filter:saturate(.72) brightness(.84)}
+
+  .footer-values{position:absolute;z-index:6;bottom:47px;left:50%;display:flex;align-items:center;gap:32px;transform:translateX(-50%);color:#79aab5;font-size:13px;font-weight:850;letter-spacing:.24em;text-transform:uppercase;white-space:nowrap}
+  .footer-values i{display:block;width:1px;height:20px;background:currentColor;opacity:.7}
+  body[data-theme="dark"] .footer-values{color:#9ed5da}
+  @media(max-aspect-ratio:16/10){.hero-copy{top:154px}.menu{top:247px}.footer-values{bottom:32px}}
+</style>
+</head>
+<body data-theme="light">
+<canvas id="particles"></canvas>
+<div class="ambient-visuals" aria-hidden="true">
+  <img class="side-art side-art--mrt" src="mrt.png" alt="">
+  <img class="side-art side-art--doctor" src="doctor.png" alt="">
+</div>
+<div class="app" id="app">
+  <p class="side-note side-note--left" data-i18n="sideLeft">Надёжность<br>Экспертиза<br>Развитие</p>
+  <p class="side-note side-note--right" data-i18n="sideRight">Российские<br>технологии<br>для здоровья<br>людей</p>
+
+  <nav class="topbar" aria-label="Управление страницей">
+    <a class="presentation-link" href="01_start.html" data-i18n-title="presentationTitle">
+      <span class="play-button" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5 19 12 7 19.5Z"/></svg></span>
+      <span class="presentation-label" data-i18n="presentation">Начать<br>презентацию</span>
+    </a>
+    <div class="control-cluster">
+      <button class="glass-control icon-button theme-button" type="button" onclick="toggleTheme()" aria-label="Тёмная тема" title="Тёмная тема">
+        <svg class="moon-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5A8 8 0 0 1 9.5 3.5 8.5 8.5 0 1 0 20.5 14.5z"/></svg>
+        <svg class="sun-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+      <div class="glass-control language-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="ru" onclick="setLanguage('ru')">RU</button>
+        <button type="button" data-lang="en" onclick="setLanguage('en')">EN</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="logo-wrap" id="brandLogo">
+    <img class="logo-img" src="cropped-LogoAz-2.png" alt="НПК «АЗИМУТ»" data-i18n-alt="logoAlt" onerror="this.parentElement.classList.add('logo-missing')">
+    <div class="logo-fallback" aria-label="НПК «АЗИМУТ»">
+      <svg viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="19"/><path d="M36 2v68M2 36h68M25 47l11-31 11 31-11 9z"/></svg>
+      <span><strong>АЗИМУТ</strong><small>Научно-производственная компания</small></span>
+    </div>
+  </div>
+  <header class="hero-copy">
+    <h1 data-i18n="heroTitle">Современные решения для медицины</h1>
+    <p data-i18n="heroSubtitle">Технологии сегодня. Здоровье завтра</p>
+  </header>
+
+  <main class="menu" aria-label="Главное меню">
+    <a class="tile tile--company" href="04_history.html">
+      <div class="tile-content">
+        <span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6M9 10h.01M15 10h.01"/></svg></span>
+        <h2 data-i18n="menuAbout">О компании</h2>
+        <p data-i18n="aboutCopy">История, компетенции,<br>статус и география</p>
+      </div>
+      <span class="tile-arrow" aria-hidden="true">→</span>
+      <span class="card-media" aria-hidden="true"><img src="company.png" alt="" onerror="showMediaFallback(this)"><span class="media-fallback"><svg viewBox="0 0 240 240"><path d="M30 218h180M55 218V95l55-36 75 48v111M83 218v-40h42v40M83 107h.01M123 107h.01M163 107h.01M83 140h.01M123 140h.01M163 140h.01"/><path d="M52 95h64V51H81V31H52z"/></svg></span></span>
+    </a>
+
+    <a class="tile tile--product" href="03_product.html">
+      <div class="tile-content">
+        <span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.3 7 12 12l8.7-5M12 22V12"/></svg></span>
+        <h2 data-i18n="menuProducts">Продукция</h2>
+        <p data-i18n="productsCopy">Каталог оборудования<br>и подробные характеристики</p>
+      </div>
+      <span class="tile-arrow" aria-hidden="true">→</span>
+      <span class="card-media" aria-hidden="true"><img src="product.png" alt="" onerror="showMediaFallback(this)"><span class="media-fallback"><svg viewBox="0 0 280 180"><rect x="35" y="47" width="185" height="87" rx="10"/><path d="M61 47v-16h95v16M69 79h34M69 103h64M180 67v48M194 91h10M39 147h176M72 134v13M190 134v13"/><rect x="211" y="74" width="33" height="33" rx="6"/></svg></span></span>
+    </a>
+
+    <a class="tile tile--concept" href="concept.html">
+      <div class="tile-content">
+        <span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 22h4M8 14a6 6 0 1 1 8 0c-1.2.9-1.8 2-2 3h-4c-.2-1-1-2.1-2-3z"/></svg></span>
+        <h2 data-i18n="menuConcepts">Разработки</h2>
+        <p data-i18n="conceptsCopy">Новые решения<br>и перспективные прототипы</p>
+      </div>
+      <span class="tile-arrow" aria-hidden="true">→</span>
+      <span class="card-media" aria-hidden="true"><img src="concapt.png" alt="" onerror="showMediaFallback(this)"><span class="media-fallback"><svg viewBox="0 0 180 260"><circle cx="90" cy="37" r="25"/><path d="M61 86c10-18 48-18 58 0l15 52-17 74H63l-17-74zM71 210v34M109 210v34M51 98l-26 55M129 98l26 55"/><path d="M90 77v112M75 115c17-9 25-9 40 0M73 137c17 10 28 10 44 0M71 160c18-9 30-9 47 0"/></svg></span></span>
+    </a>
+
+    <a class="tile tile--contacts" href="05_contact1.html">
+      <div class="tile-content">
+        <span class="tile-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.8 19.8 0 0 1 3 5.18 2 2 0 0 1 5 3h3a2 2 0 0 1 2 1.72c.12.9.33 1.78.63 2.62a2 2 0 0 1-.45 2.11L9 10.6a16 16 0 0 0 4.4 4.4l1.15-1.15a2 2 0 0 1 2.11-.45c.84.3 1.72.51 2.62.63A2 2 0 0 1 22 16.92z"/></svg></span>
+        <h2 data-i18n="menuContacts">Контакты</h2>
+        <p data-i18n="contactsCopy">Связаться с нами<br>и перейти на сайт</p>
+      </div>
+      <span class="tile-arrow" aria-hidden="true">→</span>
+      <span class="card-media contact-graphic" aria-hidden="true">
+        <img class="map-image" src="map.png" alt="" onload="showMapImage(this)" onerror="showMapFallback(this)">
+        <svg class="contact-map" viewBox="0 0 320 230"><path d="M16 82 39 58l28 8 16-22 38 13 23-26 42 10 19-19 20 29 42-5 22 30-10 28 20 30-30 21-22-2-22 27-37-16-29 10-26-20-35 7-19-26-28-5-14-31-29-14 9-26-22-26z"/><path class="route" d="M86 151C132 112 171 138 204 101c26-29 46-19 71-51"/><circle class="point" cx="86" cy="151" r="5"/><circle class="point" cx="203" cy="101" r="5"/><circle class="point" cx="274" cy="50" r="5"/><path class="pin" d="M179 76c0-12-10-22-22-22s-22 10-22 22c0 17 22 39 22 39s22-22 22-39z"/><circle class="pin-dot" cx="157" cy="76" r="6"/></svg>
+      </span>
+    </a>
+  </main>
+
+  <footer class="footer-values" aria-label="Ценности компании"><span data-i18n="footerPeople">Люди</span><i></i><span data-i18n="footerTechnology">Технологии</span><i></i><span data-i18n="footerHealth">Здоровье</span><i></i><span data-i18n="footerFuture">Будущее</span></footer>
+</div>
+<script>
+const translations={
+  ru:{
+    documentTitle:'НПК «АЗИМУТ» — Главное меню',logoAlt:'НПК «АЗИМУТ»',presentation:'Начать<br>презентацию',presentationTitle:'Начать презентацию',
+    sideLeft:'Надёжность<br>Экспертиза<br>Развитие',sideRight:'Российские<br>технологии<br>для здоровья<br>людей',
+    heroTitle:'Современные решения для медицины',heroSubtitle:'Технологии сегодня. Здоровье завтра',
+    menuAbout:'О компании',aboutCopy:'История, компетенции,<br>статус и география',menuProducts:'Продукция',productsCopy:'Каталог оборудования<br>и подробные характеристики',
+    menuConcepts:'Разработки',conceptsCopy:'Новые решения<br>и перспективные прототипы',menuContacts:'Контакты',contactsCopy:'Связаться с нами<br>и перейти на сайт',
+    footerPeople:'Люди',footerTechnology:'Технологии',footerHealth:'Здоровье',footerFuture:'Будущее',darkLabel:'Тёмная тема',lightLabel:'Светлая тема'
+  },
+  en:{
+    documentTitle:'NPK AZIMUT — Main menu',logoAlt:'NPK AZIMUT',presentation:'Start<br>presentation',presentationTitle:'Start presentation',
+    sideLeft:'Reliability<br>Expertise<br>Development',sideRight:'Russian<br>technologies<br>for people’s<br>health',
+    heroTitle:'Modern solutions for medicine',heroSubtitle:'Technology today. Health tomorrow',
+    menuAbout:'About us',aboutCopy:'History, expertise,<br>status and geography',menuProducts:'Products',productsCopy:'Equipment catalogue<br>and detailed specifications',
+    menuConcepts:'Developments',conceptsCopy:'New solutions<br>and promising prototypes',menuContacts:'Contacts',contactsCopy:'Contact us<br>and visit the website',
+    footerPeople:'People',footerTechnology:'Technology',footerHealth:'Health',footerFuture:'Future',darkLabel:'Dark theme',lightLabel:'Light theme'
+  }
+};
+let currentLanguage=localStorage.getItem('npkLanguage')||'ru';
+let currentTheme=localStorage.getItem('npkTheme')||'light';
+if(!translations[currentLanguage])currentLanguage='ru';
+if(!['light','dark'].includes(currentTheme))currentTheme='light';
+function scaleApp(){const app=document.getElementById('app');const s=Math.min(innerWidth/1920,innerHeight/1080);app.style.transform=`scale(${s})`;app.style.marginLeft=((innerWidth-1920*s)/2)+'px';app.style.marginTop=((innerHeight-1080*s)/2)+'px'}
+function applyTheme(){document.body.dataset.theme=currentTheme;const t=translations[currentLanguage];const button=document.querySelector('.theme-button');const label=currentTheme==='dark'?t.lightLabel:t.darkLabel;button.setAttribute('aria-label',label);button.title=label;localStorage.setItem('npkTheme',currentTheme)}
+function toggleTheme(){currentTheme=currentTheme==='dark'?'light':'dark';applyTheme()}
+function setLanguage(lang){if(!translations[lang])return;currentLanguage=lang;const t=translations[lang];document.documentElement.lang=lang;document.title=t.documentTitle;document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.dataset.i18n;if(t[k]!==undefined)el.innerHTML=t[k]});document.querySelectorAll('[data-i18n-title]').forEach(el=>{const k=el.dataset.i18nTitle;if(t[k]!==undefined){el.title=t[k];el.setAttribute('aria-label',t[k])}});document.querySelectorAll('[data-i18n-alt]').forEach(el=>{const k=el.dataset.i18nAlt;if(t[k]!==undefined)el.alt=t[k]});document.querySelectorAll('.language-switch button').forEach(btn=>btn.classList.toggle('active',btn.dataset.lang===lang));localStorage.setItem('npkLanguage',lang);applyTheme()}
+function showMediaFallback(img){img.closest('.card-media')?.classList.add('missing-asset')}
+function showMapImage(img){img.closest('.contact-graphic')?.classList.add('has-map')}
+function showMapFallback(img){const graphic=img.closest('.contact-graphic');graphic?.classList.remove('has-map');graphic?.classList.add('map-missing')}
+const canvas=document.getElementById('particles'),ctx=canvas.getContext('2d');let w,h,points=[];
+function initParticles(){w=canvas.width=innerWidth;h=canvas.height=innerHeight;points=Array.from({length:68},()=>({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.8+.75}))}
+function drawParticles(){ctx.clearRect(0,0,w,h);const dark=document.body.dataset.theme==='dark';ctx.fillStyle=dark?'rgba(105,225,233,.32)':'rgba(0,114,123,.27)';points.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()});ctx.strokeStyle=dark?'rgba(105,225,233,.09)':'rgba(0,114,123,.075)';for(let i=0;i<points.length;i++)for(let j=i+1;j<points.length;j++){const a=points[i],b=points[j],d=Math.hypot(a.x-b.x,a.y-b.y);if(d<160){ctx.globalAlpha=1-d/160;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()}}ctx.globalAlpha=1;requestAnimationFrame(drawParticles)}
+addEventListener('resize',()=>{scaleApp();initParticles()});scaleApp();applyTheme();setLanguage(currentLanguage);initParticles();drawParticles();
+</script>
+</body>
+</html>
