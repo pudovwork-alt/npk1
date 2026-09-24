@@ -8,3 +8,7 @@ mapaz.png - карта где расположен
 04_history.html - после доработки
 
 Добавлены картинки doctor mrt product company concapt
+
+geography.html - то что в меню (карта)
+
+map6.html - новая карта
