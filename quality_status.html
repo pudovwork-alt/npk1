@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>НПК «АЗИМУТ» — Статус</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --accent:#00838c;
+  --accent2:#149ba4;
+  --accent3:#77d4db;
+  --deep:#07515a;
+  --text:#0a4d55;
+  --body:#315f66;
+  --muted:#6d9298;
+  --line:rgba(0,131,140,.15);
+  --line2:rgba(0,131,140,.08);
+  --white:rgba(255,255,255,.82);
+  --card:rgba(255,255,255,.72);
+  --card2:rgba(255,255,255,.48);
+  --shadow:0 28px 68px rgba(18,111,118,.13);
+  --shadow2:0 16px 36px rgba(18,111,118,.11);
+}
+html,body{
+  width:100%;height:100%;overflow:hidden;
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  color:var(--text);
+}
+body{
+  background:
+    radial-gradient(circle at 8% 16%,rgba(106,217,224,.22),transparent 28%),
+    radial-gradient(circle at 91% 18%,rgba(73,187,198,.13),transparent 25%),
+    radial-gradient(circle at 79% 82%,rgba(116,222,225,.18),transparent 32%),
+    linear-gradient(135deg,#fbffff 0%,#effbfb 43%,#e7f7f6 100%);
+  transition:.35s ease;
+}
+body[data-theme="dark"]{
+  --text:#efffff;
+  --body:#c5dfe1;
+  --muted:#98bfc3;
+  --line:rgba(119,221,229,.20);
+  --line2:rgba(119,221,229,.10);
+  --white:rgba(10,31,34,.84);
+  --card:rgba(12,39,43,.76);
+  --card2:rgba(11,31,34,.54);
+  --shadow:0 28px 68px rgba(0,0,0,.34);
+  --shadow2:0 16px 36px rgba(0,0,0,.26);
+  background:
+    radial-gradient(circle at 8% 16%,rgba(0,187,198,.12),transparent 28%),
+    radial-gradient(circle at 91% 18%,rgba(70,194,205,.10),transparent 25%),
+    radial-gradient(circle at 79% 82%,rgba(68,202,211,.10),transparent 32%),
+    linear-gradient(135deg,#031012 0%,#071a1d 45%,#0a2629 100%);
+}
+
+#particles{position:fixed;inset:0;z-index:0;pointer-events:none}
+.page{
+  position:relative;z-index:2;
+  width:1920px;height:1080px;
+  transform-origin:top left;
+  padding:31px 70px 36px;
+  overflow:hidden;
+}
+
+/* Decorative geometry */
+.orbit{
+  position:absolute;border:2px solid rgba(116,214,221,.18);border-radius:50%;pointer-events:none
+}
+.orbit.o1{width:590px;height:590px;left:-375px;bottom:-205px}
+.orbit.o2{width:510px;height:510px;right:-330px;top:240px}
+.orbit.o3{width:355px;height:355px;right:150px;bottom:-240px;border-width:1px;opacity:.6}
+.orbit-dot{
+  position:absolute;width:14px;height:14px;border-radius:50%;
+  background:rgba(255,255,255,.9);
+  box-shadow:0 0 0 1px rgba(0,131,140,.10),0 7px 22px rgba(0,131,140,.12);
+  pointer-events:none
+}
+.od1{left:84px;top:490px}.od2{right:145px;top:642px}.od3{left:355px;top:128px;width:9px;height:9px}
+
+.top-controls{
+  position:absolute;top:38px;right:74px;z-index:10;
+  display:flex;align-items:center;gap:14px
+}
+.glass{
+  height:64px;border:1px solid var(--line);background:var(--white);
+  box-shadow:var(--shadow2);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-radius:21px
+}
+.theme-btn{
+  width:64px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--accent)
+}
+.theme-btn svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.theme-btn .sun{display:none} body[data-theme="dark"] .theme-btn .sun{display:block} body[data-theme="dark"] .theme-btn .moon{display:none}
+.lang{
+  padding:6px;display:flex;align-items:center;gap:4px
+}
+.lang button{
+  min-width:66px;height:50px;border:0;border-radius:16px;background:transparent;
+  color:var(--muted);font-size:20px;font-weight:850;cursor:pointer
+}
+.lang button.active{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;box-shadow:0 10px 24px rgba(0,131,140,.25)
+}
+
+.side-note{
+  position:absolute;z-index:3;color:#7da8b0;font-weight:700;letter-spacing:.28em;
+  text-transform:uppercase;font-size:15px;line-height:1.55;opacity:.76
+}
+.side-note.left{left:76px;top:106px;width:190px}
+.side-note.right{right:77px;top:173px;width:210px;text-align:right}
+.side-note:after{
+  content:"";display:block;width:42px;height:2px;margin-top:13px;background:rgba(0,131,140,.24)
+}
+.side-note.right:after{margin-left:auto}
+
+.hero{
+  width:100%;height:292px;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  position:relative;z-index:3
+}
+.brand{
+  width:660px;height:145px;display:flex;align-items:center;justify-content:center;
+  margin-top:-4px
+}
+.brand img{
+  display:block;max-width:100%;max-height:138px;object-fit:contain
+}
+.brand-fallback{
+  display:none;font-weight:950;letter-spacing:-.045em;font-size:96px;
+  background:linear-gradient(135deg,var(--deep),var(--accent2));
+  -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.hero-title-wrap{display:flex;align-items:center;gap:42px;margin-top:1px}
+.hero-title-wrap:before,.hero-title-wrap:after{
+  content:"";width:82px;height:2px;border-radius:10px;
+  background:linear-gradient(90deg,transparent,rgba(0,94,104,.38))
+}
+.hero-title-wrap:after{background:linear-gradient(90deg,rgba(0,94,104,.38),transparent)}
+h1{
+  font-size:53px;line-height:1;font-weight:850;letter-spacing:.29em;
+  margin-left:.29em;color:var(--deep)
+}
+body[data-theme="dark"] h1{color:#dffbff}
+.subtitle{
+  margin-top:16px;font-size:18px;line-height:1.45;text-align:center;
+  letter-spacing:.22em;text-transform:uppercase;font-weight:650;color:#789da4
+}
+
+.board{
+  position:relative;z-index:4;
+  width:1510px;height:570px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;
+  gap:22px 26px
+}
+.card{
+  position:relative;overflow:hidden;
+  border:1px solid rgba(255,255,255,.72);
+  outline:1px solid var(--line2);
+  border-radius:34px;
+  background:
+    linear-gradient(115deg,rgba(255,255,255,.88) 0%,rgba(255,255,255,.72) 58%,rgba(255,255,255,.46) 100%);
+  box-shadow:var(--shadow2);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  padding:29px 245px 24px 35px;
+  transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease;
+  cursor:default
+}
+body[data-theme="dark"] .card{
+  background:linear-gradient(115deg,rgba(15,48,52,.86),rgba(13,41,45,.76) 58%,rgba(12,35,39,.60));
+  border-color:rgba(139,235,241,.12)
+}
+.card:hover{
+  transform:translateY(-7px);
+  box-shadow:0 27px 56px rgba(0,102,111,.17);
+  border-color:rgba(0,131,140,.24)
+}
+.card:before{
+  content:"";position:absolute;right:-34px;top:-106px;width:370px;height:370px;border-radius:50%;
+  border:2px solid rgba(88,202,211,.24);pointer-events:none
+}
+.card:after{
+  content:"";position:absolute;right:41px;top:36px;width:2px;height:182px;
+  background:linear-gradient(180deg,transparent,rgba(0,131,140,.17),transparent);
+  transform:rotate(19deg);pointer-events:none
+}
+.logo-box{
+  width:126px;height:126px;border-radius:28px;position:absolute;left:34px;top:30px;
+  background:rgba(255,255,255,.88);border:1px solid rgba(0,131,140,.10);
+  display:flex;align-items:center;justify-content:center;padding:16px;
+  box-shadow:0 12px 28px rgba(14,99,106,.10),inset 0 1px 0 rgba(255,255,255,.9)
+}
+.logo-box img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.logo-fallback{
+  display:none;width:100%;height:100%;align-items:center;justify-content:center;text-align:center;
+  color:#47737a;font-size:13px;line-height:1.2;font-weight:850
+}
+.card-content{
+  height:100%;padding-left:158px;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:3
+}
+.card h2{
+  font-size:22px;line-height:1.34;font-weight:720;color:#1b5260;letter-spacing:-.012em;
+  max-width:430px;margin-top:0
+}
+body[data-theme="dark"] .card h2{color:#e7fbff}
+.card .emph{
+  display:block;margin-top:7px;font-size:25px;font-weight:900;color:var(--accent);letter-spacing:-.02em
+}
+
+/* Right-side image */
+.visual{
+  position:absolute;right:0;top:0;width:235px;height:100%;overflow:hidden;
+  border-radius:0 34px 34px 0;
+  background:linear-gradient(145deg,rgba(184,238,240,.38),rgba(255,255,255,.18));
+}
+.visual:before{
+  content:"";position:absolute;left:-80px;top:-92px;width:310px;height:310px;border-radius:50%;
+  border:2px solid rgba(88,202,211,.20);pointer-events:none;z-index:2
+}
+.visual:after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.04));
+  pointer-events:none;z-index:2
+}
+.visual img{
+  width:100%;height:100%;object-fit:cover;display:block
+}
+.visual-fallback{
+  position:absolute;inset:0;display:none;align-items:center;justify-content:center;text-align:center;
+  padding:20px;background:linear-gradient(145deg,rgba(184,238,240,.38),rgba(255,255,255,.18));
+  color:#47737a;font-size:14px;font-weight:850;line-height:1.25;z-index:1
+}
+body[data-theme="dark"] .visual-fallback{color:#cfeff2}
+.iso-card{box-shadow:0 20px 46px rgba(0,131,140,.15)}
+.iso-card h2{max-width:400px}
+.iso-card .emph{font-size:31px}
+
+.footer-words{
+  position:absolute;z-index:5;left:0;right:0;bottom:47px;
+  display:flex;align-items:center;justify-content:center;gap:34px;
+  color:#7eaab1;text-transform:uppercase;font-size:13px;font-weight:800;letter-spacing:.28em
+}
+.footer-words i{width:1px;height:19px;background:rgba(0,131,140,.32);display:block}
+
+@media(max-width:900px){
+  html,body{overflow:auto}
+}
+</style>
+</head>
+
+<body data-theme="light">
+<canvas id="particles"></canvas>
+
+<div class="page" id="page">
+  <div class="orbit o1"></div>
+  <div class="orbit o2"></div>
+  <div class="orbit o3"></div>
+  <span class="orbit-dot od1"></span>
+  <span class="orbit-dot od2"></span>
+  <span class="orbit-dot od3"></span>
+
+  <div class="side-note left" data-i18n="leftNote">Технологии<br>сегодня.<br>Здоровье<br>завтра.</div>
+  <div class="side-note right" data-i18n="rightNote">Российские<br>технологии<br>для здоровья<br>людей</div>
+
+  <div class="top-controls">
+    <button class="glass theme-btn" type="button" onclick="toggleTheme()" aria-label="Тёмная тема">
+      <svg class="moon" viewBox="0 0 24 24"><path d="M20.5 14.5A8 8 0 0 1 9.5 3.5 8.5 8.5 0 1 0 20.5 14.5z"/></svg>
+      <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"/></svg>
+    </button>
+    <div class="glass lang">
+      <button data-lang="ru" onclick="setLanguage('ru')">RU</button>
+      <button data-lang="en" onclick="setLanguage('en')">EN</button>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="brand">
+      <img src="cropped-LogoAz-2.png" alt="НПК АЗИМУТ" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <div class="brand-fallback">АЗИМУТ</div>
+    </div>
+    <div class="hero-title-wrap"><h1 data-i18n="title">СТАТУС</h1></div>
+    <div class="subtitle" data-i18n="subtitle">Профессиональные объединения<br>и подтверждённое качество</div>
+  </header>
+
+  <main class="board">
+
+    <article class="card">
+      <div class="logo-box">
+        <img src="statuslogo_01.png" alt="Кластер медицинского, экологического приборостроения и биотехнологий" onerror="showFallback(this)">
+        <div class="logo-fallback">statuslogo_01.png</div>
+      </div>
+      <div class="card-content">
+        <h2 data-i18n="card1">Член Союза «Некоммерческое партнёрство „Кластер медицинского, экологического приборостроения и биотехнологий“»</h2>
+      </div>
+      <div class="visual">
+        <img src="statusimg_01.png" alt="Биотехнологии" onerror="showVisualFallback(this)">
+        <div class="visual-fallback">statusimg_01.png</div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="logo-box">
+        <img src="statuslogo_02.png" alt="Санкт-Петербургская Торгово-Промышленная Палата" onerror="showFallback(this)">
+        <div class="logo-fallback">statuslogo_02.png</div>
+      </div>
+      <div class="card-content">
+        <h2 data-i18n="card2">Член Союза «Санкт-Петербургская Торгово-Промышленная Палата» (ТПП)</h2>
+      </div>
+      <div class="visual">
+        <img src="statusimg_02.png" alt="Санкт-Петербург" onerror="showVisualFallback(this)">
+        <div class="visual-fallback">statusimg_02.png</div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="logo-box">
+        <img src="statuslogo_03.png" alt="МАМТ" onerror="showFallback(this)">
+        <div class="logo-fallback">statuslogo_03.png</div>
+      </div>
+      <div class="card-content">
+        <h2 data-i18n="card3">Международная ассоциация разработчиков, производителей и пользователей медицинской техники (МАМТ)</h2>
+      </div>
+      <div class="visual">
+        <img src="statusimg_03.png" alt="Международные связи" onerror="showVisualFallback(this)">
+        <div class="visual-fallback">statusimg_03.png</div>
+      </div>
+    </article>
+
+    <article class="card iso-card">
+      <div class="logo-box">
+        <img src="statuslogo_04.png" alt="ISO 13485" onerror="showFallback(this)">
+        <div class="logo-fallback">statuslogo_04.png</div>
+      </div>
+      <div class="card-content">
+        <h2 data-i18n="card4">Система менеджмента качества сертифицирована по стандарту <span class="emph">ISO 13485</span></h2>
+      </div>
+      <div class="visual">
+        <img src="statusimg_04.png" alt="Качество ISO" onerror="showVisualFallback(this)">
+        <div class="visual-fallback">statusimg_04.png</div>
+      </div>
+    </article>
+
+  </main>
+
+  <div class="footer-words">
+    <span data-i18n="f1">Люди</span><i></i>
+    <span data-i18n="f2">Технологии</span><i></i>
+    <span data-i18n="f3">Здоровье</span><i></i>
+    <span data-i18n="f4">Будущее</span>
+  </div>
+</div>
+
+<script>
+const translations={
+  ru:{
+    title:'СТАТУС',
+    subtitle:'Профессиональные объединения<br>и подтверждённое качество',
+    leftNote:'Технологии<br>сегодня.<br>Здоровье<br>завтра.',
+    rightNote:'Российские<br>технологии<br>для здоровья<br>людей',
+    card1:'Член Союза «Некоммерческое партнёрство „Кластер медицинского, экологического приборостроения и биотехнологий“»',
+    card2:'Член Союза «Санкт-Петербургская Торгово-Промышленная Палата» (ТПП)',
+    card3:'Международная ассоциация разработчиков, производителей и пользователей медицинской техники (МАМТ)',
+    card4:'Система менеджмента качества сертифицирована по стандарту <span class="emph">ISO 13485</span>',
+    f1:'Люди',f2:'Технологии',f3:'Здоровье',f4:'Будущее',
+    dark:'Тёмная тема',light:'Светлая тема'
+  },
+  en:{
+    title:'STATUS',
+    subtitle:'Professional associations<br>and certified quality',
+    leftNote:'Technology<br>today.<br>Health<br>tomorrow.',
+    rightNote:'Russian<br>technology<br>for people’s<br>health',
+    card1:'Member of the Union “Non-profit Partnership Cluster of Medical, Environmental Instrumentation and Biotechnology”',
+    card2:'Member of the Union “St. Petersburg Chamber of Commerce and Industry”',
+    card3:'International Association of Developers, Manufacturers and Users of Medical Equipment (IAMT)',
+    card4:'The quality management system is certified to <span class="emph">ISO 13485</span>',
+    f1:'People',f2:'Technology',f3:'Health',f4:'Future',
+    dark:'Dark theme',light:'Light theme'
+  }
+};
+
+let currentLanguage=localStorage.getItem('npkLanguage')||'ru';
+let currentTheme=localStorage.getItem('npkTheme')||'light';
+if(!translations[currentLanguage]) currentLanguage='ru';
+if(!['light','dark'].includes(currentTheme)) currentTheme='light';
+
+function showFallback(img){
+  img.style.display='none';
+  const fallback=img.nextElementSibling;
+  if(fallback) fallback.style.display='flex';
+}
+function showVisualFallback(img){
+  img.style.display='none';
+  const fallback=img.nextElementSibling;
+  if(fallback) fallback.style.display='flex';
+}
+
+function setLanguage(lang){
+  if(!translations[lang])return;
+  currentLanguage=lang;
+  const t=translations[lang];
+  document.documentElement.lang=lang;
+  document.title=lang==='ru'?'НПК «АЗИМУТ» — Статус':'NPK AZIMUT — Status';
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key=el.dataset.i18n;
+    if(t[key]!==undefined) el.innerHTML=t[key];
+  });
+  document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
+  localStorage.setItem('npkLanguage',lang);
+  applyTheme();
+}
+
+function applyTheme(){
+  document.body.dataset.theme=currentTheme;
+  const btn=document.querySelector('.theme-btn');
+  const label=currentTheme==='dark'?translations[currentLanguage].light:translations[currentLanguage].dark;
+  btn.title=label;btn.setAttribute('aria-label',label);
+  localStorage.setItem('npkTheme',currentTheme);
+}
+function toggleTheme(){currentTheme=currentTheme==='dark'?'light':'dark';applyTheme()}
+
+function scalePage(){
+  const page=document.getElementById('page');
+  const s=Math.min(innerWidth/1920,innerHeight/1080);
+  page.style.transform=`scale(${s})`;
+  page.style.marginLeft=((innerWidth-1920*s)/2)+'px';
+  page.style.marginTop=((innerHeight-1080*s)/2)+'px';
+}
+
+/* soft network background */
+const canvas=document.getElementById('particles');
+const ctx=canvas.getContext('2d');
+let W,H,nodes=[];
+function initParticles(){
+  W=canvas.width=innerWidth;H=canvas.height=innerHeight;
+  nodes=Array.from({length:54},()=>({
+    x:Math.random()*W,y:Math.random()*H,
+    vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,
+    r:Math.random()*2.4+1.2
+  }));
+}
+function drawParticles(){
+  ctx.clearRect(0,0,W,H);
+  const dark=document.body.dataset.theme==='dark';
+  ctx.fillStyle=dark?'rgba(92,218,226,.36)':'rgba(23,153,165,.35)';
+  nodes.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0||p.x>W)p.vx*=-1;
+    if(p.y<0||p.y>H)p.vy*=-1;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
+  });
+  ctx.strokeStyle=dark?'rgba(87,205,214,.09)':'rgba(0,131,140,.10)';
+  for(let i=0;i<nodes.length;i++){
+    for(let j=i+1;j<nodes.length;j++){
+      const a=nodes[i],b=nodes[j];
+      const d=Math.hypot(a.x-b.x,a.y-b.y);
+      if(d<170){
+        ctx.globalAlpha=1-d/170;
+        ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+      }
+    }
+  }
+  ctx.globalAlpha=1;
+  requestAnimationFrame(drawParticles);
+}
+
+addEventListener('resize',()=>{scalePage();initParticles()});
+scalePage();initParticles();applyTheme();setLanguage(currentLanguage);drawParticles();
+</script>
+</body>
+</html>
