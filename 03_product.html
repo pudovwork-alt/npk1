@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Каталог оборудования — НПК «АЗИМУТ»</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --p:#057985;
+  --p2:#22a9b0;
+  --p3:#76cfd2;
+  --ink:#123f45;
+  --muted:#69878c;
+  --line:rgba(5,121,133,.13);
+  --glass:rgba(255,255,255,.66);
+  --shadow:0 24px 70px rgba(32,110,117,.12);
+}
+html,body{width:100%;height:100%;overflow:hidden;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--ink)}
+body{
+  background:
+    radial-gradient(circle at 13% 12%,rgba(90,199,205,.18),transparent 28%),
+    radial-gradient(circle at 86% 84%,rgba(15,151,161,.12),transparent 30%),
+    linear-gradient(135deg,#f8fdfd 0%,#edf8f8 47%,#f9fcfc 100%);
+}
+#graph{position:fixed;inset:0;z-index:0;pointer-events:none}
+.app{position:relative;z-index:2;width:1920px;height:1080px;transform-origin:top left;padding:34px 62px 42px}
+
+/* top */
+.topbar{height:72px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:18px}
+.home,.control{width:58px;height:58px;border:1px solid rgba(255,255,255,.9);border-radius:17px;background:rgba(255,255,255,.56);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;color:var(--p);box-shadow:0 12px 34px rgba(5,121,133,.10);cursor:pointer;text-decoration:none;transition:.25s}
+.home:hover,.control:hover{transform:translateY(-2px);background:#fff}
+.home svg,.control svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.logo-wrap{height:58px;display:flex;align-items:center;padding:0 10px}
+.logo-wrap img{max-height:57px;max-width:300px;object-fit:contain}
+.logo-fallback{display:flex;align-items:center;gap:12px;font-weight:900;color:var(--p);font-size:25px;letter-spacing:.02em}
+.logo-mark{width:48px;height:48px;position:relative}
+.logo-mark:before,.logo-mark:after{content:"";position:absolute;bottom:3px;width:17px;height:43px;border-radius:5px 5px 2px 2px;background:linear-gradient(180deg,var(--p2),var(--p));transform-origin:bottom}
+.logo-mark:before{left:10px;transform:skew(-27deg)}
+.logo-mark:after{right:9px;transform:skew(27deg)}
+.logo-text small{display:block;font-size:8px;color:#7e9da0;font-weight:700;letter-spacing:.08em;margin-top:2px}
+.controls{display:flex;align-items:center;gap:12px}.langs{display:flex;gap:3px;padding:5px;border-radius:17px;background:rgba(255,255,255,.56);border:1px solid rgba(255,255,255,.9);box-shadow:0 12px 34px rgba(5,121,133,.10)}
+.lang{width:66px;height:47px;border:0;border-radius:12px;background:transparent;font-size:17px;font-weight:850;color:var(--muted);cursor:pointer}.lang.active{color:#fff;background:linear-gradient(135deg,var(--p),var(--p2));box-shadow:0 8px 20px rgba(5,121,133,.20)}
+
+/* title */
+.hero{text-align:center;margin-top:4px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--p);font-size:14px;font-weight:850;letter-spacing:.16em;text-transform:uppercase;margin-bottom:8px}
+.eyebrow:before,.eyebrow:after{content:"";width:38px;height:1px;background:rgba(5,121,133,.35)}
+.hero h1{font-size:52px;line-height:1.04;font-weight:900;letter-spacing:-.02em;color:#0b707a}
+.hero p{font-size:22px;color:var(--muted);margin-top:10px}
+
+/* carousel */
+.stage{position:relative;height:745px;margin-top:6px;display:flex;align-items:center;justify-content:center}
+.track{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;perspective:1800px}
+.product-card{position:absolute;width:650px;height:655px;padding:27px 29px 28px;border-radius:34px;background:rgba(255,255,255,.74);border:1px solid rgba(255,255,255,.96);box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.92);backdrop-filter:blur(24px) saturate(130%);overflow:hidden;transition:transform .75s cubic-bezier(.2,.78,.2,1),opacity .5s,filter .5s,box-shadow .35s;cursor:pointer;transform-style:preserve-3d}
+.product-card:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 70% 8%,rgba(255,255,255,.98),transparent 28%),linear-gradient(145deg,rgba(255,255,255,.30),transparent 44%);pointer-events:none}
+.product-card:after{content:"";position:absolute;left:32px;right:32px;bottom:25px;height:1px;background:linear-gradient(90deg,transparent,rgba(5,121,133,.12),transparent);opacity:.5}
+.product-card.active{transform:translateX(0) translateZ(130px) scale(1);z-index:6;opacity:1;box-shadow:0 30px 80px rgba(28,119,126,.18),0 0 0 1px rgba(17,164,173,.38),inset 0 1px 0 rgba(255,255,255,.98)}
+.product-card.left{transform:translateX(-610px) translateZ(-110px) rotateY(24deg) scale(.77);z-index:3;opacity:.71;filter:saturate(.84)}
+.product-card.right{transform:translateX(610px) translateZ(-110px) rotateY(-24deg) scale(.77);z-index:3;opacity:.71;filter:saturate(.84)}
+.product-card.far-left{transform:translateX(-980px) translateZ(-230px) rotateY(32deg) scale(.58);opacity:.16;z-index:1;pointer-events:none}
+.product-card.far-right{transform:translateX(980px) translateZ(-230px) rotateY(-32deg) scale(.58);opacity:.16;z-index:1;pointer-events:none}
+.product-card.hidden{opacity:0;pointer-events:none}
+.index{position:absolute;left:28px;top:20px;font-size:56px;font-weight:950;color:rgba(5,121,133,.10);z-index:3}
+.badge{position:absolute;right:23px;top:20px;z-index:4;display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;background:linear-gradient(135deg,rgba(5,121,133,.95),rgba(34,169,176,.92));color:#fff;font-size:14px;font-weight:850;box-shadow:0 10px 23px rgba(5,121,133,.17)}
+.badge svg{width:15px;height:15px;fill:none;stroke:#fff;stroke-width:2.2}
+.visual{height:332px;position:relative;display:flex;align-items:center;justify-content:center;z-index:2}
+.rings{position:absolute;width:300px;height:300px;border-radius:50%;border:1px solid rgba(18,157,166,.16);box-shadow:0 0 0 26px rgba(18,157,166,.04),0 0 0 54px rgba(18,157,166,.025)}
+.visual img{position:relative;z-index:2;max-width:91%;max-height:300px;object-fit:contain;filter:drop-shadow(0 20px 24px rgba(19,80,86,.18));transition:.35s}
+.product-card.active:hover .visual img{transform:translateY(-5px) scale(1.025)}
+.info{position:relative;z-index:3}
+.info h2{font-size:34px;line-height:1.08;color:#076f79;font-weight:900;letter-spacing:-.02em;margin-bottom:8px}
+.info .desc{font-size:17px;line-height:1.36;color:var(--muted);min-height:47px}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.fact{min-height:66px;border-radius:15px;background:linear-gradient(135deg,rgba(229,248,249,.82),rgba(247,253,253,.78));border:1px solid rgba(5,121,133,.07);display:flex;align-items:center;gap:9px;padding:10px 10px}
+.fact svg{width:27px;height:27px;min-width:27px;fill:none;stroke:var(--p);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.fact span{font-size:12.5px;line-height:1.2;color:#34646a;font-weight:760}
+.more{margin:17px auto 0;display:flex;width:235px;height:52px;align-items:center;justify-content:center;gap:10px;border-radius:999px;background:linear-gradient(135deg,var(--p),#0fb0b7);color:#fff;font-weight:900;font-size:17px;box-shadow:0 13px 28px rgba(5,121,133,.21)}
+.more svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2.2;transition:.25s}.product-card.active:hover .more svg{transform:translateX(4px)}
+
+.nav{position:absolute;top:50%;transform:translateY(-50%);width:66px;height:66px;border-radius:50%;border:1px solid rgba(255,255,255,.95);background:rgba(255,255,255,.72);box-shadow:0 14px 34px rgba(5,121,133,.12);backdrop-filter:blur(14px);color:var(--p);z-index:9;cursor:pointer;font-size:41px;display:flex;align-items:center;justify-content:center;transition:.25s}.nav:hover{background:#fff;transform:translateY(-50%) scale(1.06)}.prev{left:1px}.next{right:1px}
+.bottom{position:absolute;bottom:4px;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:26px;z-index:10}
+.dots{display:flex;gap:10px}.dot{width:11px;height:11px;border:0;border-radius:20px;background:rgba(5,121,133,.15);cursor:pointer;transition:.25s}.dot.active{width:36px;background:linear-gradient(90deg,var(--p),var(--p2))}
+.count{font-size:16px;color:#587a7e;font-weight:700}.count strong{color:var(--p);font-size:20px}
+.corner-note{position:absolute;right:4px;bottom:22px;color:#86a9ac;font-size:12px;line-height:1.28;letter-spacing:.04em;text-transform:uppercase;text-align:left}.corner-note:before{content:"";position:absolute;width:52px;height:1px;background:#8fb7ba;left:-70px;top:10px}
+
+@media(max-width:1100px){.app{padding-left:40px;padding-right:40px}.product-card.left{transform:translateX(-500px) translateZ(-110px) rotateY(24deg) scale(.72)}.product-card.right{transform:translateX(500px) translateZ(-110px) rotateY(-24deg) scale(.72)}}
+</style>
+</head>
+<body>
+<canvas id="graph"></canvas>
+<div class="app" id="app">
+  <div class="topbar">
+    <div class="brand">
+      <a class="home" href="02_menu.html" aria-label="На главную">
+        <svg viewBox="0 0 24 24"><path d="M3 11.2 12 4l9 7.2"/><path d="M5.5 10.3V20h13v-9.7"/><path d="M9.5 20v-5.7h5V20"/></svg>
+      </a>
+      <div class="logo-wrap">
+        <img src="cropped-LogoAz-2.png" alt="НПК АЗИМУТ" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="logo-fallback" style="display:none"><span class="logo-mark"></span><span class="logo-text">НПК АЗИМУТ<small>ТЕХНОЛОГИИ ДЛЯ ЖИЗНИ</small></span></div>
+      </div>
+    </div>
+    <div class="controls">
+      <button class="control" id="theme" aria-label="Оформление">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></svg>
+      </button>
+      <div class="langs"><button class="lang active">RU</button><button class="lang">EN</button></div>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="eyebrow">Российские технологии для здоровья людей</div>
+    <h1>Эндоскопическое оборудование</h1>
+    <p>Выберите направление — краткие характеристики уже на карточке</p>
+  </div>
+
+  <div class="stage" id="stage">
+    <button class="nav prev" onclick="change(-1)" aria-label="Предыдущий товар">‹</button>
+    <div class="track">
+
+      <article class="product-card active" data-index="0" data-href="1prod.html">
+        <div class="index">01</div><div class="badge"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/></svg>ЛОР-кабинет</div>
+        <div class="visual"><div class="rings"></div><img src="1prod.png" alt="Рабочее место ЛОР врача Азимут"></div>
+        <div class="info"><h2>Рабочее место ЛОР-врача «Азимут»</h2><div class="desc">Многофункциональный ЛОР-комбайн для диагностики и проведения процедур.</div>
+          <div class="facts">
+            <div class="fact"><svg viewBox="0 0 24 24"><path d="M7 3v7M17 3v7M5 10h14v4a7 7 0 0 1-14 0z"/></svg><span>Автономно от водопровода</span></div>
+            <div class="fact"><svg viewBox="0 0 24 24"><path d="M6 4h12v16H6zM9 8h6M9 12h6"/></svg><span>6 розеток с заземлением</span></div>
+            <div class="fact"><svg viewBox="0 0 24 24"><path d="M4 12h4l2-5 4 10 2-5h4"/></svg><span>Низкий уровень шума</span></div>
+          </div><div class="more">Подробнее <svg viewBox="0 0 24 24"><path d="M5 12h14M14 7l5 5-5 5"/></svg></div>
+        </div>
+      </article>
+
+      <article class="product-card right" data-index="1" data-href="2prod.html">
+        <div class="index">02</div><div class="badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M8 12h8"/></svg>Мобильность</div>
+        <div class="visual"><div class="rings"></div><img src="2prod.png" alt="Медицинская стойка"></div>
+        <div class="info"><h2>Медицинские стойки</h2><div class="desc">Передвижные приборные стойки для безопасного размещения медицинского оборудования.</div>
+          <div class="facts">
+            <div class="fact"><svg viewBox="0 0 24 24"><path d="M5 3h14v13H5zM7 20a2 2 0 1 0 0-4M17 20a2 2 0 1 0 0-4"/></svg><span>4 поворотных колеса</span></div>
+            <div class="fact"><svg viewBox="0 0 24 24"><path d="M3 16h18M6 16V8h12v8"/></svg><span>Полка до 30 кг</span></div>
+            <div class="fact"><svg viewBox="0 0 24 24"><path d="M12 3v18M7 8l5-5 5 5M7 16l5 5 5-5"/></svg><span>Нагрузка стойки до 140 кг</span></div>
+          </div><div class="more">Подробнее <svg viewBox="0 0 24 24"><path d="M5 12h14M14 7l5 5-5 5"/></svg></div>
+        </div>
+      </article>
+
+      <article class="product-card far-right" data-index="2" data-href="3prod.html">
+        <div class="index">03</div><div class="badge"><svg viewBox="0 0 24 24"><path d="M5 7h14v10H5zM9 17v3M15 17v3"/></svg>FULL HD</div>
+        <div class="visual"><div class="rings"></div><img src="3prod.png" alt="Видеокомплекс ЭНДОСКАМ 450 FULL HD"></div>
+        <div class="info"><h2>ЭНДОСКАМ 450 FULL HD</h2><div class="desc">Видеокамера и LED-осветитель в одном корпусе для эндоскопической визуализации.</div>
+          <div class="facts">
+            <div class="fact"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 21h8"/></svg><span>1920×1080 · 60 fps</span></div>
+            <div class="fact"><svg viewBox="0 0 24 24"><path d="M12 3v11M8 8l4-5 4 5M5 14h14v7H5z"/></svg><span>Запись фото и видео на USB</span></div>
+            <div class="fact"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 22h4M8 3a6 6 0 0 1 8 9c-1.2 1-2 2-2 4h-4c0-2-1-3-2-4a6 6 0 0 1 0-9z"/></svg><span>Встроенный LED-осветитель</span></div>
+          </div><div class="more">Подробнее <svg viewBox="0 0 24 24"><path d="M5 12h14M14 7l5 5-5 5"/></svg></div>
+        </div>
+      </article>
+
+      <article class="product-card far-left" data-index="3" data-href="4prod.html">
+        <div class="index">04</div><div class="badge"><svg viewBox="0 0 24 24"><path d="M4 6h16v12H4zM8 10h8"/></svg>Видеокамера</div>
+        <div class="visual"><div class="rings"></div><img src="4prod.png" alt="Видеокамера ЭНДОКАМ FULL HD"></div>
+        <div class="info"><h2>Видеокамера ЭНДОКАМ FULL HD</h2><div class="desc">Медицинская эндовидеокамера с высокой четкостью и реалистичной цветопередачей.</div>
+          <div class="facts">
+            <div class="fact"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 21h8"/></svg><span>FULL HD 1920×1080</span></div>
+            <div class="fact"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>HDMI · SDI · DVI</span></div>
+            <div class="fact"><svg viewBox="0 0 24 24"><path d="M12 3v11M8 8l4-5 4 5M5 14h14v7H5z"/></svg><span>Сохранение видео на USB</span></div>
+          </div><div class="more">Подробнее <svg viewBox="0 0 24 24"><path d="M5 12h14M14 7l5 5-5 5"/></svg></div>
+        </div>
+      </article>
+
+      <article class="product-card hidden" data-index="4" data-href="5prod.html">
+        <div class="index">05</div><div class="badge"><svg viewBox="0 0 24 24"><path d="M3 12h18M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>Промышленный</div>
+        <div class="visual"><div class="rings"></div><img src="5prod.png" alt="Технический эндоскоп"></div>
+        <div class="info"><h2>Технический эндоскоп</h2><div class="desc">Жесткий оптический эндоскоп для визуального контроля труднодоступных полостей и узлов.</div>
+          <div class="facts">
+            <div class="fact"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 12l5-3"/></svg><span>Рабочее расстояние 20–50 мм</span></div>
+            <div class="fact"><svg viewBox="0 0 24 24"><path d="M4 12h16M12 4v16"/></svg><span>Углы наблюдения 0–90°</span></div>
+            <div class="fact"><svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19"/></svg><span>Стойкость к маслу и бензину</span></div>
+          </div><div class="more">Подробнее <svg viewBox="0 0 24 24"><path d="M5 12h14M14 7l5 5-5 5"/></svg></div>
+        </div>
+      </article>
+
+    </div>
+    <button class="nav next" onclick="change(1)" aria-label="Следующий товар">›</button>
+    <div class="bottom"><div class="dots"></div><div class="count"><strong id="cur">01</strong> / 05</div></div>
+    <div class="corner-note">Больше возможностей<br>для здоровья людей</div>
+  </div>
+</div>
+<script>
+const app=document.getElementById('app');
+function scale(){const s=Math.min(innerWidth/1920,innerHeight/1080);app.style.transform=`scale(${s})`;app.style.marginLeft=((innerWidth-1920*s)/2)+'px';app.style.marginTop=((innerHeight-1080*s)/2)+'px'}
+addEventListener('resize',scale);scale();
+
+const cards=[...document.querySelectorAll('.product-card')];
+let current=0,startX=0;
+const dotsWrap=document.querySelector('.dots');
+cards.forEach((_,i)=>{const b=document.createElement('button');b.className='dot'+(i===0?' active':'');b.onclick=()=>go(i);dotsWrap.appendChild(b)});
+const dots=[...document.querySelectorAll('.dot')];
+function rel(i){return (i-current+cards.length)%cards.length}
+function update(){
+  cards.forEach((c,i)=>{
+    c.className='product-card'; const d=rel(i);
+    if(d===0)c.classList.add('active');
+    else if(d===1)c.classList.add('right');
+    else if(d===cards.length-1)c.classList.add('left');
+    else if(d===2)c.classList.add('far-right');
+    else if(d===cards.length-2)c.classList.add('far-left');
+    else c.classList.add('hidden');
+  });
+  dots.forEach((d,i)=>d.classList.toggle('active',i===current));
+  document.getElementById('cur').textContent=String(current+1).padStart(2,'0');
+}
+function change(v){current=(current+v+cards.length)%cards.length;update()}
+function go(i){current=i;update()}
+cards.forEach((card,i)=>card.addEventListener('click',()=>{
+  if(i!==current){current=i;update();return}
+  location.href=card.dataset.href;
+}));
+const stage=document.getElementById('stage');
+stage.addEventListener('touchstart',e=>startX=e.touches[0].clientX,{passive:true});
+stage.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-startX;if(Math.abs(dx)>45)change(dx<0?1:-1)},{passive:true});
+addEventListener('keydown',e=>{if(e.key==='ArrowRight')change(1);if(e.key==='ArrowLeft')change(-1);if(e.key==='Enter')location.href=cards[current].dataset.href});
+update();
+
+/* декоративный фон */
+const c=document.getElementById('graph'),x=c.getContext('2d');let w,h,p=[];
+function init(){w=c.width=innerWidth;h=c.height=innerHeight;p=Array.from({length:56},()=>({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,r:Math.random()*1.6+.7}))}
+function draw(){x.clearRect(0,0,w,h);x.fillStyle='rgba(5,121,133,.22)';p.forEach(a=>{a.x+=a.vx;a.y+=a.vy;if(a.x<0||a.x>w)a.vx*=-1;if(a.y<0||a.y>h)a.vy*=-1;x.beginPath();x.arc(a.x,a.y,a.r,0,Math.PI*2);x.fill()});x.strokeStyle='rgba(5,121,133,.07)';for(let i=0;i<p.length;i++)for(let j=i+1;j<p.length;j++){const d=Math.hypot(p[i].x-p[j].x,p[i].y-p[j].y);if(d<155){x.globalAlpha=1-d/155;x.beginPath();x.moveTo(p[i].x,p[i].y);x.lineTo(p[j].x,p[j].y);x.stroke()}}x.globalAlpha=1;requestAnimationFrame(draw)}
+addEventListener('resize',init);init();draw();
+
+/* simple lang controls intentionally visual only */
+document.querySelectorAll('.lang').forEach(btn=>btn.onclick=()=>{document.querySelectorAll('.lang').forEach(x=>x.classList.remove('active'));btn.classList.add('active')});
+</script>
+</body>
+</html>
