@@ -57,7 +57,7 @@ body[data-theme="dark"] .side-copy{color:rgba(111,225,233,.43)}
 body[data-theme="dark"] .subtitle{color:var(--muted)}
 
 .content-grid{height:838px;display:grid;grid-template-columns:600px 1fr;gap:18px}
-.left-stack{display:grid;grid-template-rows:438px 132px 218px;gap:18px;min-width:0}
+.left-stack{display:grid;grid-template-rows:438px 1fr;gap:18px;min-width:0}
 .panel{background:var(--glass2);border:1px solid rgba(255,255,255,.65);border-radius:var(--panel-radius);box-shadow:0 18px 48px var(--shadow), inset 0 1px 0 rgba(255,255,255,.33);backdrop-filter:blur(19px);-webkit-backdrop-filter:blur(19px)}
 body[data-theme="dark"] .panel{border-color:var(--line)}
 
@@ -81,11 +81,11 @@ body[data-theme="dark"] .stat-card{background:rgba(255,255,255,.045);border-colo
 .legend-dot.service{background:#95d6da}.legend-dot.key{background:transparent;border:3px solid #4fb9c1}
 
 /* statement */
-.statement-panel{position:relative;overflow:hidden;padding:24px 24px 18px 100px}
-.statement-icon{position:absolute;left:22px;top:24px;width:58px;height:58px;border-radius:14px;background:rgba(255,255,255,.48);display:flex;align-items:center;justify-content:center}
-.statement-icon svg{width:38px;height:38px;fill:none;stroke:var(--green);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.statement-title{font-size:25px;font-weight:900;line-height:1.12;margin-bottom:8px}.statement-copy{font-size:16px;line-height:1.35;color:var(--text)}
-.statement-foot{position:absolute;left:24px;right:26px;bottom:16px;display:flex;align-items:center;gap:12px;font-size:12px;font-weight:900;letter-spacing:.18em;color:var(--green);text-transform:uppercase}.statement-foot:after{content:"→";font-size:28px;letter-spacing:0}.statement-mountain{position:absolute;right:-6px;bottom:-12px;width:210px;height:140px;opacity:.18;filter:grayscale(1)}
+.statement-panel{position:relative;overflow:hidden;padding:34px 34px 26px 122px;min-height:250px;background:linear-gradient(135deg,rgba(255,255,255,.56),rgba(255,255,255,.32))}
+.statement-icon{position:absolute;left:30px;top:30px;width:72px;height:72px;border-radius:18px;background:rgba(255,255,255,.62);display:flex;align-items:center;justify-content:center;box-shadow:0 12px 28px var(--shadow)}
+.statement-icon svg{width:44px;height:44px;fill:none;stroke:var(--green);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.statement-title{font-size:34px;font-weight:900;line-height:1.08;margin-bottom:14px;letter-spacing:-.02em}.statement-copy{font-size:20px;line-height:1.45;color:var(--text);max-width:520px;font-weight:650}
+.statement-foot{position:absolute;left:34px;right:34px;bottom:22px;display:flex;align-items:center;gap:14px;font-size:16px;font-weight:900;letter-spacing:.10em;color:var(--green);text-transform:uppercase}.statement-foot:after{content:"→";font-size:34px;letter-spacing:0}.statement-mountain{position:absolute;right:-8px;bottom:-16px;width:250px;height:165px;opacity:.16;filter:grayscale(1)}
 
 /* map */
 .map-panel{position:relative;overflow:hidden;min-width:0}
@@ -95,7 +95,11 @@ body[data-theme="dark"] .stat-card{background:rgba(255,255,255,.045);border-colo
 body[data-theme="dark"] .map-shell img{opacity:.62;filter:brightness(.78) contrast(1.15) saturate(.6)}
 .map-fade{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 53% 54%,transparent 38%,rgba(230,249,247,.12) 70%,rgba(241,252,251,.48) 100%)}
 body[data-theme="dark"] .map-fade{background:radial-gradient(circle at 53% 54%,transparent 38%,rgba(1,15,17,.05) 70%,rgba(1,12,14,.28) 100%)}
-.rays-layer,.marker-group{position:absolute;inset:0;pointer-events:none}.rays-layer{z-index:3}.marker-group{z-index:5}
+.rays-layer{position:absolute;z-index:3;pointer-events:none}
+.marker-group{position:absolute;z-index:5;pointer-events:none}
+.marker-group .marker{pointer-events:auto;animation:markerPulse 3s ease-in-out infinite}
+.marker-group .marker-label{opacity:0;transform:translateY(5px)}
+.marker[data-name^="Точка"] .marker-label{display:block;left:23px;top:-7px;font-size:12px;padding:5px 8px;opacity:.82}
 .rays-layer svg{width:100%;height:100%;display:block;overflow:visible}
 .ray{stroke:var(--green2);stroke-width:.22;fill:none;stroke-linecap:round;opacity:.70;stroke-dasharray:300;stroke-dashoffset:300;filter:drop-shadow(0 0 4px rgba(0,123,134,.28));animation:rayDraw 4.8s cubic-bezier(.2,.75,.3,1) forwards}
 .ray:nth-child(2){animation-delay:.15s}.ray:nth-child(3){animation-delay:.3s}.ray:nth-child(4){animation-delay:.45s}.ray:nth-child(5){animation-delay:.6s}.ray:nth-child(6){animation-delay:.75s}.ray:nth-child(7){animation-delay:.9s}.ray:nth-child(8){animation-delay:1.05s}.ray:nth-child(9){animation-delay:1.2s}.ray:nth-child(10){animation-delay:1.35s}.ray:nth-child(11){animation-delay:1.5s}.ray:nth-child(12){animation-delay:1.65s}.ray:nth-child(13){animation-delay:1.8s}.ray:nth-child(14){animation-delay:1.95s}
@@ -107,15 +111,15 @@ body[data-theme="dark"] .map-fade{background:radial-gradient(circle at 53% 54%,t
 .marker-label{position:absolute;left:23px;top:-7px;background:var(--glass);border:1px solid var(--line);border-radius:10px;padding:7px 11px;font-size:14px;font-weight:850;white-space:nowrap;box-shadow:0 8px 22px var(--shadow);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:var(--text);opacity:0;transform:translateY(5px);transition:.2s ease;pointer-events:none}.marker.label-visible .marker-label,.marker:hover .marker-label{opacity:1;transform:none}
 .marker.stp{width:28px;height:28px;margin:-14px 0 0 -14px}.marker.stp .marker-label{opacity:1;transform:none;left:30px;top:-24px;padding:10px 14px;font-size:15px}.marker.stp .marker-label small{display:block;color:var(--muted);font-weight:650;margin-top:3px}
 /* positions tuned for existing map.png */
-.m-stp{left:19.3%;top:31.3%}.m-moscow{left:16.0%;top:49.5%}.m-ekb{left:33.2%;top:55%}.m-nsk{left:48.0%;top:69%}.m-kras{left:58.2%;top:65%}.m-vlad{left:86.8%;top:82%}
-.m-a{left:11%;top:44%}.m-b{left:12.8%;top:59%}.m-c{left:23.5%;top:78%}.m-d{left:28.5%;top:70%}.m-e{left:38.5%;top:72%}.m-f{left:44%;top:40%}.m-g{left:52%;top:53%}.m-h{left:62%;top:39%}.m-i{left:72.8%;top:72%}.m-j{left:82.8%;top:46%}.m-k{left:89.8%;top:53%}.m-l{left:88%;top:26%}
+.m-stp{left:17.16%;top:26.60%}.m-moscow{left:14.86%;top:41.61%}.m-ekb{left:29.07%;top:60.52%}.m-nsk{left:40.15%;top:77.28%}.m-kras{left:53.74%;top:78.84%}.m-vlad{left:86.45%;top:97.16%}
+.m-a{left:9.95%;top:50.38%}.m-b{left:10.78%;top:39.66%}.m-c{left:9.84%;top:67.53%}.m-d{left:23.32%;top:67.14%}.m-e{left:51.65%;top:89.36%}.m-f{left:43.81%;top:51.16%}.m-g{left:53.63%;top:56.62%}.m-h{left:63.35%;top:48.43%}.m-i{left:72.80%;top:71.95%}.m-j{left:71.92%;top:57.01%}.m-k{left:86.03%;top:47.07%}.m-l{left:84.67%;top:25.63%}
 
-.map-bottom{position:absolute;left:20px;right:20px;bottom:18px;height:100px;display:grid;grid-template-columns:1fr 1fr 1.15fr 260px;gap:0;background:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.68);border-radius:18px;box-shadow:0 12px 32px var(--shadow);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);overflow:hidden}
+.map-bottom{position:absolute;left:20px;right:20px;bottom:18px;height:124px;display:grid;grid-template-columns:1fr 1fr 1.15fr 260px;gap:0;background:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.68);border-radius:22px;box-shadow:0 12px 32px var(--shadow);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);overflow:hidden}
 body[data-theme="dark"] .map-bottom{background:rgba(11,31,34,.70);border-color:var(--line)}
-.map-feature{display:flex;align-items:center;gap:18px;padding:0 30px;position:relative}.map-feature:not(:nth-last-child(2)):after{content:"";position:absolute;right:0;top:23%;height:54%;width:1px;background:var(--line)}.map-feature svg{width:34px;height:34px;stroke:var(--green);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex:none}.map-feature strong{font-size:15px;line-height:1.35}
-.map-motto{display:flex;align-items:center;justify-content:center;gap:18px;color:rgba(0,123,134,.32);border-left:1px solid var(--line);font-size:12px;font-weight:800;line-height:1.6;letter-spacing:.30em;text-transform:uppercase}.map-motto svg{width:55px;height:55px;stroke:currentColor;fill:none;stroke-width:1.5}
+.map-feature{display:flex;align-items:center;gap:24px;padding:0 34px;position:relative}.map-feature:not(:nth-last-child(2)):after{content:"";position:absolute;right:0;top:18%;height:64%;width:1px;background:var(--line)}.map-feature svg{width:50px;height:50px;stroke:var(--green);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex:none}.map-feature strong{font-size:19px;line-height:1.3}
+.map-motto{display:flex;align-items:center;justify-content:center;gap:18px;color:rgba(0,123,134,.32);border-left:1px solid var(--line);font-size:13px;font-weight:800;line-height:1.6;letter-spacing:.30em;text-transform:uppercase}.map-motto svg{width:60px;height:60px;stroke:currentColor;fill:none;stroke-width:1.5}
 
-@media (max-width:1200px){.app{width:1600px;height:900px}.page{padding:34px}.hero{height:145px}.content-grid{height:700px;grid-template-columns:510px 1fr}.left-stack{grid-template-rows:364px 112px 188px}.page-title{font-size:56px}.subtitle{font-size:22px}.stats-grid{height:290px}.stat-number{font-size:32px}.map-bottom{height:88px}.map-area{bottom:106px}}
+@media (max-width:1200px){.app{width:1600px;height:900px}.page{padding:34px}.hero{height:145px}.content-grid{height:700px;grid-template-columns:510px 1fr}.left-stack{grid-template-rows:364px 1fr}.page-title{font-size:56px}.subtitle{font-size:22px}.stats-grid{height:290px}.stat-number{font-size:32px}.map-bottom{height:102px}.map-area{bottom:106px}}
 </style>
 </head>
 <body data-theme="light">
@@ -180,15 +184,6 @@ body[data-theme="dark"] .map-bottom{background:rgba(11,31,34,.70);border-color:v
           </div>
         </section>
 
-        <section class="panel legend-panel">
-          <div class="legend-title-row"><div class="legend-title" data-i18n="legendTitle">Показать на карте</div><div class="chev"></div></div>
-          <div class="legend-row">
-            <div class="legend-chip"><span class="legend-dot"></span><span data-i18n="legend1">Поставки</span></div>
-            <div class="legend-chip"><span class="legend-dot service"></span><span data-i18n="legend2">Сервис</span></div>
-            <div class="legend-chip"><span class="legend-dot key"></span><span data-i18n="legend3">Ключевые регионы</span></div>
-          </div>
-        </section>
-
         <section class="panel statement-panel">
           <div class="statement-icon"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20V7"/></svg></div>
           <div class="statement-title" data-i18n="statementTitle">От Санкт-Петербурга<br>до регионов России —</div>
@@ -203,43 +198,26 @@ body[data-theme="dark"] .map-bottom{background:rgba(11,31,34,.70);border-color:v
           <div class="map-shell">
             <img src="map.png" alt="Карта поставок" data-i18n-alt="mapAlt" />
             <div class="map-fade"></div>
-            <div class="rays-layer">
-              <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-                <path class="ray" d="M19.3 31.3 C18 38 16.5 43.2 16 49.5" />
-                <path class="ray" d="M19.3 31.3 C23.4 40 28.8 48 33.2 55" />
-                <path class="ray" d="M19.3 31.3 C30 41 40 56 48 69" />
-                <path class="ray" d="M19.3 31.3 C36 38 46.5 51 58.2 65" />
-                <path class="ray" d="M19.3 31.3 C40 35 63 52 86.8 82" />
-                <path class="ray" d="M19.3 31.3 C16 37 12 40 11 44" />
-                <path class="ray" d="M19.3 31.3 C15 44 13 52 12.8 59" />
-                <path class="ray" d="M19.3 31.3 C18 49 19 66 23.5 78" />
-                <path class="ray" d="M19.3 31.3 C22 45 25 58 28.5 70" />
-                <path class="ray" d="M19.3 31.3 C27 45 34 58 38.5 72" />
-                <path class="ray" d="M19.3 31.3 C28 33 37 36 44 40" />
-                <path class="ray" d="M19.3 31.3 C34 34 45 42 52 53" />
-                <path class="ray" d="M19.3 31.3 C38 27 51 32 62 39" />
-                <path class="ray" d="M19.3 31.3 C46 24 67 36 82.8 46" />
-              </svg>
-            </div>
+            <div class="rays-layer"><svg id="raysSvg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg></div>
             <div class="marker-group">
-              <div class="marker stp m-stp"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div><div class="marker-label"><span data-i18n="stp">Санкт-Петербург</span><small data-i18n="hq">НПК «АЗИМУТ»</small></div></div>
-              <div class="marker m-moscow label-visible"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div><div class="marker-label" data-i18n="moscow">Москва</div></div>
-              <div class="marker m-ekb label-visible"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div><div class="marker-label" data-i18n="ekb">Екатеринбург</div></div>
-              <div class="marker m-nsk label-visible"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div><div class="marker-label" data-i18n="nsk">Новосибирск</div></div>
-              <div class="marker m-kras label-visible"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div><div class="marker-label" data-i18n="kras">Красноярск</div></div>
-              <div class="marker m-vlad label-visible"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div><div class="marker-label" data-i18n="vlad">Владивосток</div></div>
-              <div class="marker m-a"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div></div>
-              <div class="marker m-b"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div></div>
-              <div class="marker m-c"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div></div>
-              <div class="marker m-d"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div></div>
-              <div class="marker m-e"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div></div>
-              <div class="marker m-f"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div></div>
-              <div class="marker m-g"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div></div>
-              <div class="marker m-h"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div></div>
-              <div class="marker m-i"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div></div>
-              <div class="marker m-j"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div></div>
-              <div class="marker m-k"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div></div>
-              <div class="marker m-l"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div></div>
+              <div class="marker stp m-stp" data-name="Санкт-Петербург"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div><div class="marker-label"><span data-i18n="stp">Санкт-Петербург</span><small data-i18n="hq">НПК «АЗИМУТ»</small></div></div>
+              <div class="marker m-moscow label-visible" data-name="Москва"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div><div class="marker-label" data-i18n="moscow">Москва</div></div>
+              <div class="marker m-ekb label-visible" data-name="Екатеринбург"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div><div class="marker-label" data-i18n="ekb">Екатеринбург</div></div>
+              <div class="marker m-nsk label-visible" data-name="Новосибирск"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div><div class="marker-label" data-i18n="nsk">Новосибирск</div></div>
+              <div class="marker m-kras label-visible" data-name="Красноярск"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div><div class="marker-label" data-i18n="kras">Красноярск</div></div>
+              <div class="marker m-vlad label-visible" data-name="Владивосток"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div><div class="marker-label" data-i18n="vlad">Владивосток</div></div>
+              <div class="marker m-a" data-name="Точка A"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div></div>
+              <div class="marker m-b" data-name="Точка B"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div></div>
+              <div class="marker m-c" data-name="Точка C"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div></div>
+              <div class="marker m-d" data-name="Точка D"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div></div>
+              <div class="marker m-e" data-name="Точка E"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div></div>
+              <div class="marker m-f" data-name="Точка F"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div></div>
+              <div class="marker m-g" data-name="Точка G"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div></div>
+              <div class="marker m-h" data-name="Точка H"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div></div>
+              <div class="marker m-i" data-name="Точка I"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div></div>
+              <div class="marker m-j" data-name="Точка J"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div></div>
+              <div class="marker m-k" data-name="Точка K"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div></div>
+              <div class="marker m-l" data-name="Точка L"><div class="marker-ring"></div><div class="marker-ring2"></div><div class="marker-dot"></div></div>
             </div>
           </div>
         </div>
@@ -269,6 +247,60 @@ function applyTheme(){document.body.dataset.theme=currentTheme;const b=document.
 function toggleTheme(){currentTheme=currentTheme==='dark'?'light':'dark';applyTheme()}
 function setLanguage(lang){if(!translations[lang])return;currentLanguage=lang;const t=translations[lang];document.documentElement.lang=lang;document.title=t.pageTitle+' — NPK';document.querySelectorAll('[data-i18n]').forEach(el=>{const key=el.dataset.i18n;if(t[key]!==undefined)el.innerHTML=t[key].replaceAll('\\n','<br>')});document.querySelectorAll('[data-i18n-alt]').forEach(el=>{const key=el.dataset.i18nAlt;if(t[key]!==undefined)el.alt=t[key]});document.querySelectorAll('.language-switch button').forEach(btn=>btn.classList.toggle('active',btn.dataset.lang===lang));localStorage.setItem('npkLanguage',lang);applyTheme()}
 
+
+/* stable map layout + dynamic rays */
+function updateMapOverlay(){
+  const shell=document.querySelector('.map-shell');
+  const img=shell?.querySelector('img');
+  const group=shell?.querySelector('.marker-group');
+  const rays=shell?.querySelector('.rays-layer');
+  if(!shell||!img||!group||!rays||!img.naturalWidth||!img.naturalHeight)return;
+  const sw=shell.clientWidth, sh=shell.clientHeight;
+  const ir=img.naturalWidth/img.naturalHeight, sr=sw/sh;
+  let w,h,x,y;
+  if(sr>ir){h=sh;w=h*ir;x=(sw-w)/2;y=0;}
+  else{w=sw;h=w/ir;x=0;y=(sh-h)/2;}
+  [group,rays].forEach(el=>{el.style.left=x+'px';el.style.top=y+'px';el.style.width=w+'px';el.style.height=h+'px';});
+}
+function markerPercent(marker){
+  const group=marker.parentElement;
+  const cs=getComputedStyle(marker);
+  const left=marker.style.left&&marker.style.left.endsWith('%')?parseFloat(marker.style.left):parseFloat(cs.left)/group.clientWidth*100;
+  const top=marker.style.top&&marker.style.top.endsWith('%')?parseFloat(marker.style.top):parseFloat(cs.top)/group.clientHeight*100;
+  return {left,top};
+}
+function buildRays(){
+  const svg=document.getElementById('raysSvg');
+  const source=document.querySelector('.marker.stp');
+  if(!svg||!source)return;
+  const start=markerPercent(source);
+  const markers=[...document.querySelectorAll('.marker-group .marker:not(.stp)')];
+  svg.innerHTML='';
+  markers.forEach((marker,idx)=>{
+    const end=markerPercent(marker);
+    const dx=end.left-start.left;
+    const dy=end.top-start.top;
+    const distance=Math.hypot(dx,dy);
+    const curve=Math.max(4,Math.min(14,distance*0.12));
+    const cx1=start.left + dx*0.28 + Math.sign(dx||1)*curve*0.25;
+    const cy1=start.top + dy*0.10 - curve;
+    const cx2=start.left + dx*0.72 + Math.sign(dx||1)*curve*0.18;
+    const cy2=start.top + dy*0.92 - curve*0.35;
+    const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('class','ray');
+    path.setAttribute('d',`M${start.left.toFixed(2)} ${start.top.toFixed(2)} C${cx1.toFixed(2)} ${cy1.toFixed(2)}, ${cx2.toFixed(2)} ${cy2.toFixed(2)}, ${end.left.toFixed(2)} ${end.top.toFixed(2)}`);
+    path.style.animationDelay=`${(idx*0.15).toFixed(2)}s`;
+    svg.appendChild(path);
+  });
+}
+function initFinalMap(){
+  const img=document.querySelector('.map-shell img');
+  if(!img) return;
+  const ready=()=>{updateMapOverlay(); buildRays();};
+  if(img.complete && img.naturalWidth) ready();
+  else img.addEventListener('load', ready, {once:true});
+  window.addEventListener('resize', ()=>requestAnimationFrame(()=>{updateMapOverlay(); buildRays();}));
+}
 /* animated counters */
 function animateCounters(){document.querySelectorAll('.counter').forEach(el=>{const target=Number(el.dataset.target||0);const duration=1250;const start=performance.now();const tick=now=>{const p=Math.min(1,(now-start)/duration);const eased=1-Math.pow(1-p,3);el.textContent=Math.round(target*eased);if(p<1)requestAnimationFrame(tick)};requestAnimationFrame(tick)})}
 
@@ -277,7 +309,7 @@ const c=document.getElementById('particles'),ctx=c.getContext('2d');let w,h,pts=
 function init(){w=c.width=innerWidth;h=c.height=innerHeight;pts=Array.from({length:70},()=>({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.32,vy:(Math.random()-.5)*.32,r:Math.random()*2+1}))}
 function draw(){ctx.clearRect(0,0,w,h);const dark=document.body.dataset.theme==='dark';ctx.fillStyle=dark?'rgba(80,214,222,.40)':'rgba(0,114,123,.34)';pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()});ctx.strokeStyle=dark?'rgba(80,214,222,.11)':'rgba(0,114,123,.10)';for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){let a=pts[i],b=pts[j],d=Math.hypot(a.x-b.x,a.y-b.y);if(d<160){ctx.globalAlpha=1-d/160;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.globalAlpha=1}}requestAnimationFrame(draw)}
 window.addEventListener('resize',init);
-scaleApp();applyTheme();setLanguage(currentLanguage);init();draw();requestAnimationFrame(animateCounters);
+scaleApp();applyTheme();setLanguage(currentLanguage);init();draw();initFinalMap();requestAnimationFrame(animateCounters);
 </script>
 </body>
 </html>
