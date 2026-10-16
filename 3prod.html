@@ -1,340 +1,146 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ЭНДОКАМ FULL HD — НПК «АЗИМУТ»</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --p:#057985;
-  --p2:#1fb0b8;
-  --p3:#87d9dc;
-  --ink:#0f5661;
-  --ink2:#3f6f75;
-  --soft:#eef8f8;
-  --line:rgba(5,121,133,.12);
-  --glass:rgba(255,255,255,.68);
-  --white:rgba(255,255,255,.88);
-  --shadow:0 22px 60px rgba(13,110,118,.12);
+  --p:#057985;--p2:#20aeb6;--ink:#154e56;--muted:#5d7e83;
+  --glass:rgba(255,255,255,.72);--line:rgba(5,121,133,.12);
+  --shadow:0 26px 72px rgba(5,121,133,.12);
 }
-html,body{width:100%;height:100%;overflow:hidden;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--ink);text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+html,body{width:100%;height:100%;overflow:hidden;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 body{
   background:
-    radial-gradient(circle at 16% 16%,rgba(97,210,214,.13),transparent 26%),
-    radial-gradient(circle at 88% 84%,rgba(10,142,154,.10),transparent 28%),
-    linear-gradient(135deg,#f7fdfd 0%,#edf7f7 48%,#f9fcfc 100%);
+    radial-gradient(circle at 15% 16%,rgba(85,204,211,.14),transparent 28%),
+    radial-gradient(circle at 86% 84%,rgba(5,121,133,.10),transparent 30%),
+    linear-gradient(135deg,#f8fdfd,#edf8f8 50%,#fbfdfd);
+}
+body.dark{
+  --ink:#e7f7f7;--muted:#a7c5c8;--glass:rgba(11,34,38,.72);--line:rgba(115,218,223,.15);--shadow:0 28px 78px rgba(0,0,0,.32);
+  background:
+    radial-gradient(circle at 15% 16%,rgba(39,177,185,.14),transparent 28%),
+    radial-gradient(circle at 86% 84%,rgba(5,121,133,.16),transparent 30%),
+    linear-gradient(135deg,#071316,#0b1f23 50%,#071214);
 }
 #graph{position:fixed;inset:0;z-index:0;pointer-events:none}
-.app{position:relative;z-index:1;width:1920px;height:1080px;transform-origin:top left;padding:44px 48px 24px}
+.app{position:relative;z-index:1;width:1920px;height:1080px;transform-origin:top left;padding:34px 54px 40px}
+.topbar{height:70px;display:flex;align-items:center;justify-content:space-between}
+.nav-left,.nav-right{display:flex;align-items:center;gap:12px}
+.icon-btn,.back-btn,.lang-switch{border:1px solid rgba(255,255,255,.88);background:rgba(255,255,255,.58);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 12px 30px rgba(5,121,133,.09)}
+body.dark .icon-btn,body.dark .back-btn,body.dark .lang-switch{background:rgba(10,32,36,.72);border-color:rgba(126,221,226,.14);box-shadow:0 14px 32px rgba(0,0,0,.24)}
+.icon-btn{width:58px;height:58px;border-radius:18px;display:flex;align-items:center;justify-content:center;color:var(--p);cursor:pointer;text-decoration:none}
+.icon-btn svg,.back-btn svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2.15;stroke-linecap:round;stroke-linejoin:round}
+.back-btn{height:58px;padding:0 22px;border-radius:18px;display:flex;align-items:center;gap:10px;color:var(--p);font-size:17px;font-weight:850;text-decoration:none}
+.logo-wrap{height:58px;display:flex;align-items:center;margin-left:10px}
+.logo-wrap img{max-height:56px;max-width:290px;object-fit:contain}
+.logo-fallback{display:none;font-weight:950;font-size:25px;color:var(--p);letter-spacing:.03em}
+.lang-switch{display:flex;padding:5px;border-radius:18px;gap:4px}
+.lang-switch button{width:64px;height:47px;border:0;border-radius:13px;background:transparent;color:var(--muted);font-weight:900;font-size:17px;cursor:pointer}
+.lang-switch button.active{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;box-shadow:0 8px 20px rgba(5,121,133,.18)}
+.theme-icon-moon{display:none} body.dark .theme-icon-sun{display:none} body.dark .theme-icon-moon{display:block}
 
-.topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:18px}
-.left-stack{display:flex;align-items:flex-start;gap:18px}
-.home-btn,.control-btn,.lang-switch,.back-btn{border:1px solid rgba(255,255,255,.9);background:rgba(255,255,255,.56);box-shadow:0 14px 36px rgba(5,121,133,.09);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
-.home-btn,.control-btn{width:58px;height:58px;border-radius:18px;display:flex;align-items:center;justify-content:center;color:var(--p);text-decoration:none;flex:none}
-.home-btn svg,.control-btn svg,.back-btn svg,.feature-icon svg,.action-btn svg,.thumb-arrow svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.back-wrap{position:absolute;left:48px;top:96px;z-index:3}
-.back-btn{height:48px;padding:0 20px;border-radius:999px;display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--p);font-size:17px;font-weight:850}
-.logo-wrap{height:58px;display:flex;align-items:center;padding:0 10px}
-.logo-wrap img{max-height:57px;max-width:320px;object-fit:contain}
-.logo-fallback{display:none;align-items:center;gap:12px;font-weight:900;color:var(--p);font-size:25px}
-.logo-mark{width:48px;height:48px;position:relative}
-.logo-mark:before,.logo-mark:after{content:"";position:absolute;bottom:3px;width:17px;height:43px;border-radius:5px 5px 2px 2px;background:linear-gradient(180deg,var(--p2),var(--p));transform-origin:bottom}
-.logo-mark:before{left:10px;transform:skew(-27deg)}
-.logo-mark:after{right:9px;transform:skew(27deg)}
-.logo-text small{display:block;font-size:8px;color:#7e9da0;font-weight:700;letter-spacing:.08em;margin-top:2px}
-.right-top{display:flex;align-items:flex-start;gap:24px}
-.controls{display:flex;align-items:center;gap:12px;margin-top:-4px}
-.lang-switch{display:flex;gap:4px;padding:5px;border-radius:18px}
-.lang-switch button{width:68px;height:48px;border:0;border-radius:13px;background:transparent;color:#6b8b90;font-size:18px;font-weight:900;cursor:pointer}
-.lang-switch button.active{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;box-shadow:0 8px 18px rgba(5,121,133,.16)}
-.brand-block{text-align:right;min-width:370px}
-.brand-caption{margin-top:8px;display:flex;align-items:center;justify-content:flex-end;gap:12px;color:#87a7aa;font-size:12px;line-height:1.3;text-transform:uppercase}
-.brand-caption:before{content:"";width:80px;height:1px;background:#96bcc0}
+.content{display:grid;grid-template-columns:.95fr 1.05fr;gap:54px;margin-top:52px;align-items:center}
+.viewer-card{height:788px;border-radius:40px;background:var(--glass);border:1px solid rgba(255,255,255,.9);box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);padding:28px;position:relative;overflow:hidden}
+body.dark .viewer-card{border-color:rgba(126,221,226,.12);box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.05)}
+.badge{display:inline-flex;align-items:center;gap:9px;padding:11px 18px;border-radius:999px;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;font-size:16px;font-weight:900;position:relative;z-index:2}
+.badge svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2}
+.main-visual{height:520px;position:relative;display:flex;align-items:center;justify-content:center}
+.main-visual:before{content:"";position:absolute;width:490px;height:490px;border-radius:50%;border:1px solid rgba(22,162,171,.15);box-shadow:0 0 0 34px rgba(22,162,171,.04),0 0 0 68px rgba(22,162,171,.025)}
+.main-visual img{position:relative;z-index:2;max-width:93%;max-height:445px;object-fit:contain;filter:drop-shadow(0 23px 27px rgba(13,76,82,.14));image-rendering:-webkit-optimize-contrast}
+.resolution-tag{position:absolute;right:10px;top:12px;z-index:3;padding:14px 18px 12px;border-radius:18px;border:2px solid rgba(31,176,184,.72);background:rgba(255,255,255,.55);color:#0a6f79;font-weight:950;line-height:1.03;text-align:center;box-shadow:0 12px 28px rgba(6,120,130,.08)}
+.resolution-tag strong{display:block;font-size:29px;letter-spacing:-.04em}.resolution-tag span{font-size:18px}
+body.dark .resolution-tag{background:rgba(10,32,36,.72);color:#7bdbe0;border-color:rgba(123,219,224,.45)}
+.gallery{display:grid;grid-template-columns:54px 1fr 54px;align-items:center;gap:14px;margin-top:2px}
+.thumb-arrow{width:50px;height:50px;border-radius:50%;border:1px solid rgba(255,255,255,.88);background:rgba(255,255,255,.64);color:var(--p);display:flex;align-items:center;justify-content:center;cursor:pointer}
+body.dark .thumb-arrow{background:rgba(10,32,36,.72);border-color:rgba(126,221,226,.14)}
+.thumb-arrow svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:2.2}
+.thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.thumb{height:84px;border:2px solid transparent;border-radius:18px;background:rgba(255,255,255,.54);display:flex;align-items:center;justify-content:center;padding:8px;cursor:pointer;overflow:hidden}
+body.dark .thumb{background:rgba(15,43,47,.65)}
+.thumb.active{border-color:var(--p2);box-shadow:0 10px 24px rgba(5,121,133,.11)}
+.thumb img{max-width:100%;max-height:100%;object-fit:contain}
+.gallery-dots{display:flex;justify-content:center;gap:10px;margin-top:15px}.gallery-dots span{width:9px;height:9px;border-radius:50%;background:rgba(5,121,133,.18)}.gallery-dots span.active{width:28px;border-radius:10px;background:var(--p)}
 
-
-.content{display:grid;grid-template-columns:.97fr 1fr;gap:40px;margin-top:92px;align-items:center}
-
-.viewer-card{position:relative;height:700px;border-radius:34px;background:rgba(255,255,255,.56);border:1px solid rgba(255,255,255,.88);box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);padding:22px 24px 16px;overflow:hidden}
-.viewer-card:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 72% 10%,rgba(255,255,255,.78),transparent 24%),linear-gradient(145deg,rgba(255,255,255,.28),transparent 42%);pointer-events:none}
-.badge{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:999px;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;font-size:16px;font-weight:900;box-shadow:0 12px 26px rgba(5,121,133,.16);position:relative;z-index:2}
-.badge svg{width:21px;height:21px;fill:none;stroke:#fff;stroke-width:2.1}
-.main-visual{position:relative;height:450px;display:flex;align-items:center;justify-content:center;margin-top:4px}
-.main-visual:before{content:"";position:absolute;width:440px;height:440px;border-radius:50%;border:1px solid rgba(12,155,166,.14);box-shadow:0 0 0 28px rgba(12,155,166,.04),0 0 0 56px rgba(12,155,166,.02)}
-.main-visual img{position:relative;z-index:2;max-width:92%;max-height:390px;object-fit:contain;filter:drop-shadow(0 20px 24px rgba(14,78,84,.13));image-rendering:-webkit-optimize-contrast;image-rendering:crisp-edges;transform:translateZ(0)}
-.resolution-tag{position:absolute;right:8px;top:8px;z-index:3;padding:10px 14px 9px;border-radius:16px;border:2px solid rgba(31,176,184,.75);background:rgba(255,255,255,.55);color:#0a6f79;font-weight:950;line-height:1.03;text-align:center;box-shadow:0 10px 24px rgba(6,120,130,.08)}
-.resolution-tag strong{display:block;font-size:24px;letter-spacing:-.04em}
-.resolution-tag span{font-size:15px}
-.gallery{display:grid;grid-template-columns:54px 1fr 54px;align-items:center;gap:12px;margin-top:6px;position:relative;z-index:3}
-.thumb-arrow{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.92);background:rgba(255,255,255,.68);box-shadow:0 10px 24px rgba(5,121,133,.08);color:var(--p);cursor:pointer}
-.thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.thumb{height:74px;border-radius:16px;border:2px solid transparent;background:rgba(255,255,255,.56);box-shadow:0 8px 18px rgba(6,120,130,.05);display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;padding:7px;transition:.2s}
-.thumb.active{border-color:#17b8c3;box-shadow:0 12px 26px rgba(6,120,130,.10)}
-.thumb img{max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 10px 16px rgba(14,78,84,.10));image-rendering:-webkit-optimize-contrast}
-.gallery-dots{display:flex;justify-content:center;gap:12px;margin-top:10px}
-.gallery-dots span{width:11px;height:11px;border-radius:50%;background:rgba(13,120,130,.15)}
-.gallery-dots span.active{background:var(--p);width:13px;height:13px}
-
-.info-side{position:relative;padding-top:0;align-self:center}
-.kicker{font-size:15px;font-weight:900;letter-spacing:.24em;text-transform:uppercase;color:#158592;margin-bottom:8px}
-.info-side h2{font-size:58px;line-height:.97;font-weight:950;color:#0b6a75;letter-spacing:-.04em;margin-bottom:12px}
-.lead{font-size:18px;line-height:1.36;color:#5b7d82;max-width:860px;margin-bottom:16px;font-weight:500}
-.features-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 18px;max-width:920px}
-.feature{min-height:84px;border-radius:22px;background:linear-gradient(135deg,rgba(255,255,255,.74),rgba(244,252,252,.88));border:1px solid rgba(255,255,255,.92);box-shadow:0 12px 28px rgba(5,121,133,.07);display:flex;align-items:center;gap:14px;padding:16px 18px}
-.feature-icon{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,rgba(102,218,224,.22),rgba(16,181,190,.10));display:flex;align-items:center;justify-content:center;color:var(--p);flex:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.7)}
-.feature-label{font-size:16.5px;color:#235b62;font-weight:780;line-height:1.22}
-.feature.span2{grid-column:1 / -1}
-.side-note-top,.side-note-bottom,.left-bottom-note{position:absolute;color:#8caeb1;font-size:12px;line-height:1.35;text-transform:uppercase;letter-spacing:.03em}
-.side-note-top{right:0;top:88px;width:112px;font-size:11px}
-.side-note-top:before{content:"";position:absolute;width:50px;height:1px;background:#8eb5b8;left:-68px;top:14px}
-.side-note-bottom{right:18px;bottom:112px;width:120px;font-size:11px}
-.side-note-bottom:after{content:"";position:absolute;width:50px;height:1px;background:#8eb5b8;right:-68px;bottom:14px}
-.left-bottom-note{left:80px;bottom:18px;font-size:11px}
-.left-bottom-note:before{content:"";position:absolute;width:66px;height:1px;background:#8eb5b8;left:-84px;top:14px}
-
-.actions{display:flex;gap:14px;margin-top:16px}
-.action-btn{height:58px;border-radius:999px;padding:0 24px;display:inline-flex;align-items:center;gap:12px;text-decoration:none;font-size:16px;font-weight:900;transition:.2s}
-.action-btn.primary{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;box-shadow:0 18px 34px rgba(5,121,133,.20)}
-.action-btn.secondary{background:rgba(255,255,255,.42);border:2px solid rgba(5,121,133,.36);color:var(--p)}
-.action-btn svg{width:24px;height:24px}
-.action-btn:hover,.home-btn:hover,.control-btn:hover,.thumb-arrow:hover,.back-btn:hover{transform:translateY(-2px)}
-
-@media (max-width:1100px){
-  .app{padding:18px 20px 20px}
-}
-
-/* ===== product page final UI ===== */
-.app{padding:34px 54px 30px}
-.topbar{height:62px;align-items:center}
-.left-stack{display:flex;align-items:center;gap:12px}
-.back-wrap{display:none!important}
-.home-btn,.control-btn,.back-btn,.lang-switch{
-  border:1px solid rgba(255,255,255,.92);
-  background:rgba(255,255,255,.64);
-  box-shadow:0 12px 34px rgba(5,121,133,.09),inset 0 1px 0 rgba(255,255,255,.86);
-  -webkit-backdrop-filter:blur(18px) saturate(125%);backdrop-filter:blur(18px) saturate(125%);
-}
-.home-btn,.control-btn{width:58px;height:58px;border-radius:18px;transition:.25s ease}
-.back-btn{height:58px;padding:0 22px;border-radius:18px;font-size:17px;transition:.25s ease}
-.back-btn svg{width:23px;height:23px}
-.controls{margin-top:0}.brand-block{min-width:330px}.logo-wrap{height:58px}
-.theme-icon-moon{display:none}
-.content{margin-top:54px;grid-template-columns:.95fr 1.05fr;gap:52px;align-items:center}
-.viewer-card{height:770px;border-radius:38px;background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.94);box-shadow:0 30px 80px rgba(13,110,118,.11),inset 0 1px 0 rgba(255,255,255,.94);padding:26px 28px 20px}
-.main-visual{height:500px}.main-visual:before{width:470px;height:470px}.main-visual img{max-height:430px}
-.gallery{margin-top:10px}.thumb{height:82px;border-radius:18px}
-.info-side{align-self:center;padding:0 4px;display:flex;flex-direction:column;justify-content:center;min-height:770px}
-.kicker{font-size:16px;letter-spacing:.23em;margin-bottom:10px}
-.info-side h2{font-size:62px;line-height:.97;margin-bottom:18px}
-.lead{font-size:20px;line-height:1.42;margin-bottom:26px;max-width:900px;color:#52777d}
+.info-side{min-height:788px;display:flex;flex-direction:column;justify-content:center;padding:0 4px}
+.kicker{font-size:16px;letter-spacing:.22em;text-transform:uppercase;color:var(--p);font-weight:900;margin-bottom:10px}
+.info-side h1{font-size:59px;line-height:.98;color:#0b6f79;font-weight:950;letter-spacing:-.035em;margin-bottom:18px}
+body.dark .info-side h1{color:#76d9de}
+.lead{font-size:20px;line-height:1.42;color:var(--muted);max-width:900px;margin-bottom:28px}
 .features-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px 22px;max-width:960px}
-.feature{
-  min-height:118px;border-radius:28px;padding:22px 24px;gap:20px;
-  background:linear-gradient(145deg,rgba(255,255,255,.88),rgba(239,250,250,.78));
-  border:1px solid rgba(255,255,255,.98);
-  box-shadow:0 16px 34px rgba(5,121,133,.075),inset 0 1px 0 rgba(255,255,255,.96);
-  position:relative;overflow:hidden;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease;
-}
-.feature:after{content:"";position:absolute;inset:auto -28px -48px auto;width:118px;height:118px;border-radius:50%;background:radial-gradient(circle,rgba(31,176,184,.11),transparent 68%);pointer-events:none}
-.feature:hover{transform:translateY(-3px);border-color:rgba(31,176,184,.28);box-shadow:0 22px 42px rgba(5,121,133,.11),inset 0 1px 0 rgba(255,255,255,.98)}
-.feature-icon{width:78px;height:78px;border-radius:22px;background:linear-gradient(145deg,rgba(215,247,248,.98),rgba(236,252,252,.80));box-shadow:0 12px 28px rgba(5,121,133,.09),inset 0 1px 0 rgba(255,255,255,.94);flex:none}
-.feature-icon svg{width:42px;height:42px;stroke-width:1.9}
+.feature{min-height:118px;border-radius:28px;padding:22px 24px;gap:20px;background:linear-gradient(145deg,rgba(255,255,255,.90),rgba(239,250,250,.80));border:1px solid rgba(255,255,255,.98);box-shadow:0 16px 34px rgba(5,121,133,.075),inset 0 1px 0 rgba(255,255,255,.96);display:flex;align-items:center;position:relative;overflow:hidden;transition:.25s ease}
+body.dark .feature{background:linear-gradient(145deg,rgba(18,49,54,.92),rgba(12,37,41,.82));border-color:rgba(125,220,225,.12);box-shadow:0 16px 34px rgba(0,0,0,.20),inset 0 1px 0 rgba(255,255,255,.04)}
+.feature:hover{transform:translateY(-3px);box-shadow:0 22px 42px rgba(5,121,133,.11)}
+.feature-icon{width:78px;height:78px;border-radius:22px;flex:none;display:flex;align-items:center;justify-content:center;color:var(--p);background:linear-gradient(145deg,rgba(215,247,248,.98),rgba(236,252,252,.82));box-shadow:0 12px 28px rgba(5,121,133,.09),inset 0 1px 0 rgba(255,255,255,.94)}
+body.dark .feature-icon{background:linear-gradient(145deg,rgba(26,83,88,.82),rgba(20,63,68,.72));color:#78d8dd;box-shadow:0 12px 28px rgba(0,0,0,.16)}
+.feature-icon svg{width:43px;height:43px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}.feature-icon svg.solid-icon{fill:currentColor !important;stroke:currentColor !important;stroke-width:.75 !important;stroke-linejoin:round;stroke-linecap:round;width:43px;height:43px}
 .feature-label{font-size:20px;line-height:1.24;font-weight:820;color:#205d65}
-.feature.span2{grid-column:1 / -1;min-height:108px}
-.actions{margin-top:28px}.action-btn{height:62px;padding:0 28px;font-size:17px;background:rgba(255,255,255,.55)}
-.action-btn.secondary{border:1px solid rgba(5,121,133,.28);box-shadow:0 12px 28px rgba(5,121,133,.07)}
-.side-note-top,.side-note-bottom,.left-bottom-note{display:none!important}
-
-/* dark theme */
-body.dark{
-  --ink:#e8f7f7;--ink2:#b6d1d3;--soft:#0b1b1e;--line:rgba(119,218,223,.14);--glass:rgba(10,31,35,.62);--white:rgba(13,39,43,.88);--shadow:0 26px 70px rgba(0,0,0,.34);
-  background:radial-gradient(circle at 16% 16%,rgba(43,174,183,.16),transparent 27%),radial-gradient(circle at 88% 84%,rgba(5,121,133,.15),transparent 30%),linear-gradient(135deg,#071315 0%,#0a1c20 48%,#071214 100%);
-}
-body.dark .home-btn,body.dark .control-btn,body.dark .back-btn,body.dark .lang-switch,body.dark .thumb-arrow,body.dark .action-btn.secondary{background:rgba(12,35,39,.72);border-color:rgba(126,221,226,.15);box-shadow:0 14px 36px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.05);color:#77d8dd}
-body.dark .theme-icon-sun{display:none}body.dark .theme-icon-moon{display:block}
-body.dark .viewer-card{background:rgba(10,31,35,.64);border-color:rgba(126,221,226,.13);box-shadow:0 30px 80px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.05)}
-body.dark .viewer-card:before{background:radial-gradient(circle at 72% 10%,rgba(63,183,191,.10),transparent 26%),linear-gradient(145deg,rgba(255,255,255,.025),transparent 42%)}
-body.dark .main-visual:before{border-color:rgba(101,211,217,.16);box-shadow:0 0 0 28px rgba(34,169,176,.035),0 0 0 56px rgba(34,169,176,.018)}
-body.dark .thumb{background:rgba(16,45,50,.58);box-shadow:0 8px 20px rgba(0,0,0,.20)}
-body.dark .thumb.active{border-color:#42cbd2}
-body.dark .kicker{color:#6ed9de}body.dark .info-side h2{color:#83e2e6}body.dark .lead{color:#a8c7ca}
-body.dark .feature{background:linear-gradient(145deg,rgba(17,49,54,.88),rgba(10,35,39,.82));border-color:rgba(126,221,226,.13);box-shadow:0 16px 34px rgba(0,0,0,.23),inset 0 1px 0 rgba(255,255,255,.04)}
-body.dark .feature:hover{border-color:rgba(104,218,224,.30);box-shadow:0 22px 42px rgba(0,0,0,.30)}
-body.dark .feature-icon{background:linear-gradient(145deg,rgba(33,95,101,.72),rgba(19,65,70,.62));color:#75dce1;box-shadow:0 10px 24px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.04)}
-body.dark .feature-label{color:#d1ebec}
-body.dark .badge{box-shadow:0 14px 30px rgba(0,0,0,.22)}
-body.dark .resolution-tag{background:rgba(11,35,39,.72);color:#85e3e7;border-color:rgba(85,210,217,.55)}
-body.dark .lang-switch button{color:#9db9bc}body.dark .lang-switch button.active{color:#fff}
-body.dark .logo-wrap img{filter:brightness(1.15) contrast(.95)}
-
+body.dark .feature-label{color:#d3eeee}
+.feature.span2{grid-column:1/-1;min-height:108px}
+.actions{margin-top:28px}.action-btn{height:62px;padding:0 28px;border-radius:999px;display:inline-flex;align-items:center;gap:12px;text-decoration:none;border:1px solid rgba(5,121,133,.25);background:rgba(255,255,255,.56);color:var(--p);font-size:17px;font-weight:900;box-shadow:0 12px 28px rgba(5,121,133,.07)}
+body.dark .action-btn{background:rgba(10,32,36,.72);border-color:rgba(126,221,226,.14);color:#78d8dd}.action-btn svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:2.1}
+@media(max-width:1100px){.app{padding-left:32px;padding-right:32px}}
 </style>
 </head>
 <body>
 <canvas id="graph"></canvas>
 <div class="app" id="app">
-  <div class="topbar">
-    <div class="left-stack">
-      <a class="home-btn" href="02_menu.html" data-i18n-aria="home" aria-label="На главную">
-        <svg viewBox="0 0 24 24"><path d="M3 11.2 12 4l9 7.2"/><path d="M5.5 10.3V20h13v-9.7"/><path d="M9.5 20v-5.7h5V20"/></svg>
-      </a>
-      <a class="back-btn" href="03_product.html" data-i18n-aria="back" aria-label="Назад">
-        <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 5l-7 7 7 7"/></svg>
-        <span data-i18n="back">Назад</span>
-      </a>
+  <header class="topbar">
+    <div class="nav-left">
+      <a class="icon-btn" href="02_menu.html" aria-label="Домой" data-i18n-title="home"><svg viewBox="0 0 24 24"><path d="M3 11.2 12 4l9 7.2"/><path d="M5.5 10.3V20h13v-9.7"/><path d="M9.5 20v-5.7h5V20"/></svg></a>
+      <a class="back-btn" href="03_product.html"><svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 5l-7 7 7 7"/></svg><span data-i18n="back">Назад</span></a>
+      <div class="logo-wrap"><img src="cropped-LogoAz-2.png" alt="НПК АЗИМУТ" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><div class="logo-fallback">НПК АЗИМУТ</div></div>
     </div>
-    <div class="right-top">
-      <div class="controls">
-        <button class="control-btn" id="themeToggle" type="button" aria-label="Включить тёмную тему" title="Включить тёмную тему">
-          <svg class="theme-icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></svg>
-          <svg class="theme-icon-moon" viewBox="0 0 24 24"><path d="M20.5 15.2A8.7 8.7 0 0 1 8.8 3.5 8.8 8.8 0 1 0 20.5 15.2Z"/></svg>
-        </button>
-        <div class="lang-switch" role="group" aria-label="Language"><button class="active" type="button" data-lang="ru" aria-pressed="true">RU</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
-      </div>
-      <div class="brand-block">
-        <div class="logo-wrap">
-          <img src="cropped-LogoAz-2.png" alt="АЗИМУТ" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-          <div class="logo-fallback"><span class="logo-mark"></span><span class="logo-text">АЗИМУТ<small>научно-производственная компания</small></span></div>
-        </div>
-        
-      </div>
+    <div class="nav-right">
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Тема"><svg class="theme-icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></svg><svg class="theme-icon-moon" viewBox="0 0 24 24"><path d="M20.5 15.2A8.7 8.7 0 0 1 8.8 3.5 8.8 8.8 0 1 0 20.5 15.2Z"/></svg></button>
+      <div class="lang-switch"><button class="active" data-lang="ru">RU</button><button data-lang="en">EN</button></div>
     </div>
-  </div>
-<div class="content">
+  </header>
+
+  <main class="content">
     <section class="viewer-card">
-      <div class="badge"><svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.9-4.2 4.1 1 5.8L12 17l-5.3 2.7 1-5.8L3.5 9.8l5.9-.9z"/></svg><span data-i18n="badge">Хит продаж</span></div>
+      <div class="badge"><svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.9-4.2 4.1 1 5.8L12 17l-5.3 2.7 1-5.8L3.5 9.8l5.9-.9z"/></svg><span data-i18n="badge">Медицинская камера</span></div>
       <div class="main-visual">
         <div class="resolution-tag"><strong>FULL HD</strong><span>1920×1080</span></div>
         <img id="mainImage" src="3prod.png" alt="ЭНДОКАМ FULL HD" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 900 520\'><rect width=\'100%\' height=\'100%\' rx=\'40\' fill=\'%23eef8f8\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'36\' font-family=\'Arial\' fill=\'%23057985\'>3prod.png</text></svg>'">
       </div>
-      <div class="gallery">
-        <button class="thumb-arrow" type="button" id="prevThumb" data-i18n-aria="previous" aria-label="Предыдущее изображение">
-          <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
-        </button>
-        <div class="thumbs" id="thumbs"></div>
-        <button class="thumb-arrow" type="button" id="nextThumb" data-i18n-aria="next" aria-label="Следующее изображение">
-          <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
-        </button>
-      </div>
+      <div class="gallery"><button class="thumb-arrow" id="prevThumb" type="button" aria-label="Предыдущее изображение"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><div class="thumbs" id="thumbs"></div><button class="thumb-arrow" id="nextThumb" type="button" aria-label="Следующее изображение"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button></div>
       <div class="gallery-dots" id="galleryDots"></div>
     </section>
 
     <section class="info-side">
       <div class="kicker" data-i18n="kicker">Медицинская эндовидеокамера</div>
-      <h2 data-i18n="title">ЭНДОКАМ FULL HD</h2>
+      <h1 data-i18n="title">ЭНДОКАМ FULL HD</h1>
       <p class="lead" data-i18n="lead">Медицинская камера серии «ЭНДОКАМ FULL HD» предназначена для вывода изображения операционного поля на экран монитора.</p>
 
       <div class="features-grid">
         <div class="feature"><div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M3 12h4l2-5 4 10 2-5h6"/></svg></div><div class="feature-label" data-i18n="f1">Отсутствие помех</div></div>
         <div class="feature"><div class="feature-icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 21h8"/></svg></div><div class="feature-label" data-i18n="f2">FULL HD цветопередача</div></div>
-        <div class="feature"><div class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09A1.65 1.65 0 0 0 15 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.47.28.76.78.76 1.33"/></svg></div><div class="feature-label" data-i18n="f3">Простота эксплуатации</div></div>
-        <div class="feature"><div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 2v2M7 12H5m14 0h-2M6.34 6.34l1.41 1.41m8.5 8.5 1.41 1.41M12 22v-2m-4.24-1.76 1.41-1.41M18.95 5.05l-1.41 1.41"/><path d="M12 7a5 5 0 0 0 0 10c1.5 0 2.76-.66 3.67-1.71"/></svg></div><div class="feature-label" data-i18n="f4">Малое энергопотребление</div></div>
-        <div class="feature"><div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M7 11V7a5 5 0 0 1 10 0v4"/><rect x="5" y="11" width="14" height="10" rx="2"/></svg></div><div class="feature-label" data-i18n="f5">Небольшие габариты и вес</div></div>
-        <div class="feature"><div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 3v11"/><path d="M8 8l4-5 4 5"/><rect x="5" y="14" width="14" height="7" rx="2"/></svg></div><div class="feature-label" data-i18n="f6">Запись на USB</div></div>
+        <div class="feature"><div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M9.1 20.2 8.6 18.8l-1.6-.4-.8-1.4.8-1.3-.5-1.3-1.3-.7v-1.7l1.3-.7.5-1.3-.8-1.3.8-1.4 1.6-.4.5-1.4h1.7l.5 1.4 1.6.4.8 1.4-.8 1.3.5 1.3 1.3.7v1.7l-1.3.7-.5 1.3.8 1.3-.8 1.4-1.6.4-.5 1.4z"/><circle cx="10" cy="13" r="2.2"/><path d="M16.4 11.4l-.36-.98-1.06-.28-.54-.92.53-.88-.32-.84-.87-.49V6l.87-.49.32-.84-.53-.88.54-.92 1.06-.28.36-.98h1.15l.36.98 1.06.28.54.92-.53.88.32.84.87.49v1.2l-.87.49-.32.84.53.88-.54.92-1.06.28-.36.98z"/><circle cx="17" cy="6.7" r="1.35"/></svg></div><div class="feature-label" data-i18n="f3">Простота эксплуатации</div></div>
+        <div class="feature"><div class="feature-icon"><svg class="solid-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50"><path d="M18.59 13c-1.66 -4.29 0.34 -8.55 4.82 -9.8c4.62 -1.1 8.63 2.63 8.67 7.16l-0.67 2.64c2.84 0.06 5.68 -0.15 8.51 0.15c2.18 8.85 4.11 17.89 6.18 26.78c0.35 1.71 0.89 3.09 0.83 4.86c-1.36 0.26 -2.54 0.22 -3.92 0.21l-23.01 0c-5.52 -0.12 -11.49 0.26 -16.93 -0.2c-0.03 -1.21 0.15 -2.07 0.45 -3.24c2.21 -9.43 4.25 -19.02 6.55 -28.41c2.84 -0.3 5.67 -0.09 8.52 -0.15zM29.01 13c1.63 -2.78 1.35 -5.02 -1.19 -7.06c-1.92 -1.34 -3.72 -1.35 -5.64 0c-2.54 2.02 -2.85 4.3 -1.17 7.06l8 0zM11.49 15.14c-0.2 1.81 -0.72 3.52 -1.09 5.3c-1.75 7.44 -3.34 15.1 -5.21 22.49c9.2 0.16 18.59 0.02 27.81 0.07c3.93 -0.04 7.89 0.09 11.81 -0.07c-1.87 -7.39 -3.46 -15.05 -5.21 -22.49c-0.37 -1.78 -0.89 -3.49 -1.1 -5.3c-3.43 -0.32 -7.04 -0.05 -10.5 -0.14c-5.38 0.09 -11.18 -0.19 -16.51 0.14z"/></svg></div><div class="feature-label" data-i18n="f4">Небольшие габариты и вес</div></div>
+        <div class="feature"><div class="feature-icon"><svg class="solid-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50"><path d="M20.16 2.14c3.16 -0.22 6.51 -0.23 9.67 0l0.22 2.89c9.98 -0.84 7.69 5.66 7.95 12.86l0.01 23.18c-0.03 8.09 -7.57 5.5 -13.01 5.93c-5.44 -0.43 -12.98 2.16 -13.01 -5.93l0.01 -23.18c0.27 -7.21 -2.04 -13.7 7.95 -12.86l0.21 -2.89zM22.03 4l-0.21 2.87c-2.19 0.3 -4.2 -0.18 -6.36 0.52l-1.06 1.03c-0.88 4.15 -0.18 9.25 -0.4 13.55l0 19.03c-0.21 4.9 3.48 3.89 6.95 4.01l8.1 0c3.47 -0.12 7.14 0.89 6.95 -4.01c0.02 -6.3 -0.01 -12.71 0 -19.03c-0.22 -4.29 0.49 -9.4 -0.41 -13.54l-1.05 -1.04c-2.16 -0.71 -4.17 -0.22 -6.36 -0.52l-0.21 -2.87l-5.94 0z"/><path d="M16.15 21.15c4.54 -0.34 9.28 -0.06 13.85 -0.15c1.33 -0.01 2.53 -0.04 3.84 0.16c0.36 5.48 0.06 11.31 0.16 16.84c-0.02 1.65 0.09 3.2 -0.16 4.84c-1.31 0.21 -2.51 0.17 -3.84 0.16c-4.56 -0.09 -9.31 0.19 -13.85 -0.15c-0.24 -1.64 -0.13 -3.2 -0.15 -4.85c0.1 -5.54 -0.19 -11.35 0.15 -16.85z"/></svg></div><div class="feature-label" data-i18n="f5">Малое энергопотребление</div></div>
+        <div class="feature"><div class="feature-icon"><svg class="solid-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50"><path d="M36.38 2.09l0.63 0.03c1.85 0.63 5.88 5.65 7.71 7.18c1.06 1.04 2.03 2.12 3.18 3.07l-0.03 0.64c-0.61 1.74 -6.59 6.95 -8.27 8.49c2.11 3.77 1.88 4 -1.11 6.99l-15.52 15.52c-11.96 11.52 -28.75 -4.81 -16.98 -16.98c5.14 -5.14 10.4 -10.34 15.52 -15.52c3 -3 3.21 -3.25 6.98 -1.11c2.41 -2.97 5.42 -5.39 7.89 -8.31zM37 4.47c-2.49 2.47 -5.01 4.99 -7.44 7.53c2.76 2.84 5.61 5.67 8.44 8.44c2.54 -2.42 5.1 -4.92 7.53 -7.45c-2.79 -2.86 -5.65 -5.75 -8.53 -8.52zM25.69 10.94c-1.31 0.35 -1.33 0.46 -2.25 1.45c-5.31 5.37 -10.73 10.75 -16.06 16.08c-9.87 10.11 4.01 24 14.14 14.16c5.33 -5.33 10.72 -10.76 16.09 -16.07c0.98 -0.92 1.09 -0.95 1.45 -2.25c-4.45 -4.36 -9.01 -8.92 -13.37 -13.37z"/><path d="M11.05 35.09c0.78 -4.52 7.17 -3.81 6.9 0.82c-0.79 4.51 -7.16 3.82 -6.9 -0.82zM13.3 34.31c-0.18 0.8 -0.69 2.71 0.84 2.59c0.91 -0.05 1.72 0.26 1.75 -1.04c0.19 -2.32 -0.94 -1.85 -2.59 -1.55z"/><path d="M35.39 11.66c-0.61 -0.81 -1.84 -1.82 -0.54 -2.65c1.65 -1.73 2.94 0.07 2.76 1.63l-0.99 0.85l-1.23 0.17z"/><path d="M38.36 13.34l1.04 -0.83l1.2 -0.17c0.62 0.82 1.87 1.82 0.53 2.66c-1.48 1.74 -2.92 -0.19 -2.77 -1.66z"/></svg></div><div class="feature-label" data-i18n="f6">Запись на USB</div></div>
         <div class="feature span2"><div class="feature-icon"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg></div><div class="feature-label" data-i18n="f7">4 программируемые кнопки</div></div>
       </div>
 
-      <div class="actions">
-<a class="action-btn secondary" href="03_product.html">
-          <svg viewBox="0 0 24 24"><path d="M3 7h5l2 2h11v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-          <span data-i18n="catalog">К каталогу</span>
-        </a>
-      </div>
-
-      
-      
-      
+      <div class="actions"><a class="action-btn" href="03_product.html"><svg viewBox="0 0 24 24"><path d="M3 7h5l2 2h11v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span data-i18n="catalog">К каталогу</span></a></div>
     </section>
-  </div>
-
-  
+  </main>
 </div>
 
 <script>
-const app=document.getElementById('app');
-function scale(){
-  const s=Math.min(innerWidth/1920, innerHeight/1080);
-  app.style.transform=`scale(${s})`;
-  app.style.marginLeft=((innerWidth-1920*s)/2)+'px';
-  app.style.marginTop=((innerHeight-1080*s)/2)+'px';
-}
-addEventListener('resize',scale);scale();
-
-// decorative background
-const c=document.getElementById('graph'),x=c.getContext('2d');
-let w,h,p=[];
-function init(){w=c.width=innerWidth;h=c.height=innerHeight;p=Array.from({length:54},()=>({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.2,vy:(Math.random()-.5)*.2,r:Math.random()*1.6+.8}))}
-function draw(){
-  x.clearRect(0,0,w,h);
-  x.fillStyle='rgba(5,121,133,.23)';
-  p.forEach(a=>{a.x+=a.vx;a.y+=a.vy;if(a.x<0||a.x>w)a.vx*=-1;if(a.y<0||a.y>h)a.vy*=-1;x.beginPath();x.arc(a.x,a.y,a.r,0,Math.PI*2);x.fill()});
-  x.strokeStyle='rgba(5,121,133,.08)';
-  for(let i=0;i<p.length;i++)for(let j=i+1;j<p.length;j++){
-    const d=Math.hypot(p[i].x-p[j].x,p[i].y-p[j].y);
-    if(d<165){x.globalAlpha=1-d/165;x.beginPath();x.moveTo(p[i].x,p[i].y);x.lineTo(p[j].x,p[j].y);x.stroke()}
-  }
-  x.globalAlpha=1;requestAnimationFrame(draw);
-}
-addEventListener('resize',init);init();draw();
-
-// gallery
-const images=[
-  '3prod.png',
-  '3prod_2.png',
-  '3prod_3.png',
-  '3prod_4.png'
-];
-const thumbs=document.getElementById('thumbs');
-const dots=document.getElementById('galleryDots');
-const mainImage=document.getElementById('mainImage');
-let current=0;
-function makeThumb(src, i){
-  const btn=document.createElement('button');
-  btn.className='thumb'+(i===0?' active':'');
-  btn.type='button';
-  const img=document.createElement('img');
-  img.src=src;
-  img.alt='Миниатюра '+(i+1);
-  img.onerror=()=>{img.src='3prod.png'};
-  btn.appendChild(img);
-  btn.onclick=()=>setImage(i);
-  thumbs.appendChild(btn);
-  const dot=document.createElement('span');
-  if(i===0)dot.className='active';
-  dots.appendChild(dot);
-}
-images.forEach(makeThumb);
-function setImage(i){
-  current=(i+images.length)%images.length;
-  mainImage.src=images[current];
-  document.querySelectorAll('.thumb').forEach((t,idx)=>t.classList.toggle('active',idx===current));
-  document.querySelectorAll('.gallery-dots span').forEach((d,idx)=>d.classList.toggle('active',idx===current));
-}
-mainImage.onerror=()=>{mainImage.src='3prod.png'};
-document.getElementById('prevThumb').onclick=()=>setImage(current-1);
-document.getElementById('nextThumb').onclick=()=>setImage(current+1);
-
-
-// language + theme
 const storage={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
-const translations={
-  ru:{back:'Назад',catalog:'К каталогу',home:'На главную',themeDark:'Включить тёмную тему',themeLight:'Включить светлую тему',previous:'Предыдущее изображение',next:'Следующее изображение',badge:"Хит продаж",kicker:"Медицинская эндовидеокамера",title:"ЭНДОКАМ FULL HD",lead:"Медицинская камера серии «ЭНДОКАМ FULL HD» предназначена для вывода изображения операционного поля на экран монитора.",f1:"Отсутствие помех",f2:"FULL HD цветопередача",f3:"Простота эксплуатации",f4:"Малое энергопотребление",f5:"Небольшие габариты и вес",f6:"Запись на USB",f7:"4 программируемые кнопки"},
-  en:{back:'Back',catalog:'Catalog',home:'Home',themeDark:'Enable dark theme',themeLight:'Enable light theme',previous:'Previous image',next:'Next image',badge:"Best seller",kicker:"Medical endoscopic video camera",title:"ENDOCAM FULL HD",lead:"The ENDOCAM FULL HD medical camera is designed to display the surgical field on a monitor.",f1:"Interference-free operation",f2:"FULL HD color reproduction",f3:"Easy to operate",f4:"Low power consumption",f5:"Compact size and low weight",f6:"USB recording",f7:"4 programmable buttons"}
-};
-let currentLang=storage.get('npk-language')||'ru';if(!translations[currentLang])currentLang='ru';
-function applyLanguage(lang){
- currentLang=translations[lang]?lang:'ru'; const t=translations[currentLang]; document.documentElement.lang=currentLang;
- document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.dataset.i18n;if(t[k]!==undefined)el.textContent=t[k]});
- document.querySelectorAll('[data-i18n-aria]').forEach(el=>{const k=el.dataset.i18nAria;if(t[k]!==undefined)el.setAttribute('aria-label',t[k])});
- document.querySelectorAll('.lang-switch button').forEach(b=>{const a=b.dataset.lang===currentLang;b.classList.toggle('active',a);b.setAttribute('aria-pressed',String(a))});
- document.title=t.title+' — НПК «АЗИМУТ»'; storage.set('npk-language',currentLang); updateThemeLabel();
-}
-const themeToggle=document.getElementById('themeToggle');
-function updateThemeLabel(){const dark=document.body.classList.contains('dark');const t=translations[currentLang];themeToggle.setAttribute('aria-label',dark?t.themeLight:t.themeDark);themeToggle.title=dark?t.themeLight:t.themeDark}
-function applyTheme(theme){const dark=theme==='dark';document.body.classList.toggle('dark',dark);document.documentElement.style.colorScheme=dark?'dark':'light';storage.set('npk-theme',dark?'dark':'light');updateThemeLabel()}
-themeToggle.addEventListener('click',()=>applyTheme(document.body.classList.contains('dark')?'light':'dark'));
-document.querySelectorAll('.lang-switch button').forEach(btn=>btn.addEventListener('click',()=>applyLanguage(btn.dataset.lang)));
-applyTheme(storage.get('npk-theme')==='dark'?'dark':'light');applyLanguage(currentLang);
-
+const tr={ru:{pageTitle:'ЭНДОКАМ FULL HD — НПК «АЗИМУТ»',home:'Домой',back:'Назад',catalog:'К каталогу',badge:'Медицинская камера',kicker:'Медицинская эндовидеокамера',title:'ЭНДОКАМ FULL HD',lead:'Медицинская камера серии «ЭНДОКАМ FULL HD» предназначена для вывода изображения операционного поля на экран монитора.',f1:'Отсутствие помех',f2:'FULL HD цветопередача',f3:'Простота эксплуатации',f4:'Небольшие габариты и вес',f5:'Малое энергопотребление',f6:'Запись на USB',f7:'4 программируемые кнопки'},en:{pageTitle:'ENDOKAM FULL HD — NPK AZIMUT',home:'Home',back:'Back',catalog:'Back to catalog',badge:'Medical camera',kicker:'Medical endovideo camera',title:'ENDOKAM FULL HD',lead:'The ENDOKAM FULL HD medical camera is designed to display the operative field image on a monitor.',f1:'Interference-free operation',f2:'FULL HD color reproduction',f3:'Ease of use',f4:'Compact size and light weight',f5:'Low power consumption',f6:'USB recording',f7:'4 programmable buttons'}};
+let lang=storage.get('npk-language')||'ru'; if(!tr[lang])lang='ru';
+function applyLang(l){lang=tr[l]?l:'ru'; const t=tr[lang]; document.documentElement.lang=lang; document.title=t.pageTitle; document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.dataset.i18n;if(t[k])el.textContent=t[k]}); document.querySelectorAll('[data-i18n-title]').forEach(el=>{const k=el.dataset.i18nTitle;if(t[k])el.setAttribute('aria-label',t[k])}); document.querySelectorAll('.lang-switch button').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang)); storage.set('npk-language',lang)}
+document.querySelectorAll('.lang-switch button').forEach(b=>b.addEventListener('click',()=>applyLang(b.dataset.lang)));
+const themeToggle=document.getElementById('themeToggle'); function applyTheme(theme){const dark=theme==='dark'; document.body.classList.toggle('dark',dark); document.documentElement.style.colorScheme=dark?'dark':'light'; storage.set('npk-theme',dark?'dark':'light')}
+themeToggle.addEventListener('click',()=>applyTheme(document.body.classList.contains('dark')?'light':'dark')); applyTheme(storage.get('npk-theme')==='dark'?'dark':'light'); applyLang(lang);
+const app=document.getElementById('app'); function scale(){const s=Math.min(innerWidth/1920,innerHeight/1080); app.style.transform=`scale(${s})`; app.style.marginLeft=((innerWidth-1920*s)/2)+'px'; app.style.marginTop=((innerHeight-1080*s)/2)+'px'} addEventListener('resize',scale); scale();
+const images=['3prod.png','3prod_2.png','3prod_3.png','3prod_4.png']; const mainImage=document.getElementById('mainImage'), thumbs=document.getElementById('thumbs'), dots=document.getElementById('galleryDots'); let current=0; images.forEach((src,i)=>{const b=document.createElement('button'); b.className='thumb'+(i===0?' active':''); b.type='button'; const img=document.createElement('img'); img.src=src; img.onerror=()=>{img.src='3prod.png'}; b.appendChild(img); b.onclick=()=>setImage(i); thumbs.appendChild(b); const d=document.createElement('span'); if(i===0)d.className='active'; dots.appendChild(d)}); function setImage(i){current=(i+images.length)%images.length; mainImage.src=images[current]; document.querySelectorAll('.thumb').forEach((e,j)=>e.classList.toggle('active',j===current)); document.querySelectorAll('.gallery-dots span').forEach((e,j)=>e.classList.toggle('active',j===current))} mainImage.onerror=()=>{if(mainImage.getAttribute('src')!=='3prod.png')mainImage.src='3prod.png'}; document.getElementById('prevThumb').onclick=()=>setImage(current-1); document.getElementById('nextThumb').onclick=()=>setImage(current+1);
+const c=document.getElementById('graph'),ctx=c.getContext('2d'); let w,h,p=[]; function init(){w=c.width=innerWidth;h=c.height=innerHeight;p=Array.from({length:54},()=>({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,r:Math.random()*1.5+.7}))} function draw(){ctx.clearRect(0,0,w,h); const dark=document.body.classList.contains('dark'); ctx.fillStyle=dark?'rgba(91,204,211,.28)':'rgba(5,121,133,.20)'; p.forEach(a=>{a.x+=a.vx;a.y+=a.vy;if(a.x<0||a.x>w)a.vx*=-1;if(a.y<0||a.y>h)a.vy*=-1;ctx.beginPath();ctx.arc(a.x,a.y,a.r,0,Math.PI*2);ctx.fill()}); ctx.strokeStyle=dark?'rgba(91,204,211,.10)':'rgba(5,121,133,.07)'; for(let i=0;i<p.length;i++)for(let j=i+1;j<p.length;j++){const d=Math.hypot(p[i].x-p[j].x,p[i].y-p[j].y); if(d<160){ctx.globalAlpha=1-d/160; ctx.beginPath(); ctx.moveTo(p[i].x,p[i].y); ctx.lineTo(p[j].x,p[j].y); ctx.stroke()}} ctx.globalAlpha=1; requestAnimationFrame(draw)} addEventListener('resize',init); init(); draw();
 </script>
 </body>
 </html>
