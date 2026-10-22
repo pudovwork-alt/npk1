@@ -89,6 +89,91 @@ body{
 .corner-note{position:absolute;right:4px;bottom:22px;color:#86a9ac;font-size:12px;line-height:1.28;letter-spacing:.04em;text-transform:uppercase;text-align:left}.corner-note:before{content:"";position:absolute;width:52px;height:1px;background:#8fb7ba;left:-70px;top:10px}
 
 @media(max-width:1100px){.app{padding-left:40px;padding-right:40px}.product-card.left{transform:translateX(-500px) translateZ(-110px) rotateY(24deg) scale(.72)}.product-card.right{transform:translateX(500px) translateZ(-110px) rotateY(-24deg) scale(.72)}}
+
+/* Точечная настройка чёткости и масштаба в исходном 3D-оформлении */
+.stage{height:765px;margin-top:-26px}
+.product-card{
+  width:680px;height:700px;
+  padding:28px 30px 29px;
+  -webkit-backdrop-filter:blur(8px) saturate(112%);
+  backdrop-filter:blur(8px) saturate(112%);
+}
+.product-card.active{transform:translateX(0) scale(1)}
+.product-card.left{transform:translateX(-640px) rotateY(13deg) scale(.88);opacity:.92}
+.product-card.right{transform:translateX(640px) rotateY(-13deg) scale(.88);opacity:.92}
+.product-card.far-left{transform:translateX(-1030px) rotateY(20deg) scale(.64)}
+.product-card.far-right{transform:translateX(1030px) rotateY(-20deg) scale(.64)}
+.visual{height:343px}
+.visual img{
+  max-height:324px;
+  image-rendering:auto;
+  backface-visibility:visible;
+  transform:none;
+  will-change:auto;
+}
+.facts{gap:11px}
+.fact{min-height:74px;padding:10px 11px;gap:10px}
+.fact svg{width:33px;height:33px;min-width:33px;stroke-width:2.15}
+.fact svg.icon-filled{stroke:var(--p);stroke-width:1.2;stroke-linejoin:round}
+.fact svg.icon-filled[viewBox="0 0 640 640"]{stroke-width:10}
+.fact svg.led-icon{width:39px;height:39px;min-width:39px}
+.fact .weight-icon{width:33px;height:33px;min-width:33px}
+.fact span{font-size:13.2px;line-height:1.22}
+
+/* Пространство после удаления нижнего счётчика */
+.stage{height:795px;margin-top:-38px}
+.product-card{width:715px;height:745px;padding:30px 32px 31px}
+.product-card.left{transform:translateX(-680px) rotateY(13deg) scale(.87)}
+.product-card.right{transform:translateX(680px) rotateY(-13deg) scale(.87)}
+.product-card.far-left{transform:translateX(-1080px) rotateY(20deg) scale(.63)}
+.product-card.far-right{transform:translateX(1080px) rotateY(-20deg) scale(.63)}
+.visual{height:354px}
+.visual img{max-height:335px}
+.facts{gap:12px;margin-top:15px}
+.fact{min-height:85px;gap:11px;padding:11px 12px}
+.fact svg{width:40px;height:40px;min-width:40px;stroke-width:2.15}
+.fact svg.led-icon{width:45px;height:45px;min-width:45px}
+.fact .weight-icon{width:40px;height:40px;min-width:40px}
+.fact span{font-size:13.8px}
+
+/* Возвращаем исходную глубину 3D-карусели и делаем пиктограммы крупными */
+.stage{height:820px;margin-top:-45px}
+.product-card{width:715px;height:770px}
+.product-card.active{transform:translateX(0) translateZ(130px) scale(1)}
+.product-card.left{transform:translateX(-655px) translateZ(-110px) rotateY(24deg) scale(.82);opacity:.88}
+.product-card.right{transform:translateX(655px) translateZ(-110px) rotateY(-24deg) scale(.82);opacity:.88}
+.product-card.far-left{transform:translateX(-1050px) translateZ(-230px) rotateY(32deg) scale(.58)}
+.product-card.far-right{transform:translateX(1050px) translateZ(-230px) rotateY(-32deg) scale(.58)}
+.visual{height:340px}
+.visual img{max-height:326px}
+.fact{min-height:112px;gap:10px;padding:12px 10px}
+.fact svg{width:72px;height:72px;min-width:72px;stroke-width:1.65}
+.fact svg.led-icon{width:76px;height:76px;min-width:76px}
+.fact .weight-icon{width:72px;height:72px;min-width:72px}
+.fact span{font-size:13.2px;line-height:1.2}
+
+/* Тёмная тема с сохранением бирюзового фирменного цвета */
+body.dark{
+  --ink:#e6f7f8;--muted:#a0c1c6;--line:rgba(104,204,208,.18);
+  background:radial-gradient(circle at 14% 12%,rgba(11,127,139,.20),transparent 30%),
+             radial-gradient(circle at 85% 80%,rgba(9,91,111,.22),transparent 32%),
+             linear-gradient(135deg,#07171d,#102b34 54%,#081b23);
+}
+body.dark .product-card{background:rgba(17,38,47,.94);border-color:rgba(110,211,219,.24);box-shadow:0 23px 65px rgba(0,0,0,.30)}
+body.dark .product-card:before{background:radial-gradient(circle at 70% 8%,rgba(70,143,150,.09),transparent 32%);pointer-events:none}
+body.dark .product-card.active{box-shadow:0 30px 75px rgba(0,0,0,.42),0 0 0 1px rgba(66,204,213,.52)}
+body.dark .info h2{color:#74d6dc}
+body.dark .info .desc{color:#b4d0d4}
+body.dark .fact{background:linear-gradient(135deg,rgba(32,77,86,.83),rgba(22,56,68,.85));border-color:rgba(89,187,195,.18)}
+body.dark .fact span{color:#d2ecee}
+body.dark .index{color:rgba(139,231,236,.14)}
+body.dark .home,body.dark .control,body.dark .langs,body.dark .nav{background:rgba(24,55,66,.83);border-color:rgba(113,203,211,.20);box-shadow:0 12px 30px rgba(0,0,0,.22)}
+body.dark .home:hover,body.dark .control:hover,body.dark .nav:hover{background:#234a55}
+body.dark .lang{color:#a9cbd0}
+body.dark .lang.active{color:#fff}
+body.dark .eyebrow{color:#77d7dc}
+body.dark .logo-fallback{color:#77d7dc}
+body.dark .rings{border-color:rgba(108,218,224,.20);box-shadow:0 0 0 26px rgba(56,177,189,.06),0 0 0 54px rgba(56,177,189,.03)}
 </style>
 </head>
 <body>
@@ -162,7 +247,7 @@ body{
         <div class="info"><h2>Видеокамера ЭНДОКАМ FULL HD</h2><div class="desc">Отдельная медицинская видеокамера высокой четкости для передачи эндоскопического изображения на монитор.</div>
           <div class="facts">
             <div class="fact"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 21h8"/></svg><span>FULL HD 1920×1080</span></div>
-            <div class="fact"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>HDMI · SDI · DVI</span></div>
+            <div class="fact"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>Естественная цветопередача</span></div>
             <div class="fact"><svg class="icon-filled" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50"><path d="M36.38 2.09l0.63 0.03c1.85 0.63 5.88 5.65 7.71 7.18c1.06 1.04 2.03 2.12 3.18 3.07l-0.03 0.64c-0.61 1.74 -6.59 6.95 -8.27 8.49c2.11 3.77 1.88 4 -1.11 6.99l-15.52 15.52c-11.96 11.52 -28.75 -4.81 -16.98 -16.98c5.14 -5.14 10.4 -10.34 15.52 -15.52c3 -3 3.21 -3.25 6.98 -1.11c2.41 -2.97 5.42 -5.39 7.89 -8.31zM37 4.47c-2.49 2.47 -5.01 4.99 -7.44 7.53c2.76 2.84 5.61 5.67 8.44 8.44c2.54 -2.42 5.1 -4.92 7.53 -7.45c-2.79 -2.86 -5.65 -5.75 -8.53 -8.52zM25.69 10.94c-1.31 0.35 -1.33 0.46 -2.25 1.45c-5.31 5.37 -10.73 10.75 -16.06 16.08c-9.87 10.11 4.01 24 14.14 14.16c5.33 -5.33 10.72 -10.76 16.09 -16.07c0.98 -0.92 1.09 -0.95 1.45 -2.25c-4.45 -4.36 -9.01 -8.92 -13.37 -13.37z"/><path d="M11.05 35.09c0.78 -4.52 7.17 -3.81 6.9 0.82c-0.79 4.51 -7.16 3.82 -6.9 -0.82zM13.3 34.31c-0.18 0.8 -0.69 2.71 0.84 2.59c0.91 -0.05 1.72 0.26 1.75 -1.04c0.19 -2.32 -0.94 -1.85 -2.59 -1.55z"/><path d="M35.39 11.66c-0.61 -0.81 -1.84 -1.82 -0.54 -2.65c1.65 -1.73 2.94 0.07 2.76 1.63l-0.99 0.85l-1.23 0.17z"/><path d="M38.36 13.34l1.04 -0.83l1.2 -0.17c0.62 0.82 1.87 1.82 0.53 2.66c-1.48 1.74 -2.92 -0.19 -2.77 -1.66z"/></svg><span>Сохранение видео на USB</span></div>
           </div><div class="more">Подробнее <svg viewBox="0 0 24 24"><path d="M5 12h14M14 7l5 5-5 5"/></svg></div>
         </div>
@@ -173,17 +258,15 @@ body{
         <div class="visual"><div class="rings"></div><img src="5prod.png" alt="Технический эндоскоп"></div>
         <div class="info"><h2>Технический эндоскоп</h2><div class="desc">Жесткий технический эндоскоп для контроля полостей, каналов и узлов в труднодоступных местах.</div>
           <div class="facts">
-            <div class="fact"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 12l5-3"/></svg><span>Рабочее расстояние 20–50 мм</span></div>
-            <div class="fact"><svg viewBox="0 0 24 24"><path d="M4 12h16M12 4v16"/></svg><span>Углы наблюдения 0–90°</span></div>
-            <div class="fact"><svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19"/></svg><span>Стойкость к маслу и бензину</span></div>
+            <div class="fact"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 12l5-3"/></svg><span>Минимальное искажение</span></div>
+            <div class="fact"><svg viewBox="0 0 24 24"><path d="M4 12h16M12 4v16"/></svg><span>Углы наблюдения 0 – 90°</span></div>
+            <div class="fact"><svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19"/></svg><span>Соотношение цены и качества</span></div>
           </div><div class="more">Подробнее <svg viewBox="0 0 24 24"><path d="M5 12h14M14 7l5 5-5 5"/></svg></div>
         </div>
       </article>
 
     </div>
     <button class="nav next" onclick="change(1)" aria-label="Следующий товар">›</button>
-    <div class="bottom"><div class="dots"></div><div class="count"><strong id="cur">01</strong> / 05</div></div>
-    <div class="corner-note">Больше возможностей<br>для здоровья людей</div>
   </div>
 </div>
 <script>
@@ -193,9 +276,6 @@ addEventListener('resize',scale);scale();
 
 const cards=[...document.querySelectorAll('.product-card')];
 let current=0,startX=0;
-const dotsWrap=document.querySelector('.dots');
-cards.forEach((_,i)=>{const b=document.createElement('button');b.className='dot'+(i===0?' active':'');b.onclick=()=>go(i);dotsWrap.appendChild(b)});
-const dots=[...document.querySelectorAll('.dot')];
 function rel(i){return (i-current+cards.length)%cards.length}
 function update(){
   cards.forEach((c,i)=>{
@@ -207,8 +287,6 @@ function update(){
     else if(d===cards.length-2)c.classList.add('far-left');
     else c.classList.add('hidden');
   });
-  dots.forEach((d,i)=>d.classList.toggle('active',i===current));
-  document.getElementById('cur').textContent=String(current+1).padStart(2,'0');
 }
 function change(v){current=(current+v+cards.length)%cards.length;update()}
 function go(i){current=i;update()}
@@ -228,8 +306,55 @@ function init(){w=c.width=innerWidth;h=c.height=innerHeight;p=Array.from({length
 function draw(){x.clearRect(0,0,w,h);x.fillStyle='rgba(5,121,133,.22)';p.forEach(a=>{a.x+=a.vx;a.y+=a.vy;if(a.x<0||a.x>w)a.vx*=-1;if(a.y<0||a.y>h)a.vy*=-1;x.beginPath();x.arc(a.x,a.y,a.r,0,Math.PI*2);x.fill()});x.strokeStyle='rgba(5,121,133,.07)';for(let i=0;i<p.length;i++)for(let j=i+1;j<p.length;j++){const d=Math.hypot(p[i].x-p[j].x,p[i].y-p[j].y);if(d<155){x.globalAlpha=1-d/155;x.beginPath();x.moveTo(p[i].x,p[i].y);x.lineTo(p[j].x,p[j].y);x.stroke()}}x.globalAlpha=1;requestAnimationFrame(draw)}
 addEventListener('resize',init);init();draw();
 
-/* simple lang controls intentionally visual only */
-document.querySelectorAll('.lang').forEach(btn=>btn.onclick=()=>{document.querySelectorAll('.lang').forEach(x=>x.classList.remove('active'));btn.classList.add('active')});
+/* Переключатели оформления и полного перевода каталога */
+const themeButton=document.getElementById('theme');
+let darkMode=false;
+function setTheme(dark){
+  darkMode=dark;
+  document.body.classList.toggle('dark',dark);
+  themeButton.setAttribute('aria-pressed',String(dark));
+  themeButton.setAttribute('title',dark?'Switch to light theme':'Переключить тему');
+  try{localStorage.setItem('azimut-theme',dark?'dark':'light')}catch(e){}
+}
+themeButton.addEventListener('click',()=>setTheme(!darkMode));
+try{setTheme(localStorage.getItem('azimut-theme')==='dark')}catch(e){setTheme(false)}
+
+const ruCards=cards.map(card=>({
+  badge:card.querySelector('.badge').lastChild.nodeValue.trim(),
+  title:card.querySelector('.info h2').textContent,
+  desc:card.querySelector('.info .desc').textContent,
+  facts:[...card.querySelectorAll('.fact span:last-child')].map(el=>el.textContent)
+}));
+const enCards=[
+  {badge:'ENT workplace',title:'Azimut ENT workstation',desc:'An integrated ENT workstation combining suction, air supply and essential procedures in one module.',facts:['Independent of water supply','6 grounded power outlets','Low noise level']},
+  {badge:'Mobility',title:'Medical equipment stands',desc:'Mobile equipment stands with shelves and a wheeled base for convenient placement of a camera, monitor and peripherals.',facts:['4 swivel wheels','Shelf capacity up to 30 kg','Stand load capacity up to 140 kg']},
+  {badge:'FULL HD',title:'ENDOSCAM 450 FULL HD',desc:'A video endoscopy system with Full HD imaging, USB recording and built-in LED illumination.',facts:['FULL HD 1920×1080','Photo and video recording to USB','Built-in LED illuminator']},
+  {badge:'Video camera',title:'ENDOCAM FULL HD video camera',desc:'A standalone high-definition medical video camera for displaying endoscopic images on a monitor.',facts:['FULL HD 1920×1080','HDMI · SDI · DVI','Save video to USB']},
+  {badge:'Industrial',title:'Technical endoscope',desc:'A rigid technical endoscope for inspecting cavities, channels and components in hard-to-reach places.',facts:['Working distance 20–50 mm','Viewing angle 0–90°','Oil and petrol resistant']}
+];
+const langButtons=[...document.querySelectorAll('.lang')];
+function setLanguage(lang){
+  document.documentElement.lang=lang.toLowerCase();
+  langButtons.forEach(btn=>btn.classList.toggle('active',btn.textContent.trim()===lang));
+  document.querySelector('.eyebrow').textContent=lang==='EN'?'Russian technology for better health':'Российские технологии для здоровья людей';
+  cards.forEach((card,i)=>{
+    const t=lang==='EN'?enCards[i]:ruCards[i];
+    card.querySelector('.badge').lastChild.nodeValue=t.badge;
+    card.querySelector('.info h2').textContent=t.title;
+    card.querySelector('.info .desc').textContent=t.desc;
+    card.querySelectorAll('.fact span:last-child').forEach((el,j)=>el.textContent=t.facts[j]);
+    card.querySelector('.more').firstChild.nodeValue=lang==='EN'?'Details ':'Подробнее ';
+  });
+  document.querySelector('.home').setAttribute('aria-label',lang==='EN'?'Home':'На главную');
+  document.querySelector('.nav.prev').setAttribute('aria-label',lang==='EN'?'Previous product':'Предыдущий товар');
+  document.querySelector('.nav.next').setAttribute('aria-label',lang==='EN'?'Next product':'Следующий товар');
+  themeButton.setAttribute('aria-label',lang==='EN'?'Toggle theme':'Переключить тему');
+  document.querySelector('.logo-text small').textContent=lang==='EN'?'TECHNOLOGY FOR LIFE':'ТЕХНОЛОГИИ ДЛЯ ЖИЗНИ';
+  try{localStorage.setItem('azimut-lang',lang)}catch(e){}
+}
+langButtons.forEach(btn=>btn.addEventListener('click',()=>setLanguage(btn.textContent.trim())));
+try{setLanguage(localStorage.getItem('azimut-lang')==='EN'?'EN':'RU')}catch(e){setLanguage('RU')}
 </script>
 </body>
 </html>
+
