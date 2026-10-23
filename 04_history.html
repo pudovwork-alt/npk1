@@ -116,6 +116,49 @@
     .image-fallback{position:absolute;inset:0;display:none;align-items:center;justify-content:center;text-align:center;padding:25px;color:var(--muted);font-size:20px;font-weight:750;background:var(--photo-bg)}
     .image-fallback svg{display:block;width:58px;height:58px;margin:0 auto 15px;fill:none;stroke:var(--accent);stroke-width:1.7}
     @media(max-aspect-ratio:16/10){.app{padding-top:32px}.main{margin-top:15px}}
+
+    /* Послойная сборка страницы в стиле 02_menu_animated.html */
+    @keyframes hPanelL{from{opacity:0;transform:translate(-64px,24px) scale(.975);filter:blur(12px)}to{opacity:1;transform:none;filter:blur(0)}}
+    @keyframes hPanelR{from{opacity:0;transform:translate(64px,24px) scale(.975);filter:blur(12px)}to{opacity:1;transform:none;filter:blur(0)}}
+    @keyframes hRise{from{opacity:0;transform:translateY(23px);filter:blur(7px)}to{opacity:1;transform:none;filter:blur(0)}}
+    @keyframes hLeft{from{opacity:0;transform:translate(-31px,17px);filter:blur(7px)}to{opacity:1;transform:none;filter:blur(0)}}
+    @keyframes hRight{from{opacity:0;transform:translate(31px,17px);filter:blur(7px)}to{opacity:1;transform:none;filter:blur(0)}}
+    @keyframes hIcon{0%{opacity:0;transform:scale(.54) rotate(-11deg)}65%{opacity:1;transform:scale(1.075) rotate(2deg)}100%{opacity:1;transform:none}}
+    @keyframes hPhoto{from{opacity:0;transform:scale(1.095);clip-path:inset(10% 8% round 26px);filter:blur(10px)}to{opacity:1;transform:none;clip-path:inset(0 round 0);filter:blur(0)}}
+    .topbar-left{animation:hLeft .76s cubic-bezier(.16,1,.3,1) .08s both}
+    .topbar-right{animation:hRight .76s cubic-bezier(.16,1,.3,1) .15s both}
+    .story{animation:hPanelL 1s cubic-bezier(.16,1,.3,1) .30s both}
+    .gallery{animation:hPanelR 1s cubic-bezier(.16,1,.3,1) .39s both}
+    .story>.eyebrow{animation:hRise .76s cubic-bezier(.16,1,.3,1) .72s both}
+    .story>h1{animation:hRise .85s cubic-bezier(.16,1,.3,1) .82s both}
+    .story>.lead{animation:hRise .82s cubic-bezier(.16,1,.3,1) .95s both}
+    .story>.history{animation:hRise .82s cubic-bezier(.16,1,.3,1) 1.07s both}
+    .metric-item:nth-child(1){animation:hLeft .82s cubic-bezier(.16,1,.3,1) 1.18s both}
+    .metric-item:nth-child(2){animation:hRight .82s cubic-bezier(.16,1,.3,1) 1.28s both}
+    .metric-item:nth-child(3){animation:hLeft .82s cubic-bezier(.16,1,.3,1) 1.37s both}
+    .metric-item:nth-child(4){animation:hRight .82s cubic-bezier(.16,1,.3,1) 1.46s both}
+    .metric-item:nth-child(1) .metric-badge{animation:hIcon .64s cubic-bezier(.2,.85,.2,1.2) 1.51s both}
+    .metric-item:nth-child(2) .metric-badge{animation:hIcon .64s cubic-bezier(.2,.85,.2,1.2) 1.61s both}
+    .metric-item:nth-child(3) .metric-badge{animation:hIcon .64s cubic-bezier(.2,.85,.2,1.2) 1.70s both}
+    .metric-item:nth-child(4) .metric-badge{animation:hIcon .64s cubic-bezier(.2,.85,.2,1.2) 1.79s both}
+    .tagline{animation:hRise .8s cubic-bezier(.16,1,.3,1) 1.76s both}
+    .photo-card.position-main{animation:hPhoto 1s cubic-bezier(.16,1,.3,1) .76s both}
+    .photo-card.position-left{animation:hPhoto .95s cubic-bezier(.16,1,.3,1) 1.00s both}
+    .photo-card.position-right{animation:hPhoto .95s cubic-bezier(.16,1,.3,1) 1.16s both}
+    .photo-card .photo-label{animation:hRise .72s cubic-bezier(.16,1,.3,1) 1.75s both}
+    .photo-card.position-left .photo-label{animation-delay:1.91s}
+    .photo-card.position-right .photo-label{animation-delay:2.04s}
+    .photo-card img{transition:transform .65s cubic-bezier(.16,1,.3,1),filter .4s ease}
+    .photo-card:hover img{transform:scale(1.045)}
+    .photo-card:hover{box-shadow:0 25px 65px var(--shadow),0 0 0 1px var(--line)}
+    .metric-item:hover .metric-badge{box-shadow:0 10px 27px var(--shadow),0 0 0 2px var(--metric-icon-border)}
+    @media(prefers-reduced-motion:reduce){
+      .topbar-left,.topbar-right,.story,.gallery,.story>.eyebrow,.story>h1,.story>.lead,
+      .story>.history,.metric-item,.metric-badge,.tagline,.photo-card,.photo-card .photo-label{
+        animation:none!important;opacity:1!important;filter:none!important
+      }
+      .photo-card img{transition:none!important}
+    }
   </style>
 </head>
 <body data-theme="light">
