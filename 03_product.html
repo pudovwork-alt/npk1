@@ -59,8 +59,8 @@ body{
 .product-card.active{transform:translateX(0) translateZ(130px) scale(1);z-index:6;opacity:1;box-shadow:0 30px 80px rgba(28,119,126,.18),0 0 0 1px rgba(17,164,173,.38),inset 0 1px 0 rgba(255,255,255,.98)}
 .product-card.left{transform:translateX(-610px) translateZ(-110px) rotateY(24deg) scale(.79);z-index:3;opacity:.82;filter:none}
 .product-card.right{transform:translateX(610px) translateZ(-110px) rotateY(-24deg) scale(.79);z-index:3;opacity:.82;filter:none}
-.product-card.far-left{transform:translateX(-980px) translateZ(-230px) rotateY(32deg) scale(.58);opacity:.16;z-index:1;pointer-events:none}
-.product-card.far-right{transform:translateX(980px) translateZ(-230px) rotateY(-32deg) scale(.58);opacity:.16;z-index:1;pointer-events:none}
+.product-card.far-left{transform:translateX(-980px) translateZ(-230px) rotateY(32deg) scale(.58);opacity:.30;z-index:1;pointer-events:none}
+.product-card.far-right{transform:translateX(980px) translateZ(-230px) rotateY(-32deg) scale(.58);opacity:.30;z-index:1;pointer-events:none}
 .product-card.hidden{opacity:0;pointer-events:none}
 .index{position:absolute;left:28px;top:20px;font-size:56px;font-weight:950;color:rgba(5,121,133,.10);z-index:3}
 .badge{position:absolute;right:23px;top:20px;z-index:4;display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;background:linear-gradient(135deg,rgba(5,121,133,.95),rgba(34,169,176,.92));color:#fff;font-size:14px;font-weight:850;box-shadow:0 10px 23px rgba(5,121,133,.17)}
@@ -174,9 +174,68 @@ body.dark .lang.active{color:#fff}
 body.dark .eyebrow{color:#77d7dc}
 body.dark .logo-fallback{color:#77d7dc}
 body.dark .rings{border-color:rgba(108,218,224,.20);box-shadow:0 0 0 26px rgba(56,177,189,.06),0 0 0 54px rgba(56,177,189,.03)}
+
+/* Премиальная стартовая сборка без изменения 3D-transform карточек */
+@keyframes apFade{from{opacity:0;filter:blur(9px)}to{opacity:1;filter:blur(0)}}
+@keyframes apRise{from{opacity:0;transform:translate3d(0,28px,0);filter:blur(8px)}to{opacity:1;transform:translate3d(0,0,0);filter:blur(0)}}
+@keyframes apLeft{from{opacity:0;transform:translate3d(-34px,12px,0);filter:blur(8px)}to{opacity:1;transform:translate3d(0,0,0);filter:blur(0)}}
+@keyframes apRight{from{opacity:0;transform:translate3d(34px,12px,0);filter:blur(8px)}to{opacity:1;transform:translate3d(0,0,0);filter:blur(0)}}
+@keyframes apVisual{from{opacity:0;transform:translateY(22px) scale(.91);filter:blur(12px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+@keyframes apPop{0%{opacity:0;transform:scale(.58) rotate(-9deg)}65%{opacity:1;transform:scale(1.07) rotate(2deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes apCardOpacity{from{opacity:0;filter:blur(12px)}to{opacity:1;filter:blur(0)}}
+@keyframes apSideOpacity{from{opacity:0;filter:blur(12px)}to{opacity:.88;filter:blur(0)}}
+/* Каждая карточка сохраняет собственную конечную 3D-позицию. */
+@keyframes apFarLeft{
+ from{opacity:0;transform:translateX(-1240px) translateZ(-350px) rotateY(39deg) scale(.44);filter:blur(12px)}
+ to{opacity:.30;transform:translateX(-1050px) translateZ(-230px) rotateY(32deg) scale(.58);filter:blur(0)}
+}
+@keyframes apFarRight{
+ from{opacity:0;transform:translateX(1240px) translateZ(-350px) rotateY(-39deg) scale(.44);filter:blur(12px)}
+ to{opacity:.30;transform:translateX(1050px) translateZ(-230px) rotateY(-32deg) scale(.58);filter:blur(0)}
+}
+@keyframes apNearLeft{
+ from{opacity:0;transform:translateX(-830px) translateZ(-240px) rotateY(32deg) scale(.68);filter:blur(11px)}
+ to{opacity:.88;transform:translateX(-655px) translateZ(-110px) rotateY(24deg) scale(.82);filter:blur(0)}
+}
+@keyframes apNearRight{
+ from{opacity:0;transform:translateX(830px) translateZ(-240px) rotateY(-32deg) scale(.68);filter:blur(11px)}
+ to{opacity:.88;transform:translateX(655px) translateZ(-110px) rotateY(-24deg) scale(.82);filter:blur(0)}
+}
+@keyframes apCenter3D{
+ from{opacity:0;transform:translateX(0) translateZ(-70px) scale(.92);filter:blur(13px)}
+ to{opacity:1;transform:translateX(0) translateZ(130px) scale(1);filter:blur(0)}
+}
+body.is-entering .brand{animation:apLeft .82s cubic-bezier(.16,1,.3,1) .08s both}
+body.is-entering .controls{animation:apRight .82s cubic-bezier(.16,1,.3,1) .15s both}
+body.is-entering .hero{animation:apRise .85s cubic-bezier(.16,1,.3,1) .32s both}
+body.is-entering .product-card.far-left{animation:apFarLeft 1.05s cubic-bezier(.16,1,.3,1) .36s both}
+body.is-entering .product-card.far-right{animation:apFarRight 1.05s cubic-bezier(.16,1,.3,1) .48s both}
+body.is-entering .product-card.left{animation:apNearLeft 1.06s cubic-bezier(.16,1,.3,1) .59s both}
+body.is-entering .product-card.right{animation:apNearRight 1.06s cubic-bezier(.16,1,.3,1) .71s both}
+body.is-entering .product-card.active{animation:apCenter3D 1.05s cubic-bezier(.16,1,.3,1) .80s both}
+body.is-entering .product-card.active .badge{animation:apRight .73s cubic-bezier(.16,1,.3,1) 1.00s both}
+body.is-entering .product-card.active .visual{animation:apVisual .95s cubic-bezier(.16,1,.3,1) .85s both}
+body.is-entering .product-card.active .info h2{animation:apRise .72s cubic-bezier(.16,1,.3,1) 1.20s both}
+body.is-entering .product-card.active .info .desc{animation:apRise .72s cubic-bezier(.16,1,.3,1) 1.32s both}
+body.is-entering .product-card.active .fact:nth-child(1){animation:apLeft .72s cubic-bezier(.16,1,.3,1) 1.49s both}
+body.is-entering .product-card.active .fact:nth-child(2){animation:apRise .72s cubic-bezier(.16,1,.3,1) 1.58s both}
+body.is-entering .product-card.active .fact:nth-child(3){animation:apRight .72s cubic-bezier(.16,1,.3,1) 1.67s both}
+body.is-entering .product-card.active .fact:nth-child(1) svg{animation:apPop .65s cubic-bezier(.2,.85,.2,1.2) 1.83s both}
+body.is-entering .product-card.active .fact:nth-child(2) svg{animation:apPop .65s cubic-bezier(.2,.85,.2,1.2) 1.92s both}
+body.is-entering .product-card.active .fact:nth-child(3) svg{animation:apPop .65s cubic-bezier(.2,.85,.2,1.2) 2.01s both}
+body.is-entering .product-card.active .more{animation:apRise .72s cubic-bezier(.16,1,.3,1) 2.04s both}
+body.is-entering .nav{animation:apFade .75s ease 1.25s both}
+@media(prefers-reduced-motion:reduce){
+ body.is-entering .brand,body.is-entering .controls,body.is-entering .hero,
+ body.is-entering .product-card,body.is-entering .product-card.active .badge,
+ body.is-entering .product-card.active .visual,body.is-entering .product-card.active .info h2,
+ body.is-entering .product-card.active .info .desc,body.is-entering .product-card.active .fact,
+ body.is-entering .product-card.active .fact svg,body.is-entering .product-card.active .more,
+ body.is-entering .nav{animation:none!important}
+}
 </style>
 </head>
-<body>
+<body class="is-entering">
 <canvas id="graph"></canvas>
 <div class="app" id="app">
   <div class="topbar">
@@ -354,7 +413,8 @@ function setLanguage(lang){
 }
 langButtons.forEach(btn=>btn.addEventListener('click',()=>setLanguage(btn.textContent.trim())));
 try{setLanguage(localStorage.getItem('azimut-lang')==='EN'?'EN':'RU')}catch(e){setLanguage('RU')}
+  // После стартовой сборки управление полностью переходит обычному 3D-слайдеру.
+setTimeout(()=>document.body.classList.remove('is-entering'),2900);
 </script>
 </body>
 </html>
-
