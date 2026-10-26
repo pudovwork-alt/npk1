@@ -321,7 +321,7 @@ const app=document.getElementById('app');
 function scale(){const s=Math.min(innerWidth/1920,innerHeight/1080);app.style.transform=`scale(${s})`;app.style.marginLeft=((innerWidth-1920*s)/2)+'px';app.style.marginTop=((innerHeight-1080*s)/2)+'px'}
 addEventListener('resize',scale);scale();
 
-const images=['1prod.png','1prod_2.png','1prod_3.png','1prod_4.png'];
+const images=['1prod.png','1prod_2.png','1prod_3.png'];
 const mainImage=document.getElementById('mainImage'), thumbs=document.getElementById('thumbs'), dots=document.getElementById('galleryDots');
 let current=0;
 images.forEach((src,i)=>{
