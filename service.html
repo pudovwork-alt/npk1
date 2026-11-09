@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>НПК «АЗИМУТ» — Сервис</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --accent:#00838c;
+  --accent2:#149ba4;
+  --accent3:#77d4db;
+  --deep:#07515a;
+  --text:#0a4d55;
+  --body:#315f66;
+  --muted:#6d9298;
+  --line:rgba(0,131,140,.15);
+  --line2:rgba(0,131,140,.08);
+  --white:rgba(255,255,255,.82);
+  --shadow:0 28px 68px rgba(18,111,118,.13);
+  --shadow2:0 16px 36px rgba(18,111,118,.11);
+}
+html,body{
+  width:100%;height:100%;overflow:hidden;
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  color:var(--text);
+}
+body{
+  background:
+    radial-gradient(circle at 8% 16%,rgba(106,217,224,.22),transparent 28%),
+    radial-gradient(circle at 91% 18%,rgba(73,187,198,.13),transparent 25%),
+    radial-gradient(circle at 79% 82%,rgba(116,222,225,.18),transparent 32%),
+    linear-gradient(135deg,#fbffff 0%,#effbfb 43%,#e7f7f6 100%);
+  transition:.35s ease;
+}
+body[data-theme="dark"]{
+  --text:#efffff;
+  --body:#c5dfe1;
+  --muted:#98bfc3;
+  --line:rgba(119,221,229,.20);
+  --line2:rgba(119,221,229,.10);
+  --white:rgba(10,31,34,.84);
+  --shadow:0 28px 68px rgba(0,0,0,.34);
+  --shadow2:0 16px 36px rgba(0,0,0,.26);
+  background:
+    radial-gradient(circle at 8% 16%,rgba(0,187,198,.12),transparent 28%),
+    radial-gradient(circle at 91% 18%,rgba(70,194,205,.10),transparent 25%),
+    radial-gradient(circle at 79% 82%,rgba(68,202,211,.10),transparent 32%),
+    linear-gradient(135deg,#031012 0%,#071a1d 45%,#0a2629 100%);
+}
+
+#particles{position:fixed;inset:0;z-index:0;pointer-events:none}
+.page{
+  position:relative;z-index:2;
+  width:1920px;height:1080px;
+  transform-origin:top left;
+  padding:31px 70px 36px;
+  overflow:hidden;
+}
+.orbit{
+  position:absolute;border:2px solid rgba(116,214,221,.18);border-radius:50%;pointer-events:none
+}
+.orbit.o1{width:590px;height:590px;left:-375px;bottom:-205px}
+.orbit.o2{width:510px;height:510px;right:-330px;top:240px}
+.orbit.o3{width:355px;height:355px;right:150px;bottom:-240px;border-width:1px;opacity:.6}
+.orbit-dot{
+  position:absolute;width:14px;height:14px;border-radius:50%;
+  background:rgba(255,255,255,.9);
+  box-shadow:0 0 0 1px rgba(0,131,140,.10),0 7px 22px rgba(0,131,140,.12);
+  pointer-events:none
+}
+.od1{left:84px;top:490px}.od2{right:145px;top:642px}.od3{left:355px;top:128px;width:9px;height:9px}
+
+
+.back-btn{
+  position:absolute;top:38px;left:74px;z-index:10;
+  height:64px;padding:0 24px;
+  display:flex;align-items:center;gap:12px;
+  border:1px solid var(--line);
+  background:var(--white);
+  color:var(--text);
+  text-decoration:none;
+  border-radius:21px;
+  box-shadow:var(--shadow2);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  font-size:20px;font-weight:820;letter-spacing:.01em;
+  transition:transform .25s ease,background .25s ease,box-shadow .25s ease;
+}
+.back-btn svg{
+  width:28px;height:28px;fill:none;stroke:var(--accent);
+  stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
+}
+.back-btn:hover{
+  transform:translateY(-3px);
+  background:rgba(255,255,255,.92);
+  box-shadow:0 20px 42px rgba(18,111,118,.16);
+}
+body[data-theme="dark"] .back-btn:hover{background:rgba(18,52,56,.94)}
+
+.top-controls{
+  position:absolute;top:38px;right:74px;z-index:10;
+  display:flex;align-items:center;gap:14px
+}
+.glass{
+  height:64px;border:1px solid var(--line);background:var(--white);
+  box-shadow:var(--shadow2);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-radius:21px
+}
+.theme-btn{
+  width:64px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--accent)
+}
+.theme-btn svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.theme-btn .sun{display:none} body[data-theme="dark"] .theme-btn .sun{display:block} body[data-theme="dark"] .theme-btn .moon{display:none}
+.lang{
+  padding:6px;display:flex;align-items:center;gap:4px
+}
+.lang button{
+  min-width:66px;height:50px;border:0;border-radius:16px;background:transparent;
+  color:var(--muted);font-size:20px;font-weight:850;cursor:pointer
+}
+.lang button.active{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;box-shadow:0 10px 24px rgba(0,131,140,.25)
+}
+
+.side-note{
+  position:absolute;z-index:3;color:#7da8b0;font-weight:700;letter-spacing:.28em;
+  text-transform:uppercase;font-size:15px;line-height:1.55;opacity:.76
+}
+.side-note.left{left:76px;top:132px;width:190px}
+.side-note.right{right:77px;top:173px;width:210px;text-align:right}
+.side-note:after{
+  content:"";display:block;width:42px;height:2px;margin-top:13px;background:rgba(0,131,140,.24)
+}
+.side-note.right:after{margin-left:auto}
+
+.hero{
+  width:100%;height:292px;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  position:relative;z-index:3
+}
+.brand{
+  width:660px;height:145px;display:flex;align-items:center;justify-content:center;
+  margin-top:-4px
+}
+.brand img{display:block;max-width:100%;max-height:138px;object-fit:contain}
+.brand-fallback{
+  display:none;font-weight:950;letter-spacing:-.045em;font-size:96px;
+  background:linear-gradient(135deg,var(--deep),var(--accent2));
+  -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.hero-title-wrap{display:flex;align-items:center;gap:42px;margin-top:1px}
+.hero-title-wrap:before,.hero-title-wrap:after{
+  content:"";width:82px;height:2px;border-radius:10px;
+  background:linear-gradient(90deg,transparent,rgba(0,94,104,.38))
+}
+.hero-title-wrap:after{background:linear-gradient(90deg,rgba(0,94,104,.38),transparent)}
+h1{
+  font-size:53px;line-height:1;font-weight:850;letter-spacing:.29em;
+  margin-left:.29em;color:var(--deep)
+}
+body[data-theme="dark"] h1{color:#dffbff}
+.subtitle{
+  margin-top:16px;font-size:18px;line-height:1.45;text-align:center;
+  letter-spacing:.22em;text-transform:uppercase;font-weight:650;color:#789da4
+}
+
+.board{
+  position:relative;z-index:4;
+  width:1630px;height:620px;margin:-11px auto 0;
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));
+  gap:21px
+}
+.card{
+  position:relative;overflow:hidden;
+  border:1px solid rgba(255,255,255,.72);
+  outline:1px solid var(--line2);
+  border-radius:30px;
+  background:
+    linear-gradient(115deg,rgba(255,255,255,.88) 0%,rgba(255,255,255,.72) 58%,rgba(255,255,255,.46) 100%);
+  box-shadow:var(--shadow2);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  padding:28px 29px 26px;
+  transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease;
+  cursor:default
+}
+body[data-theme="dark"] .card{
+  background:linear-gradient(115deg,rgba(15,48,52,.86),rgba(13,41,45,.76) 58%,rgba(12,35,39,.60));
+  border-color:rgba(139,235,241,.12)
+}
+.card:hover{
+  transform:translateY(-7px);
+  box-shadow:0 27px 56px rgba(0,102,111,.17);
+  border-color:rgba(0,131,140,.24)
+}
+.card:before{
+  content:"";position:absolute;right:-117px;top:-122px;width:315px;height:315px;border-radius:50%;
+  border:2px solid rgba(88,202,211,.17);pointer-events:none
+}
+.card:after{
+  content:"";position:absolute;left:29px;bottom:22px;width:64px;height:3px;border-radius:5px;
+  background:linear-gradient(90deg,var(--accent),rgba(0,131,140,.05));
+  pointer-events:none
+}
+.card-content{
+  position:relative;z-index:2;display:flex;flex-direction:column;align-items:flex-start
+}
+.card h2{
+  font-size:25px;line-height:1.2;font-weight:820;color:#1b5260;letter-spacing:-.02em;
+  margin:19px 0 10px
+}
+body[data-theme="dark"] .card h2{color:#e7fbff}
+.card p{font-size:18px;line-height:1.43;color:var(--body);font-weight:520;max-width:340px}
+.card .highlight{color:var(--accent);font-weight:850}
+.icon-side{
+  width:76px;height:76px;border-radius:22px;
+  background:rgba(255,255,255,.78);
+  border:1px solid rgba(0,131,140,.10);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 12px 28px rgba(14,99,106,.10),inset 0 1px 0 rgba(255,255,255,.92);
+  color:var(--accent)
+}
+.icon-side svg{width:44px;height:44px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.icon-side svg.solid-icon{fill:currentColor;stroke:none}
+body[data-theme="dark"] .icon-side{
+  background:rgba(14,42,46,.82);
+  border-color:rgba(139,235,241,.12)
+}
+.card:hover .icon-side{background:rgba(220,252,253,.96);transform:scale(1.06) rotate(-3deg)}
+.icon-side{transition:transform .35s ease,background .35s ease}
+@media(max-width:800px){
+ html,body{height:auto;min-height:100%;overflow-x:hidden;overflow-y:auto}
+ .page{width:100%;height:auto;min-height:100vh;padding:104px 18px 36px;overflow:visible}
+ .back-btn{top:20px;left:18px;height:52px;padding:0 15px;font-size:15px;border-radius:16px}
+ .back-btn svg{width:21px;height:21px}
+ .top-controls{top:20px;right:18px;gap:8px}
+ .glass{height:52px;border-radius:16px}
+ .theme-btn{width:52px}.theme-btn svg{width:23px;height:23px}
+ .lang{padding:4px;gap:2px}.lang button{min-width:42px;height:44px;font-size:14px;border-radius:12px}
+ .side-note,.orbit-dot{display:none}
+ .hero{height:auto;margin-bottom:30px}
+ .brand{width:100%;height:86px;margin:0}
+ .brand img{max-height:82px}.brand-fallback{font-size:52px}
+ .hero-title-wrap{gap:15px;margin-top:8px}
+ .hero-title-wrap:before,.hero-title-wrap:after{width:34px}
+ h1{font-size:34px;letter-spacing:.2em;margin-left:.2em}
+ .subtitle{font-size:11px;letter-spacing:.13em;line-height:1.6;margin-top:12px}
+ .board{width:100%;height:auto;margin:0;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto;gap:12px}
+ .card{min-height:220px;padding:20px 17px 24px;border-radius:23px}
+ .card:after{left:17px;bottom:17px}
+ .icon-side{width:56px;height:56px;border-radius:16px}
+ .icon-side svg{width:32px;height:32px}
+ .card h2{font-size:19px;margin:15px 0 7px}
+ .card p{font-size:14px;line-height:1.45}
+ .footer-words{position:static;margin-top:34px;gap:12px;font-size:9px;letter-spacing:.12em}
+ .footer-words i{height:13px}
+}
+@media(max-width:460px){
+ .board{grid-template-columns:1fr}
+ .card{min-height:185px;padding:20px 22px 24px}
+ .card h2{font-size:21px}
+ .card p{font-size:16px}
+ .brand-fallback{font-size:46px}
+}
+
+.footer-words{
+  position:absolute;z-index:5;left:0;right:0;bottom:47px;
+  display:flex;align-items:center;justify-content:center;gap:34px;
+  color:#7eaab1;text-transform:uppercase;font-size:13px;font-weight:800;letter-spacing:.28em
+}
+.footer-words i{width:1px;height:19px;background:rgba(0,131,140,.32);display:block}
+
+/* Сценарная послойная сборка раздела «Сервис» */
+@keyframes stFromLeft{from{opacity:0;transform:translate3d(-54px,18px,0) scale(.97);filter:blur(10px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes stFromRight{from{opacity:0;transform:translate3d(54px,18px,0) scale(.97);filter:blur(10px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes stRise{from{opacity:0;transform:translate3d(0,24px,0);filter:blur(8px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes stFade{from{opacity:0;filter:blur(8px)}to{opacity:1;filter:blur(0)}}
+@keyframes stLogo{
+  0%{opacity:0;transform:translateY(-50%) scale(.66) rotate(-5deg);filter:blur(7px)}
+  67%{opacity:1;transform:translateY(-50%) scale(1.045) rotate(1deg);filter:blur(0)}
+  100%{opacity:1;transform:translateY(-50%) scale(1) rotate(0);filter:blur(0)}
+}
+body.status-entering .back-btn{animation:stFromLeft .76s cubic-bezier(.16,1,.3,1) .08s both}
+body.status-entering .top-controls{animation:stFromRight .76s cubic-bezier(.16,1,.3,1) .15s both}
+body.status-entering .brand{animation:stRise .88s cubic-bezier(.16,1,.3,1) .23s both}
+body.status-entering .hero-title-wrap{animation:stRise .78s cubic-bezier(.16,1,.3,1) .43s both}
+body.status-entering .subtitle{animation:stRise .78s cubic-bezier(.16,1,.3,1) .58s both}
+body.status-entering .board .card{animation:stRise .78s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(.70s + var(--order)*.11s)}
+body.status-entering .card .icon-side{animation:stRise .68s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(1.05s + var(--order)*.11s)}
+body.status-entering .side-note.left{animation:stFromLeft .8s cubic-bezier(.16,1,.3,1) 1.37s both}
+body.status-entering .side-note.right{animation:stFromRight .8s cubic-bezier(.16,1,.3,1) 1.48s both}
+body.status-entering .footer-words{animation:stRise .85s cubic-bezier(.16,1,.3,1) 2.08s both}
+body.status-entering .orbit{animation:stFade 1.4s ease .2s both}
+body.status-entering .orbit-dot{animation:stFade 1.2s ease .72s both}
+@media(prefers-reduced-motion:reduce){
+ body.status-entering .back-btn,body.status-entering .top-controls,body.status-entering .brand,
+ body.status-entering .hero-title-wrap,body.status-entering .subtitle,body.status-entering .card,
+ body.status-entering .icon-side,body.status-entering .card-content,body.status-entering .side-note,
+ body.status-entering .footer-words,body.status-entering .orbit,body.status-entering .orbit-dot{
+   animation:none!important;filter:none!important
+ }
+ .icon-side{transition:none!important}
+}
+</style>
+</head>
+
+<body data-theme="light" class="status-entering">
+<canvas id="particles"></canvas>
+
+<div class="page" id="page">
+
+  <a class="back-btn" href="02_menu.html" data-i18n-title="backTitle">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+    <span data-i18n="back">Назад</span>
+  </a>
+  <div class="orbit o1"></div>
+  <div class="orbit o2"></div>
+  <div class="orbit o3"></div>
+  <span class="orbit-dot od1"></span>
+  <span class="orbit-dot od2"></span>
+  <span class="orbit-dot od3"></span>
+
+  <div class="side-note left" data-i18n="leftNote">Технологии<br>сегодня.<br>Здоровье<br>завтра.</div>
+  <div class="side-note right" data-i18n="rightNote">Российские<br>технологии<br>для здоровья<br>людей</div>
+
+  <div class="top-controls">
+    <button class="glass theme-btn" type="button" onclick="toggleTheme()" aria-label="Тёмная тема">
+      <svg class="moon" viewBox="0 0 24 24"><path d="M20.5 14.5A8 8 0 0 1 9.5 3.5 8.5 8.5 0 1 0 20.5 14.5z"/></svg>
+      <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"/></svg>
+    </button>
+    <div class="glass lang">
+      <button data-lang="ru" onclick="setLanguage('ru')">RU</button>
+      <button data-lang="en" onclick="setLanguage('en')">EN</button>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="brand">
+      <img src="cropped-LogoAz-2.png" alt="НПК АЗИМУТ" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <div class="brand-fallback">АЗИМУТ</div>
+    </div>
+    <div class="hero-title-wrap"><h1 data-i18n="title">СЕРВИС</h1></div>
+    <div class="subtitle" data-i18n="subtitle">Профессиональная поддержка<br>на каждом этапе эксплуатации</div>
+  </header>
+
+  <main class="board" aria-label="Сервисные возможности НПК Азимут">
+    <article class="card" style="--order:0">
+      <div class="card-content">
+        <div class="icon-side"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7V12H15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h2 data-i18n="c1t">Срок рассмотрения</h2>
+        <p data-i18n="c1d">Максимум <span class="highlight">2 дня</span> для правильно оформленного обращения</p>
+      </div>
+    </article>
+    <article class="card" style="--order:1">
+      <div class="card-content">
+        <div class="icon-side"><svg class="solid-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M504.918,99.144c-1.75-8.797-4.188-13.266-4.188-13.266c-0.75-2.375-2.781-4.125-5.234-4.516c-2.469-0.391-4.938,0.641-6.391,2.672l-6.531,9.141l-36.891,51.813c-7.125,9.969-21.672,11.781-32.5,4.047l-62.125-44.453c-10.813-7.734-13.813-22.094-6.672-32.063l37.781-53.063l6.203-8.656c1.438-2.016,1.625-4.688,0.484-6.875c-1.156-2.203-3.438-3.563-5.922-3.531c0,0-5.859-1-15.234,0.188c-23.578,3.016-46.547,12.828-65.766,29.672c-27.109,23.75-41.359,56.734-42.156,90.141c-0.25,10.078,8.859,53.828-14.938,77.625S19.996,422.847,19.996,422.847c-20.391,20.406-20.391,53.469,0,73.859c20.406,20.391,53.469,20.391,73.859,0c0,0,205.969-205.968,224.844-224.843s71.203-24.469,81.578-25.875c23.25-3.141,45.844-12.922,64.813-29.547C499.574,186.222,513.262,141.097,504.918,99.144z M40.012,476.706c-9.781-9.781-9.781-25.609,0-35.391c9.766-9.766,25.609-9.781,35.375,0c9.781,9.766,9.781,25.609,0,35.391C65.621,486.472,49.777,486.472,40.012,476.706z"/></svg></div>
+        <h2 data-i18n="c2t">Срок ремонта</h2>
+        <p data-i18n="c2d">Не более <span class="highlight">14 рабочих дней</span> при наличии необходимых запчастей</p>
+      </div>
+    </article>
+    <article class="card" style="--order:2">
+      <div class="card-content">
+        <div class="icon-side"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="8" r="1.35" fill="currentColor" stroke="none"/><path d="M12 12V16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h2 data-i18n="c3t">Информация</h2>
+        <p data-i18n="c3d">Сообщаем статус ремонта или рассмотрения обращения <span class="highlight">по первому запросу</span></p>
+      </div>
+    </article>
+    <article class="card" style="--order:3">
+      <div class="card-content">
+        <div class="icon-side"><svg class="solid-icon" viewBox="60 436 32 32" aria-hidden="true"><path d="m 68,456.01367 a 1,1 0 0 0 -1,1 1,1 0 0 0 1,1 h 8 a 1,1 0 0 0 1,-1 1,1 0 0 0 -1,-1 z M 70,453.01367 a 1,1 0 0 0 -1,1 1,1 0 0 0 1,1 h 6 a 1,1 0 0 0 1,-1 1,1 0 0 0 -1,-1 z M 73,450.01367 a 1,1 0 0 0 -1,1 1,1 0 0 0 1,1 h 3 a 1,1 0 0 0 1,-1 1,1 0 0 0 -1,-1 z M 68.888672,444.01953 a 1,1 0 0 0 -0.595703,0.28711 L 66.5,446.09961 65.707031,445.30664 a 1,1 0 0 0 -1.414062,0 1,1 0 0 0 0,1.41406 l 1.5,1.5 a 1.0001,1.0001 0 0 0 1.414062,0 l 2.5,-2.5 a 1,1 0 0 0 0,-1.41406 1,1 0 0 0 -0.818359,-0.28711 z M 67,440.01367 c -3.301857,0 -6,2.69815 -6,6 0,1.76801 0.774349,3.36262 2,4.46289 v 11.53711 a 1.0001,1.0001 0 0 0 1,1 h 2.173828 c 0.415693,1.16039 1.530816,2 2.826172,2 1.295356,0 2.410479,-0.83961 2.826172,-2 H 79 81.173828 c 0.415693,1.16039 1.530816,2 2.826172,2 1.295356,0 2.410479,-0.83961 2.826172,-2 H 90 a 1.0001,1.0001 0 0 0 1,-1 v -7 a 1.0001,1.0001 0 0 0 -0.21875,-0.625 l -4,-5 A 1.0001,1.0001 0 0 0 86,449.01367 h -6 v -2 a 1.0001,1.0001 0 0 0 -1,-1 h -6 c 0,-3.30185 -2.698143,-6 -6,-6 z m 0,2 c 2.220979,0 4,1.77902 4,4 0,2.22098 -1.779021,4 -4,4 -0.84757,0 -1.630859,-0.25926 -2.275391,-0.70312 a 1,1 0 0 0 -0.267578,-0.20117 C 63.565547,448.37778 63,447.26595 63,446.01367 c 0,-2.22098 1.779021,-4 4,-4 z m 5.654297,6 H 78 v 13 h -6.173828 c -0.415693,-1.16039 -1.530816,-2 -2.826172,-2 -1.295356,0 -2.410479,0.83961 -2.826172,2 H 65 v -9.3457 c 0.626269,0.22297 1.29935,0.3457 2,0.3457 2.601207,0 4.826496,-1.67494 5.654297,-4 z m 7.345703,3 h 2 v 5 a 1.0001,1.0001 0 0 0 1,1 h 6 v 4 h -2.173828 c -0.415693,-1.16039 -1.530816,-2 -2.826172,-2 -1.295356,0 -2.410479,0.83961 -2.826172,2 H 80 Z m 4,0 h 1.519531 l 3.199219,4 H 84 Z m -15,10 c 0.564128,0 1,0.43587 1,1 0,0.56413 -0.435872,1 -1,1 -0.564128,0 -1,-0.43587 -1,-1 0,-0.56413 0.435872,-1 1,-1 z m 15,0 c 0.564128,0 1,0.43587 1,1 0,0.56413 -0.435872,1 -1,1 -0.564128,0 -1,-0.43587 -1,-1 0,-0.56413 0.435872,-1 1,-1 z"/></svg></div>
+        <h2 data-i18n="c4t">Выезд специалиста</h2>
+        <p data-i18n="c4d">Для ремонта <span class="highlight">крупногабаритной и дорогостоящей</span> техники</p>
+      </div>
+    </article>
+    <article class="card" style="--order:4">
+      <div class="card-content">
+        <div class="icon-side"><svg class="solid-icon" viewBox="0 0 26 26" aria-hidden="true"><path d="M22.934,11.19V8.705l-2.955-0.482c-0.176-0.699-0.45-1.357-0.813-1.961l1.723-2.456l-1.756-1.755l-2.424,1.743c-0.604-0.366-1.267-0.646-1.971-0.82l-0.516-2.941h-2.484L11.26,2.965c-0.706,0.173-1.371,0.448-1.977,0.812L6.866,2.051L5.11,3.806l1.7,2.431C6.442,6.846,6.163,7.51,5.985,8.22L3.066,8.705v2.484l2.916,0.516c0.176,0.71,0.456,1.375,0.824,1.985l-1.723,2.409l1.756,1.757l2.434-1.704c0.608,0.365,1.271,0.642,1.977,0.815l0.488,2.934h2.484l0.521-2.941c0.701-0.178,1.363-0.457,1.967-0.824l2.451,1.721l1.755-1.757l-1.749-2.429c0.362-0.604,0.637-1.263,0.811-1.964L22.934,11.19z M13,13.431c-1.913,0-3.464-1.55-3.464-3.464c0-1.912,1.551-3.463,3.464-3.463s3.463,1.551,3.463,3.463C16.464,11.881,14.913,13.431,13,13.431z"/><path d="M24,18.967v4c0,0.551-0.448,1-1,1H3c-0.552,0-1-0.449-1-1v-4H0v4c0,1.656,1.344,3,3,3h20c1.656,0,3-1.344,3-3v-4H24z"/></svg></div>
+        <h2 data-i18n="c5t">Услуги по монтажу</h2>
+        <p data-i18n="c5d">Выполняем монтаж <span class="highlight">нашего медицинского оборудования</span></p>
+      </div>
+    </article>
+    <article class="card" style="--order:5">
+      <div class="card-content">
+        <div class="icon-side"><svg class="solid-icon" viewBox="-3.5 0 19 19" aria-hidden="true"><path d="M11.16 16.153a.477.477 0 0 1-.476.475H1.316a.477.477 0 0 1-.475-.475V3.046a.477.477 0 0 1 .475-.475h6.95l2.893 2.893zm-1.11-9.924H8.059a.575.575 0 0 1-.574-.574V3.679H1.95v11.84h8.102zM3.907 4.92a1.03 1.03 0 1 0 1.029 1.03 1.03 1.03 0 0 0-1.03-1.03zm4.958 3.253h-5.87v1.108h5.87zm0 2.354h-5.87v1.109h5.87zm0 2.354h-5.87v1.109h5.87z"/></svg></div>
+        <h2 data-i18n="c6t">Индивидуальный подход</h2>
+        <p data-i18n="c6d">Каждому обращению присваивается <span class="highlight">индивидуальный номер</span></p>
+      </div>
+    </article>
+    <article class="card" style="--order:6">
+      <div class="card-content">
+        <div class="icon-side"><svg class="solid-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M1.5 0A1.5 1.5 0 000 1.5v5A1.5 1.5 0 001.5 8h5A1.5 1.5 0 008 6.5v-5A1.5 1.5 0 006.5 0h-5zM13.293 7.707a1 1 0 101.414-1.414L13.414 5H17.5a.5.5 0 01.5.5V9a1 1 0 102 0V5.5A2.5 2.5 0 0017.5 3h-4.086l1.293-1.293A1 1 0 0013.293.293l-3 3a1 1 0 000 1.414l3 3zM6.707 12.293a1 1 0 00-1.414 1.414L6.586 15H2.5a.5.5 0 01-.5-.5V11a1 1 0 10-2 0v3.5A2.5 2.5 0 002.5 17h4.086l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414l-3-3zM20 18.5a1.5 1.5 0 01-1.5 1.5h-5a1.5 1.5 0 01-1.5-1.5v-5a1.5 1.5 0 011.5-1.5h5a1.5 1.5 0 011.5 1.5v5z"/></svg></div>
+        <h2 data-i18n="c7t">Подменный фонд</h2>
+        <p data-i18n="c7d">Предоставляем <span class="highlight">замену оборудования</span> на время ремонта</p>
+      </div>
+    </article>
+    <article class="card" style="--order:7">
+      <div class="card-content">
+        <div class="icon-side"><svg class="solid-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M332.998,291.918c52.2-71.895,45.941-173.338-18.834-238.123c-71.736-71.728-188.468-71.728-260.195,0c-71.746,71.745-71.746,188.458,0,260.204c64.775,64.775,166.218,71.034,238.104,18.844l14.222,14.203l40.916-40.916L332.998,291.918z M278.488,278.333c-52.144,52.134-136.699,52.144-188.852,0c-52.152-52.153-52.152-136.717,0-188.861c52.154-52.144,136.708-52.144,188.852,0C330.64,141.616,330.64,226.18,278.488,278.333z"/><path d="M109.303,119.216c-27.078,34.788-29.324,82.646-6.756,119.614c2.142,3.489,6.709,4.603,10.208,2.46c3.49-2.142,4.594-6.709,2.462-10.198v0.008c-19.387-31.7-17.45-72.962,5.782-102.771c2.526-3.228,1.946-7.898-1.292-10.405C116.48,115.399,111.811,115.979,109.303,119.216z"/><path d="M501.499,438.591L363.341,315.178l-47.98,47.98l123.403,138.168c12.548,16.234,35.144,13.848,55.447-6.456C514.505,474.576,517.743,451.138,501.499,438.591z"/></svg></div>
+        <h2 data-i18n="c8t">Оперативная диагностика</h2>
+        <p data-i18n="c8d">Быстро выявляем причины неисправности и <span class="highlight">оцениваем стоимость ремонта</span></p>
+      </div>
+    </article>
+  </main>
+
+  <div class="footer-words">
+    <span data-i18n="f1">Люди</span><i></i>
+    <span data-i18n="f2">Технологии</span><i></i>
+    <span data-i18n="f3">Здоровье</span><i></i>
+    <span data-i18n="f4">Будущее</span>
+  </div>
+</div>
+
+<script>
+const translations={
+  ru:{
+    back:'Назад',backTitle:'Вернуться в главное меню',
+    title:'СЕРВИС',
+    subtitle:'Профессиональная поддержка<br>на каждом этапе эксплуатации',
+    leftNote:'Технологии<br>сегодня.<br>Здоровье<br>завтра.',
+    rightNote:'Российские<br>технологии<br>для здоровья<br>людей',
+    c1t:'Срок рассмотрения',c1d:'Максимум <span class="highlight">2 дня</span> для правильно оформленного обращения',
+    c2t:'Срок ремонта',c2d:'Не более <span class="highlight">14 рабочих дней</span> при наличии необходимых запчастей',
+    c3t:'Информация',c3d:'Сообщаем статус ремонта или рассмотрения обращения <span class="highlight">по первому запросу</span>',
+    c4t:'Выезд специалиста',c4d:'Для ремонта <span class="highlight">крупногабаритной и дорогостоящей</span> техники',
+    c5t:'Услуги по монтажу',c5d:'Выполняем монтаж <span class="highlight">нашего медицинского оборудования</span>',
+    c6t:'Индивидуальный подход',c6d:'Каждому обращению присваивается <span class="highlight">индивидуальный номер</span>',
+    c7t:'Подменный фонд',c7d:'Предоставляем <span class="highlight">замену оборудования</span> на время ремонта',
+    c8t:'Оперативная диагностика',c8d:'Быстро выявляем причины неисправности и <span class="highlight">оцениваем стоимость ремонта</span>',
+    f1:'Люди',f2:'Технологии',f3:'Здоровье',f4:'Будущее',
+    dark:'Тёмная тема',light:'Светлая тема'
+  },
+  en:{
+    back:'Back',backTitle:'Return to the main menu',
+    title:'SERVICE',
+    subtitle:'Professional support<br>throughout the equipment lifecycle',
+    leftNote:'Technology<br>today.<br>Health<br>tomorrow.',
+    rightNote:'Russian<br>technology<br>for people’s<br>health',
+    c1t:'Response time',c1d:'Up to <span class="highlight">2 days</span> to review a properly submitted request',
+    c2t:'Repair time',c2d:'No more than <span class="highlight">14 business days</span> when required spare parts are available',
+    c3t:'Updates',c3d:'We provide repair and request status information <span class="highlight">upon your first inquiry</span>',
+    c4t:'On-site specialist',c4d:'On-site repairs for <span class="highlight">large and high-value</span> equipment',
+    c5t:'Installation',c5d:'Professional installation of <span class="highlight">our medical equipment</span>',
+    c6t:'Personal approach',c6d:'Every request receives a <span class="highlight">unique reference number</span>',
+    c7t:'Loan equipment',c7d:'We provide <span class="highlight">replacement equipment</span> during repairs',
+    c8t:'Rapid diagnostics',c8d:'Fast fault identification and <span class="highlight">repair cost estimation</span>',
+    f1:'People',f2:'Technology',f3:'Health',f4:'Future',
+    dark:'Dark theme',light:'Light theme'
+  }
+};
+
+let currentLanguage=localStorage.getItem('npkLanguage')||'ru';
+let currentTheme=localStorage.getItem('npkTheme')||'light';
+if(!translations[currentLanguage]) currentLanguage='ru';
+if(!['light','dark'].includes(currentTheme)) currentTheme='light';
+
+function setLanguage(lang){
+  if(!translations[lang])return;
+  currentLanguage=lang;
+  const t=translations[lang];
+  document.documentElement.lang=lang;
+  document.title=lang==='ru'?'НПК «АЗИМУТ» — Сервис':'NPK AZIMUT — Service';
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key=el.dataset.i18n;
+    if(t[key]!==undefined) el.innerHTML=t[key];
+  });
+  document.querySelectorAll('[data-i18n-title]').forEach(el=>{
+    const key=el.dataset.i18nTitle;
+    if(t[key]!==undefined){el.title=t[key];el.setAttribute('aria-label',t[key]);}
+  });
+  document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
+  localStorage.setItem('npkLanguage',lang);
+  applyTheme();
+}
+
+function applyTheme(){
+  document.body.dataset.theme=currentTheme;
+  const btn=document.querySelector('.theme-btn');
+  const label=currentTheme==='dark'?translations[currentLanguage].light:translations[currentLanguage].dark;
+  btn.title=label;btn.setAttribute('aria-label',label);
+  localStorage.setItem('npkTheme',currentTheme);
+}
+function toggleTheme(){currentTheme=currentTheme==='dark'?'light':'dark';applyTheme()}
+
+function scalePage(){
+  const page=document.getElementById('page');
+  if(innerWidth<=800){
+    page.style.transform='none';page.style.marginLeft='0';page.style.marginTop='0';
+    return;
+  }
+  const s=Math.min(innerWidth/1920,innerHeight/1080);
+  page.style.transform=`scale(${s})`;
+  page.style.marginLeft=((innerWidth-1920*s)/2)+'px';
+  page.style.marginTop=((innerHeight-1080*s)/2)+'px';
+}
+
+const canvas=document.getElementById('particles');
+const ctx=canvas.getContext('2d');
+let W,H,nodes=[];
+function initParticles(){
+  W=canvas.width=innerWidth;H=canvas.height=innerHeight;
+  nodes=Array.from({length:54},()=>({
+    x:Math.random()*W,y:Math.random()*H,
+    vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,
+    r:Math.random()*2.4+1.2
+  }));
+}
+function drawParticles(){
+  ctx.clearRect(0,0,W,H);
+  const dark=document.body.dataset.theme==='dark';
+  ctx.fillStyle=dark?'rgba(92,218,226,.36)':'rgba(23,153,165,.35)';
+  nodes.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0||p.x>W)p.vx*=-1;
+    if(p.y<0||p.y>H)p.vy*=-1;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
+  });
+  ctx.strokeStyle=dark?'rgba(87,205,214,.09)':'rgba(0,131,140,.10)';
+  for(let i=0;i<nodes.length;i++){
+    for(let j=i+1;j<nodes.length;j++){
+      const a=nodes[i],b=nodes[j];
+      const d=Math.hypot(a.x-b.x,a.y-b.y);
+      if(d<170){
+        ctx.globalAlpha=1-d/170;
+        ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+      }
+    }
+  }
+  ctx.globalAlpha=1;
+  requestAnimationFrame(drawParticles);
+}
+
+addEventListener('resize',()=>{scalePage();initParticles()});
+scalePage();initParticles();applyTheme();setLanguage(currentLanguage);drawParticles();
+setTimeout(()=>document.body.classList.remove('status-entering'),2900);
+</script>
+</body>
+</html>
